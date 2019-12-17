@@ -1,8 +1,11 @@
+
+require("dotenv").config();
 // // Update with your config settings.
+console.log(process.env.DATABASE_URL);
 module.exports = {
   development: {
     client: 'pg',
-    connection:'postgres://localhost:3430/hackton_db',
+    connection:process.env.DATABASE_URL,
     migrations: {
       directory: 'data/migrations'
     },
@@ -14,7 +17,7 @@ module.exports = {
 
   test: {
     client: 'pg',
-    connection:'postgres://localhost:3430/hackton_test_db',
+    connection:process.env.DATABASE_TEST_URL,
     migrations: {
       directory: 'data/migrations'
     },
@@ -33,7 +36,7 @@ module.exports = {
       directory: 'data/seeds'
     },
     useNullAsDefault: true
-  }
+  },
 
   production: {
     client: 'pg',
