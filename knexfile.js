@@ -5,12 +5,16 @@ console.log(process.env.DATABASE_URL);
 module.exports = {
   development: {
     client: 'pg',
-    connection:process.env.DATABASE_URL,
+    connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: 'data/seeds'
+      directory: './data/seeds'
+    },
+    pool: {
+      min: 2,
+      max: 10
     },
     useNullAsDefault: true
   },
@@ -19,10 +23,10 @@ module.exports = {
     client: 'pg',
     connection:process.env.DATABASE_TEST_URL,
     migrations: {
-      directory: 'data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: 'data/seeds'
+      directory: './data/seeds'
     },
     useNullAsDefault: true
   },
@@ -30,10 +34,10 @@ module.exports = {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: 'data/seeds'
+      directory: './data/seeds'
     },
     useNullAsDefault: true
   },
@@ -42,10 +46,10 @@ module.exports = {
     client: 'pg',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: 'data/migrations'
+      directory: './data/migrations'
     },
     seeds: {
-      directory: 'data/seeds'
+      directory: './data/seeds'
     },
     useNullAsDefault: true
   }
