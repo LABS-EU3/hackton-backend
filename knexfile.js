@@ -1,7 +1,5 @@
+require('dotenv').config();
 
-require("dotenv").config();
-// // Update with your config settings.
-console.log(process.env.DATABASE_URL);
 module.exports = {
   development: {
     client: 'pg',
@@ -21,7 +19,7 @@ module.exports = {
 
   test: {
     client: 'pg',
-    connection:process.env.DATABASE_TEST_URL,
+    connection: process.env.DATABASE_TEST_URL,
     migrations: {
       directory: './data/migrations'
     },
@@ -53,4 +51,4 @@ module.exports = {
     },
     useNullAsDefault: true
   }
-}
+};

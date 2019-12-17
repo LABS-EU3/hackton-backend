@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1576518730986" clover="3.2.0">
-  <project timestamp="1576518730988" name="All files">
+<coverage generated="1576603665051" clover="3.2.0">
+  <project timestamp="1576603665052" name="All files">
     <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2" elements="16" coveredelements="16" complexity="0" loc="14" ncloc="14" packages="1" files="1" classes="1"/>
     <file name="server.js" path="/Users/lambda/hackton-backend/api/server.js">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>

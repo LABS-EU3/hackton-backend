@@ -4,9 +4,11 @@
   "description": "This is a Lambda EU3 Labs project\r # hackton-server\r A comprehensive portal for hackathons where students can submit their work and judges can evaluate in one place",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env DB_ENV=testing jest --detectOpenHandles --testTimeout=10000 --forceExit",
+    "test": "cross-env DB_ENV=test jest --detectOpenHandles --testTimeout=10000 --forceExit",
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "migrate": "knex migrate:latest",
+    "unmigrate": "knex migrate:rollback"
   },
   "repository": {
     "type": "git",
