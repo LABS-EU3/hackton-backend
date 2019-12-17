@@ -9,7 +9,7 @@ function getUserId(id) {
 
 function addUser(user) {
     return db('users')
-    .insert(user, 'user.id')
+    .insert(user, 'users.id')
     .then(([id]) => this.getUserId(id))
 }
 
