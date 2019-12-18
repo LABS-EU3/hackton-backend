@@ -1,4 +1,4 @@
-function bodyValidator (req, res, next) {
+function bodyValidator (req, res, next) { // function to validate email and password
     if(Object.keys(req.body).length) {
         if(req.body.email && req.body.password) {
             next()
