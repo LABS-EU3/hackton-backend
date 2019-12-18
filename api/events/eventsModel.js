@@ -26,7 +26,9 @@ function remove(id) {
 }
 
 function add(event) {
-  return db('events').insert(event);
+  return db('events')
+    .insert(event)
+    .returning('id');
 }
 
 function find() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1576682327635" clover="3.2.0">
-  <project timestamp="1576682327635" name="All files">
-    <metrics statements="179" coveredstatements="106" conditionals="26" coveredconditionals="11" methods="61" coveredmethods="23" elements="266" coveredelements="140" complexity="0" loc="179" ncloc="179" packages="8" files="13" classes="13"/>
+<coverage generated="1576688296102" clover="3.2.0">
+  <project timestamp="1576688296102" name="All files">
+    <metrics statements="179" coveredstatements="114" conditionals="26" coveredconditionals="11" methods="61" coveredmethods="26" elements="266" coveredelements="151" complexity="0" loc="179" ncloc="179" packages="8" files="13" classes="13"/>
     <package name="hackton-backend">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="knexfile.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\knexfile.js">
@@ -41,10 +41,10 @@
       <file name="authModel.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\auth\authModel.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="1" count="3" type="stmt"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
         <line num="22" count="3" type="stmt"/>
       </file>
       <file name="authRouter.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\auth\authRouter.js">
@@ -56,19 +56,19 @@
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
-        <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
         <line num="31" count="3" type="stmt"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="35" count="3" type="stmt"/>
-        <line num="37" count="3" type="cond" truecount="3" falsecount="1"/>
-        <line num="38" count="3" type="stmt"/>
-        <line num="39" count="3" type="stmt"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
+        <line num="37" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
         <line num="49" count="0" type="stmt"/>
         <line num="55" count="3" type="stmt"/>
@@ -76,31 +76,31 @@
       <file name="authenticate.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\auth\authenticate.js">
         <metrics statements="10" coveredstatements="8" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="1" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="3" type="cond" truecount="1" falsecount="1"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="7" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="5" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="cond" truecount="1" falsecount="1"/>
         <line num="8" count="0" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="11" count="3" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
         <line num="19" count="3" type="stmt"/>
       </file>
     </package>
     <package name="hackton-backend.api.events">
-      <metrics statements="57" coveredstatements="16" conditionals="4" coveredconditionals="0" methods="24" coveredmethods="3"/>
+      <metrics statements="57" coveredstatements="24" conditionals="4" coveredconditionals="0" methods="24" coveredmethods="6"/>
       <file name="eventsModel.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\events\eventsModel.js">
-        <metrics statements="7" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="1"/>
+        <metrics statements="7" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="2"/>
         <line num="2" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
       </file>
       <file name="eventsRouter.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\events\eventsRouter.js">
-        <metrics statements="50" coveredstatements="13" conditionals="4" coveredconditionals="0" methods="19" coveredmethods="2"/>
+        <metrics statements="50" coveredstatements="20" conditionals="4" coveredconditionals="0" methods="19" coveredmethods="4"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
@@ -128,14 +128,14 @@
         <line num="50" count="0" type="stmt"/>
         <line num="52" count="0" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
         <line num="77" count="1" type="stmt"/>
         <line num="79" count="1" type="stmt"/>
         <line num="82" count="0" type="stmt"/>
@@ -162,7 +162,7 @@
         <line num="13" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
       </file>
       <file name="eventCategoryRouter.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\api\eventsCategories\eventCategoryRouter.js">
@@ -184,9 +184,9 @@
         <line num="44" count="0" type="stmt"/>
         <line num="46" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
         <line num="71" count="1" type="stmt"/>
@@ -228,17 +228,17 @@
       <file name="generateToken.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\utils\generateToken.js">
         <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="3" type="stmt"/>
-        <line num="4" count="5" type="stmt"/>
-        <line num="8" count="5" type="stmt"/>
-        <line num="11" count="5" type="stmt"/>
-        <line num="16" count="5" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
         <line num="19" count="3" type="stmt"/>
       </file>
       <file name="validator.js" path="F:\Software\Lambda\Projects\labs\hackton-backend\utils\validator.js">
         <metrics statements="6" coveredstatements="4" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
-        <line num="2" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="3" count="5" type="cond" truecount="3" falsecount="1"/>
-        <line num="4" count="5" type="stmt"/>
+        <line num="2" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="3" count="8" type="cond" truecount="3" falsecount="1"/>
+        <line num="4" count="8" type="stmt"/>
         <line num="6" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="17" count="3" type="stmt"/>

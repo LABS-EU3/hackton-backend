@@ -26,7 +26,9 @@ function remove(id) {
 }
 
 function add(category) {
-  return db('event_categories').insert(category);
+  return db('event_categories')
+    .insert(category)
+    .returning('id');
 }
 
 function find() {

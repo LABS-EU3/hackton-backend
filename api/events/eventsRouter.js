@@ -65,7 +65,8 @@ function handleEventsPost(req, res) {
   db.add(event)
     .then(data => {
       res.status(201).json({
-        message: 'your event was added successfully!'
+        message: `your event was added successfully!`,
+        event_id: Number(data.toString())
       });
     })
     .catch(error => {

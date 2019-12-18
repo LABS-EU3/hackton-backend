@@ -9,10 +9,8 @@ const addUser = {
   password: 'test'
 };
 
-beforeAll(async () => {
-  await db('event_categories').delete();
-  await db('users').delete();
-  await db('events').delete();
+beforeEach(async () => {
+  await db.raw('TRUNCATE TABLE event_categories,users, events CASCADE');
   const response = await request(server)
     .post('/api/auth/register')
     .send(addUser);
@@ -28,7 +26,6 @@ describe('user can add/edit/delete/get an event category', () => {
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
-    console.log(response3.body);
     expect(response3.status).toBe(201);
   });
   test('[GET] /event-category', async () => {
@@ -39,7 +36,6 @@ describe('user can add/edit/delete/get an event category', () => {
     const response3 = await request(server)
       .get('/api/event-category')
       .set('authorization', token);
-    console.log(response3.body);
     expect(response3.status).toBe(200);
   });
 });

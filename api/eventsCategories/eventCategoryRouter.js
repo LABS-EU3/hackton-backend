@@ -55,10 +55,11 @@ function handleCategoriesEdit(req, res) {
 function handleCategoriesPost(req, res) {
   const category = req.body;
   db.add(category)
-    .then(() => {
-      res
-        .status(201)
-        .json({ message: 'your event category was added successfully!' });
+    .then(data => {
+      res.status(201).json({
+        message: 'your event category was added successfully!',
+        category_id: Number(data.toString())
+      });
     })
     .catch(error => {
       res.status(500).json({ errorMessage: error.message });
