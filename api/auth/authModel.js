@@ -1,22 +1,25 @@
 const db = require('../../data/dbConfig');
 
-function getUserId(id) {
-  return db('users')
+async function getUserId(id) {
+  const userId = await db('users')
     .where('users.id', id)
     .select('fullname', 'username', 'email', 'bio')
     .first();
+  return userId;
 }
 
-function addUser(user) {
-  return db('users')
+async function addUser(user) {
+  const newUser = await db('users')
     .insert(user, 'id')
     .then(([id]) => this.getUserId(id));
+  return newUser;
 }
 
-function getUserBy(userValue) {
-  return db('users')
+async function getUserBy(userValue) {
+  const userData = await db('users')
     .where(userValue)
     .first();
+  return userData;
 }
 
 module.exports = {
