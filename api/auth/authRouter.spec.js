@@ -27,6 +27,7 @@ describe('api/auth/* endpoints', () => {
       expect(response.body.user.email).toEqual(addUser.email);
       expect(response.body.user.bio).toEqual(addUser.bio);
       expect(response.body.user.username).toEqual(addUser.username);
+      console.log(response.body.user, '*******My log********');
     });
 
     test('Email is required', async () => {
