@@ -113,11 +113,15 @@ describe("api/auth/* endpoints", () => {
         expect(response.status).toBe(400)
     })
 
-    // test("should return a token", async () => {
-    //     const response = await request(server)
-    //       .post("/api/auth/register")
-    //       .send(addUser);
-    //     expect(response.body.token).not.toBe(undefined);
-    // });
+    test("should return a token", async () => {
+        await request(server)
+            .post("/api/auth/register")
+            .send(addUser);
+
+        const response = await request(server)
+          .post("/api/auth/login")
+          .send(loginUser);
+        expect(response.body.token).not.toBe(undefined);
+    });
   });
 });
