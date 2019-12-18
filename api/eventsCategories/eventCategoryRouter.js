@@ -2,13 +2,26 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
 const db = require('./eventCategoryModel');
+const authenticate = require('../auth/authenticate');
 
 const router = express.Router();
 
-router.post('/', handleCategoriesPost);
-router.get('/', handleCategoriesGet);
-router.put('/:id', validateID, ValidateCategory, handleCategoriesEdit);
-router.delete('/:id', validateID, ValidateCategory, handleCategoriesDelete);
+router.post('/', authenticate, handleCategoriesPost);
+router.get('/', authenticate, handleCategoriesGet);
+router.put(
+  '/:id',
+  authenticate,
+  validateID,
+  ValidateCategory,
+  handleCategoriesEdit
+);
+router.delete(
+  '/:id',
+  authenticate,
+  validateID,
+  ValidateCategory,
+  handleCategoriesDelete
+);
 
 function handleCategoriesDelete(req, res) {
   const { id } = req.params;
@@ -52,7 +65,7 @@ function handleCategoriesPost(req, res) {
     });
 }
 
-function handleCategoriesGet(res) {
+function handleCategoriesGet(req, res) {
   db.find()
     .then(data => {
       res.status(200).json(data);
