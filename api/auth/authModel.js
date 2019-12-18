@@ -13,7 +13,14 @@ function addUser(user) {
     .then(([id]) => this.getUserId(id))
 }
 
+function getUserBy(userValue) {
+    return db('users')
+    .where(userValue)
+    .first()
+}
+
 module.exports = {
     getUserId,
-    addUser
+    addUser,
+    getUserBy
 }
