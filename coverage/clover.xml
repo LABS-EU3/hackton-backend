@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1576691853590" clover="3.2.0">
-  <project timestamp="1576691853590" name="All files">
+<coverage generated="1576692804944" clover="3.2.0">
+  <project timestamp="1576692804944" name="All files">
     <metrics statements="179" coveredstatements="154" conditionals="26" coveredconditionals="15" methods="61" coveredmethods="46" elements="266" coveredelements="215" complexity="0" loc="179" ncloc="179" packages="8" files="13" classes="13"/>
     <package name="hackton-backend">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
