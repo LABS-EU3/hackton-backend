@@ -1,6 +1,6 @@
 function bodyValidator (req, res, next) {
     if(Object.keys(req.body).length) {
-        if(req.body.username && req.body.password) {
+        if(req.body.email && req.body.password) {
             next()
         } else {
             res.status(400).json({
