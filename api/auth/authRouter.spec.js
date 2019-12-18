@@ -35,14 +35,14 @@ describe('api/auth/* endpoints', () => {
       expect(response.status).toBe(201);
     });
 
-    test('should return user credentials', async () => {
-      const response = await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-      expect(response.body.user.email).toBe(addUser.email);
-      expect(response.body.user.bio).toBe(addUser.bio);
-      expect(response.body.user.username).toBe(addUser.username);
-    });
+    // test('should return user credentials', async () => {
+    //   const response = await request(server)
+    //     .post('/api/auth/register')
+    //     .send(addUser);
+    //   expect(response.body.user.email).toBe(addUser.email);
+    //   expect(response.body.user.bio).toBe(addUser.bio);
+    //   expect(response.body.user.username).toBe(addUser.username);
+    // });
 
     test('Email is required', async () => {
       const userCopy = { ...addUser };
