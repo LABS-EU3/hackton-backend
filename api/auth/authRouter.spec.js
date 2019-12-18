@@ -24,9 +24,9 @@ describe('api/auth/* endpoints', () => {
         .set('Content-Type', 'application/json')
         .send(addUser);
       expect(response.status).toBe(201);
-      expect(response.body.user.email).toBe(addUser.email);
-      expect(response.body.user.bio).toBe(addUser.bio);
-      expect(response.body.user.username).toBe(addUser.username);
+      expect(response.body.user.email).toEqual(addUser.email);
+      expect(response.body.user.bio).toEqual(addUser.bio);
+      expect(response.body.user.username).toEqual(addUser.username);
     });
 
     test('Email is required', async () => {
