@@ -14,6 +14,16 @@ const addUser = {
 
 beforeEach(async () => {
   await db.raw('TRUNCATE TABLE event_categories,events, users CASCADE');
+  // await db("event_categories").del();
+  // await db("events").del();
+  // await db("users").del();
+
+  //   const a = await request(server)
+  //     .post("/api/auth/register")
+  //     .send(addUser);
+
+  //   token = res.body.token;
+  //   console.log(token);
 });
 
 describe('api/auth/* endpoints', () => {
