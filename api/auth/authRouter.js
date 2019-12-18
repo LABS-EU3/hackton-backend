@@ -22,7 +22,7 @@ router.post('/register', bodyValidator, (req, res) => {
     })
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', bodyValidator, (req, res) => {
     let {username, password} = req.body;
 
     db.getUserBy({username})
