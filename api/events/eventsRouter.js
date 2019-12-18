@@ -1,13 +1,21 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
 const db = require('./eventsModel');
+const authenticate = require('../auth/authenticate');
+const moment = require('moment');
 
 const router = express.Router();
 
-router.post('/', handleEventsPost);
-router.get('/', handleEventsGet);
-router.put('/:id', validateID, ValidateEvent, handleEventsEdit);
-router.delete('/:id', validateID, ValidateEvent, handleEventsDelete);
+router.post('/', authenticate, handleEventsPost);
+router.get('/', authenticate, handleEventsGet);
+router.put('/:id', authenticate, validateID, ValidateEvent, handleEventsEdit);
+router.delete(
+  '/:id',
+  authenticate,
+  validateID,
+  ValidateEvent,
+  handleEventsDelete
+);
 
 function handleEventsDelete(req, res) {
   const { id } = req.params;
@@ -23,6 +31,10 @@ function handleEventsDelete(req, res) {
 function handleEventsEdit(req, res) {
   const { id } = req.params;
   const editedEvent = req.body;
+  const editedStartDate = moment(req.body.start_date).format();
+  const editedEndDate = moment(req.body.end_date).format();
+  editedEvent.start_date = editedStartDate;
+  editedEvent.end_date = editedEndDate;
   db.update(id, editedEvent)
     .then(() => {
       res.status(201).json({ message: 'your event was edited successfully!' });
@@ -34,6 +46,10 @@ function handleEventsEdit(req, res) {
 
 function handleEventsPost(req, res) {
   const event = req.body;
+  const startDate = moment(req.body.start_date).format();
+  const endDate = moment(req.body.end_date).format();
+  event.start_date = startDate;
+  event.end_date = endDate;
   db.add(event)
     .then(() => {
       res.status(201).json({ message: 'your event was added successfully!' });
@@ -43,7 +59,7 @@ function handleEventsPost(req, res) {
     });
 }
 
-function handleEventsGet(res) {
+function handleEventsGet(req, res) {
   db.find()
     .then(data => {
       res.status(200).json(data);

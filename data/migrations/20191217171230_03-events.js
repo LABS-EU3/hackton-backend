@@ -6,12 +6,9 @@ exports.up = function(knex) {
     table.text('event_description').notNullable();
     table
       .integer('creator_id')
-      .notNullable()
       .unsigned()
-      .references('id')
-      .inTable('users')
-      .onUpdate('CASCADE')
-      .onDelete('CASCADE');
+      .notNullable();
+    table.foreign('creator_id').references('users.id');
     table.datetime('start_date').notNullable();
     table.datetime('end_date').notNullable();
     table.text('location').notNullable();
@@ -21,13 +18,9 @@ exports.up = function(knex) {
       .notNullable();
     table
       .integer('category_id')
-      .notNullable()
       .unsigned()
-      .references('id')
-      .inTable('event_categories')
-      .onUpdate('CASCADE')
-
-      .onDelete('CASCADE');
+      .notNullable();
+    table.foreign('category_id').references('event_categories.id');
     table.timestamps(true, true);
   });
 };
