@@ -7,7 +7,6 @@
     "test": "cross-env DB_ENV=test jest --detectOpenHandles --testTimeout=10000 --forceExit",
     "start": "node index.js",
     "server": "nodemon index.js",
-    "pretest": "cross-env DB_ENV=test npx knex migrate:rollback --env=test && npx knex migrate:latest --env=test",
     "migrate": "knex migrate:latest",
     "unmigrate": "knex migrate:rollback"
   },
@@ -34,6 +33,7 @@
     "prettier": "^1.19.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.9",
     "cross-env": "^6.0.3",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
