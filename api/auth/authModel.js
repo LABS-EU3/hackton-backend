@@ -15,6 +15,5 @@ function addUser(user) {
 
 module.exports = {
     getUserId,
-    addUser,
-    getUserBy
+    addUser
 }
