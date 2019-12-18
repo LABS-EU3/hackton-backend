@@ -13,7 +13,7 @@ const addUser = {
 };
 
 beforeEach(async () => {
-  await db.raw('TRUNCATE TABLE event_categories,events, users CASCADE');
+  await db.raw('TRUNCATE TABLE users CASCADE');
   // await db("event_categories").del();
   // await db("events").del();
   // await db("users").del();
