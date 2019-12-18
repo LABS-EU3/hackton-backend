@@ -16,6 +16,18 @@ router.delete(
   ValidateEvent,
   handleEventsDelete
 );
+router.get('/:id', authenticate, validateID, ValidateEvent, handleEventGetById);
+
+function handleEventGetById(req, res) {
+  const { id } = req.params;
+  db.findById(id)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res.status(500).json({ errorMessage: error.message });
+    });
+}
 
 function handleEventsDelete(req, res) {
   const { id } = req.params;
