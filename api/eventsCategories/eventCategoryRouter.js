@@ -69,7 +69,6 @@ function handleCategoriesGet(req, res) {
   db.find()
     .then(data => {
       res.status(200).json(data);
-      console.log(data);
     })
     .catch(error => {
       res.status(500).json({ errorMessage: error.message });
@@ -97,13 +96,11 @@ function ValidateCategory(req, res, next) {
             'This event category id cannot be found,please provide a valid event category id'
         });
       } else {
-        console.log(data);
         req.category = data;
         next();
       }
     })
     .catch(error => {
-      console.log(error);
       res.status(500).json(error);
     });
 }

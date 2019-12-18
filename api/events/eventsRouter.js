@@ -63,8 +63,10 @@ function handleEventsPost(req, res) {
   event.start_date = startDate;
   event.end_date = endDate;
   db.add(event)
-    .then(() => {
-      res.status(201).json({ message: 'your event was added successfully!' });
+    .then(data => {
+      res.status(201).json({
+        message: 'your event was added successfully!'
+      });
     })
     .catch(error => {
       res.status(500).json({ errorMessage: error.message });
