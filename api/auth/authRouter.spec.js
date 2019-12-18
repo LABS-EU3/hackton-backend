@@ -12,7 +12,7 @@ const addUser = {
   fullname: "tests tests"
 };
 
-beforeAll(async () => {
+beforeEach(async () => {
     await db("event_categories").del();
     await db("events").del();
     await db("users").del();
@@ -32,6 +32,20 @@ describe("api/auth/* endpoints", () => {
         .post("/api/auth/register")
         .send(addUser);
       expect(response.status).toBe(201);
+    });
+
+    // test('should return user credentials', () => {
+    //     const response = await request(server)
+    //         .post('/api/auth/register')
+    //         .send(addUser);
+    //         expect(response.body).not.toBe(undefined)
+    // })
+
+    test("should return a token", async () => {
+        const response = await request(server)
+          .post("/api/auth/register")
+          .send(addUser);
+        expect(response.body.token).not.toBe(undefined);
     });
   });
 });
