@@ -3,7 +3,9 @@ const bcrypt = require('bcrypt');
 const db = require('./authModel');
 const router = express.Router()
 
-router.post('/register', (req, res) => {
+const bodyValidator = require('../../utils/validator')
+
+router.post('/register', bodyValidator, (req, res) => {
     let user = req.body;
     const hash = bcrypt.hashSync(user.password, 15)
     user.password = hash;

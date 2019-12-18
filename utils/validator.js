@@ -1,5 +1,3 @@
-const express = require('express');
-
 function bodyValidator (req, res, next) {
     if(Object.keys(req.body).length) {
         if(req.body.username && req.body.password) {
