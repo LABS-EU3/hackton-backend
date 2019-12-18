@@ -26,7 +26,7 @@ router.post('/register', bodyValidator, (req, res) => { //endpoint to register
     })
 })
 
-router.post('/login', bodyValidator, (req, res) => {
+router.post('/login', bodyValidator, (req, res) => { //login endpoint
     let {username, password} = req.body;
 
     db.getUserBy({username})
