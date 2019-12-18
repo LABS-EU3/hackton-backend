@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const db = require('./authModel');
 const generateToken = require('../../utils/generateToken')
 const router = express.Router()
-
 const bodyValidator = require('../../utils/validator')
 
 router.post('/register', bodyValidator, (req, res) => { //endpoint to register
@@ -48,5 +47,6 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
         })
     })
 })
+
 
 module.exports = router;
