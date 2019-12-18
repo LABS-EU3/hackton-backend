@@ -98,16 +98,20 @@ describe("api/auth/* endpoints", () => {
         expect(response.status).toBe(400)
     })
 
-    // test('Password is required', async () => {
-    //     const userCopy = {...addUser}
-    //     delete userCopy.password
+    test('Password is required', async () => {
+        const userCopy = {...addUser}
+        delete userCopy.password
 
-    //     const response = await request(server)
-    //     .post('/api/auth/register')
-    //     .send(userCopy)
+        await request(server)
+            .post("/api/auth/register")
+            .send(addUser);
 
-    //     expect(response.status).toBe(400)
-    // })
+        const response = await request(server)
+        .post('/api/auth/login')
+        .send(userCopy)
+
+        expect(response.status).toBe(400)
+    })
 
     // test("should return a token", async () => {
     //     const response = await request(server)
