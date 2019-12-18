@@ -3,11 +3,13 @@ exports.up = function(knex) {
     table.increments();
     table
       .string('username')
-      .notNullable()
       .unique();
     table.string('password').notNullable();
     table.text('bio');
-    table.string('email').unique();
+    table
+      .string('email')
+      .unique()
+      .notNullable();
     table.string('fullname');
   });
 };
