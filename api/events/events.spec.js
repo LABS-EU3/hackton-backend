@@ -21,30 +21,32 @@ beforeEach(async () => {
 });
 
 describe('user can add/edit/delete/get an event', () => {
-//   test('[POST] /events', async () => {
-//     const response = await request(server)
-//       .post('/api/auth/login')
-//       .send(addUser);
-//     token = response.body.token;
-//     const response2 = await request(server)
-//       .post('/api/event-category')
-//       .set('authorization', token)
-//       .send({ category_name: 'Lambda winter hackathon' });
-//     expect(response2.status).toBe(201);
-//     const response3 = await request(server)
-//       .post('/api/events')
-//       .set('authorization', token)
-//       .send({
-//         event_title: 'Winter hackathon 2019',
-//         event_description: "Lambda's winter hackathon",
-//         creator_id: 1,
-//         start_date: startDate,
-//         end_date: endDate,
-//         location: 'remote',
-//         guidelines: 'Be human',
-//         participation_type: 'both',
-//         category_id: 1
-//       });
+  test('[POST] /events', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const { userId } = response.body;
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response5.status).toBe(201);
+    let categoryId = response5.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('authorization', token)
+      .send({
+        event_title: 'Winter hackathon 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
     console.log(response3.body);
     expect(response3.status).toBe(201);
   });
@@ -57,5 +59,84 @@ describe('user can add/edit/delete/get an event', () => {
       .get('/api/events')
       .set('authorization', token);
     expect(response3.status).toBe(200);
+  });
+  test('[PUT] /events', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const { userId } = response.body;
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response5.status).toBe(201);
+    let categoryId = response5.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('authorization', token)
+      .send({
+        event_title: 'Winter hackathon 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    let eventId = response3.body.event_id;
+    const response4 = await request(server)
+      .put(`/api/events/${eventId}`)
+      .set('authorization', token)
+      .send({
+        event_title: 'NaijaHacks 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    console.log(response4.body);
+    expect(response4.status).toBe(201);
+  });
+  test('[DELETE] /events', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const { userId } = response.body;
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response5.status).toBe(201);
+    let categoryId = response5.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('authorization', token)
+      .send({
+        event_title: 'Winter hackathon 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    let eventId = response3.body.event_id;
+    const response4 = await request(server)
+      .delete(`/api/events/${eventId}`)
+      .set('authorization', token);
+    console.log(response4.body);
+    expect(response4.status).toBe(200);
   });
 });

@@ -10,6 +10,7 @@ function getUserId(id) {
 function addUser(user) {
   return db('users')
     .insert(user, 'id')
+    .returning('id')
     .then(([id]) => this.getUserId(id));
 }
 
