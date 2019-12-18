@@ -1,19 +1,26 @@
 const db = require('../../data/dbConfig');
 
 function getUserId(id) {
-    return db('users')
+  return db('users')
     .where('users.id', id)
     .select('fullname', 'username', 'email', 'bio')
-    .first()
+    .first();
 }
 
 function addUser(user) {
-    return db('users')
+  return db('users')
     .insert(user, 'id')
-    .then(([id]) => this.getUserId(id))
+    .then(([id]) => this.getUserId(id));
+}
+
+function getUserBy(userValue) {
+  return db('users')
+    .where(userValue)
+    .first();
 }
 
 module.exports = {
-    getUserId,
-    addUser
-}
+  getUserId,
+  addUser,
+  getUserBy
+};
