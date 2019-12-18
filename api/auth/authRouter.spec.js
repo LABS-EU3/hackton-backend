@@ -2,8 +2,6 @@ const request = require('supertest');
 const server = require('../server');
 const db = require('../../data/dbConfig');
 
-let token;
-
 const addUser = {
   username: "test",
   password: "test",
@@ -12,17 +10,15 @@ const addUser = {
   fullname: "tests tests"
 };
 
+const loginUser = {
+    password: "test",
+    email: "test@email.com"
+}
+
 beforeEach(async () => {
     await db("event_categories").del();
     await db("events").del();
     await db("users").del();
-
-//   const a = await request(server)
-//     .post("/api/auth/register")
-//     .send(addUser);
-
-//   token = res.body.token;
-  //   console.log(token);
 });
 
 describe("api/auth/* endpoints", () => {
@@ -72,5 +68,57 @@ describe("api/auth/* endpoints", () => {
           .send(addUser);
         expect(response.body.token).not.toBe(undefined);
     });
+  });
+
+
+  describe("[POST] /api/auth", () => {
+    test("should return 200 OK", async () => {
+        await request(server)
+            .post("/api/auth/register")
+            .send(addUser);
+
+        const response = await request(server)
+            .post("/api/auth/login")
+            .send(loginUser);
+        expect(response.status).toBe(200);
+    });
+
+    // test('should return user credentials', async () => {
+    //     const response = await request(server)
+    //         .post('/api/auth/login')
+    //         .send(loginUser);
+    //         expect(response.body.user.email).toBe(addUser.email)
+    //         expect(response.body.user.bio).toBe(addUser.bio)
+    //         expect(response.body.user.username).toBe(addUser.username)
+    // })
+
+    // test('Email is required', async () => {
+    //     const userCopy = {...addUser}
+    //     delete userCopy.email
+
+    //     const response = await request(server)
+    //     .post('/api/auth/register')
+    //     .send(userCopy)
+
+    //     expect(response.status).toBe(400)
+    // })
+
+    // test('Password is required', async () => {
+    //     const userCopy = {...addUser}
+    //     delete userCopy.password
+
+    //     const response = await request(server)
+    //     .post('/api/auth/register')
+    //     .send(userCopy)
+
+    //     expect(response.status).toBe(400)
+    // })
+
+    // test("should return a token", async () => {
+    //     const response = await request(server)
+    //       .post("/api/auth/register")
+    //       .send(addUser);
+    //     expect(response.body.token).not.toBe(undefined);
+    // });
   });
 });
