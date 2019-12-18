@@ -34,12 +34,37 @@ describe("api/auth/* endpoints", () => {
       expect(response.status).toBe(201);
     });
 
-    // test('should return user credentials', () => {
-    //     const response = await request(server)
-    //         .post('/api/auth/register')
-    //         .send(addUser);
-    //         expect(response.body).not.toBe(undefined)
-    // })
+    test('should return user credentials', async () => {
+        const response = await request(server)
+            .post('/api/auth/register')
+            .send(addUser);
+            expect(response.body.user.email).toBe(addUser.email)
+            expect(response.body.user.bio).toBe(addUser.bio)
+            expect(response.body.user.username).toBe(addUser.username)
+
+    })
+
+    test('Email is required', async () => {
+        const userCopy = {...addUser}
+        delete userCopy.email
+
+        const response = await request(server)
+        .post('/api/auth/register')
+        .send(userCopy)
+
+        expect(response.status).toBe(400)
+    })
+
+    test('Password is required', async () => {
+        const userCopy = {...addUser}
+        delete userCopy.password
+
+        const response = await request(server)
+        .post('/api/auth/register')
+        .send(userCopy)
+
+        expect(response.status).toBe(400)
+    })
 
     test("should return a token", async () => {
         const response = await request(server)
