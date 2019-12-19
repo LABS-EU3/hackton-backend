@@ -43,8 +43,14 @@ function handleEventsDelete(req, res) {
 
 function handleEventsEdit(req, res) {
   const { id } = req.params;
-  const editedStartDate = moment(req.body.start_date).format();
-  const editedEndDate = moment(req.body.end_date).format();
+  const editedStartDate = moment(
+    new Date(req.body.start_date),
+    'MMM D LTS'
+  ).format();
+  const editedEndDate = moment(
+    new Date(req.body.end_date),
+    'MMM D LTS'
+  ).format();
   const editedEvent = {
     event_title: req.body.event_title,
     event_description: req.body.event_description,
@@ -67,8 +73,8 @@ function handleEventsEdit(req, res) {
 }
 
 function handleEventsPost(req, res) {
-  const startDate = moment(req.body.start_date).format();
-  const endDate = moment(req.body.end_date).format();
+  const startDate = moment(new Date(req.body.start_date), 'MMM D LTS').format();
+  const endDate = moment(new Date(req.body.end_date), 'MMM D LTS').format();
   const event = {
     event_title: req.body.event_title,
     event_description: req.body.event_description,

@@ -10,8 +10,8 @@ const addUser = {
   password: 'test'
 };
 
-const startDate = moment('12/23/2019').format();
-const endDate = moment('03/01/2020').format();
+const startDate = moment(new Date('2019-12-23'), 'MMM D LTS').format();
+const endDate = moment(new Date('2020-01-03'), 'MMM D LTS').format();
 
 beforeEach(async () => {
   await db.raw('TRUNCATE TABLE event_categories,users, events CASCADE');
