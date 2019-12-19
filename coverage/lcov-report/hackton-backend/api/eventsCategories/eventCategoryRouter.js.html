@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80.56% </span>
+        <span class="strong">88.89% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>29/36</span>
+        <span class='fraction'>32/36</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>2/4</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">68.75% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>11/16</span>
+        <span class='fraction'>12/16</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80.56% </span>
+        <span class="strong">88.89% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>29/36</span>
+        <span class='fraction'>32/36</span>
       </div>
     </div>
     <p class="quiet">
@@ -210,16 +210,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,22 +234,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,8 +327,8 @@ function handleCategoriesPost(req, res) {
         category_id: Number(data.toString())
       });
     })
-    .catch(<span class="fstat-no" title="function not covered" >er</span>ror =&gt; {
-<span class="cstat-no" title="statement not covered" >      res.status(500).json({ errorMessage: error.message });</span>
+    .catch(error =&gt; {
+      res.status(500).json({ errorMessage: error.message });
     });
 }
 &nbsp;
@@ -344,10 +344,10 @@ function handleCategoriesGet(req, res) {
 &nbsp;
 function validateID(req, res, next) {
   const { id } = req.params;
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (Number(id)) {
+  if (Number(id)) {
     next();
   } else {
-<span class="cstat-no" title="statement not covered" >    res</span>
+    res
       .status(400)
       .json({ Error: 'Please provide a valid id,an id can only be a number' });
   }
@@ -357,8 +357,8 @@ function ValidateCategory(req, res, next) {
   const { id } = req.params;
   db.findById(id)
     .then(data =&gt; {
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (data.length === 0) {
-<span class="cstat-no" title="statement not covered" >        res.status(404).json({</span>
+      if (data.length === 0) {
+        res.status(404).json({
           ErrorMessage:
             'This event category id cannot be found,please provide a valid event category id'
         });
@@ -379,7 +379,7 @@ module.exports = router;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Dec 18 2019 21:13:24 GMT+0300 (East Africa Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 19 2019 10:29:49 GMT+0300 (East Africa Time)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

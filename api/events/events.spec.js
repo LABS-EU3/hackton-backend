@@ -139,4 +139,48 @@ describe('user can add/edit/delete/get an event', () => {
     console.log(response4.body);
     expect(response4.status).toBe(200);
   });
+  test('[PUT] /events will fail if event object is missing a property', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const { userId } = response.body;
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response5.status).toBe(201);
+    let categoryId = response5.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('authorization', token)
+      .send({
+        event_title: 'Winter hackathon 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    let eventId = response3.body.event_id;
+    const response4 = await request(server)
+      .put(`/api/events/${eventId}`)
+      .set('authorization', token)
+      .send({
+        event_title: 'NaijaHacks 2019',
+        event_description: "Lambda's winter hackathon",
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines: 'Be human',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    console.log(response4.body);
+    expect(response4.status).toBe(201);
+  });
 });
