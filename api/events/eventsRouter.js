@@ -1,12 +1,13 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
+const moment = require('moment');
 const db = require('./eventsModel');
 const authenticate = require('../auth/authenticate');
-const moment = require('moment');
+const eventsObjectValidator = require('../../utils/eventsValidator');
 
 const router = express.Router();
 
-router.post('/', authenticate, handleEventsPost);
+router.post('/', authenticate, eventsObjectValidator, handleEventsPost);
 router.get('/', authenticate, handleEventsGet);
 router.put('/:id', authenticate, validateID, ValidateEvent, handleEventsEdit);
 router.delete(
@@ -42,11 +43,26 @@ function handleEventsDelete(req, res) {
 
 function handleEventsEdit(req, res) {
   const { id } = req.params;
-  const editedEvent = req.body;
-  const editedStartDate = moment(req.body.start_date).format();
-  const editedEndDate = moment(req.body.end_date).format();
-  editedEvent.start_date = editedStartDate;
-  editedEvent.end_date = editedEndDate;
+  const editedStartDate = moment(
+    new Date(req.body.start_date),
+    'MMM D LTS'
+  ).format();
+  const editedEndDate = moment(
+    new Date(req.body.end_date),
+    'MMM D LTS'
+  ).format();
+  const editedEvent = {
+    event_title: req.body.event_title,
+    event_description: req.body.event_description,
+    creator_id: req.body.creator_id,
+    start_date: editedStartDate,
+    end_date: editedEndDate,
+    location: req.body.location,
+    guidelines: req.body.guidelines,
+    participation_type: req.body.participation_type,
+    category_id: req.body.category_id
+  };
+
   db.update(id, editedEvent)
     .then(() => {
       res.status(201).json({ message: 'your event was edited successfully!' });
@@ -57,15 +73,25 @@ function handleEventsEdit(req, res) {
 }
 
 function handleEventsPost(req, res) {
-  const event = req.body;
-  const startDate = moment(req.body.start_date).format();
-  const endDate = moment(req.body.end_date).format();
-  event.start_date = startDate;
-  event.end_date = endDate;
+  const startDate = moment(new Date(req.body.start_date), 'MMM D LTS').format();
+  const endDate = moment(new Date(req.body.end_date), 'MMM D LTS').format();
+  const event = {
+    event_title: req.body.event_title,
+    event_description: req.body.event_description,
+    creator_id: req.body.creator_id,
+    start_date: startDate,
+    end_date: endDate,
+    location: req.body.location,
+    guidelines: req.body.guidelines,
+    participation_type: req.body.participation_type,
+    category_id: req.body.category_id
+  };
+
   db.add(event)
     .then(data => {
       res.status(201).json({
-        message: 'your event was added successfully!'
+        message: `your event was added successfully!`,
+        event_id: Number(data.toString())
       });
     })
     .catch(error => {
@@ -84,6 +110,7 @@ function handleEventsGet(req, res) {
 }
 
 function validateID(req, res, next) {
+  // validates provided ID is a number
   const { id } = req.params;
   if (Number(id)) {
     next();
@@ -95,6 +122,7 @@ function validateID(req, res, next) {
 }
 
 function ValidateEvent(req, res, next) {
+  // validates the provided Id exists in the db
   const { id } = req.params;
   db.findById(id)
     .then(data => {

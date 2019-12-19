@@ -55,10 +55,11 @@ function handleCategoriesEdit(req, res) {
 function handleCategoriesPost(req, res) {
   const category = req.body;
   db.add(category)
-    .then(() => {
-      res
-        .status(201)
-        .json({ message: 'your event category was added successfully!' });
+    .then(data => {
+      res.status(201).json({
+        message: 'your event category was added successfully!',
+        category_id: Number(data.toString())
+      });
     })
     .catch(error => {
       res.status(500).json({ errorMessage: error.message });
@@ -76,6 +77,7 @@ function handleCategoriesGet(req, res) {
 }
 
 function validateID(req, res, next) {
+  // validates provided ID is a number
   const { id } = req.params;
   if (Number(id)) {
     next();
@@ -87,6 +89,7 @@ function validateID(req, res, next) {
 }
 
 function ValidateCategory(req, res, next) {
+  // validates the provided event ID exists in the db
   const { id } = req.params;
   db.findById(id)
     .then(data => {
