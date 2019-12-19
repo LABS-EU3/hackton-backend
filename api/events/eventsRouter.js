@@ -3,10 +3,11 @@ const express = require('express');
 const db = require('./eventsModel');
 const authenticate = require('../auth/authenticate');
 const moment = require('moment');
+const eventsObjectValidator = require('../../utils/eventsValidator');
 
 const router = express.Router();
 
-router.post('/', authenticate, handleEventsPost);
+router.post('/', authenticate, eventsObjectValidator, handleEventsPost);
 router.get('/', authenticate, handleEventsGet);
 router.put('/:id', authenticate, validateID, ValidateEvent, handleEventsEdit);
 router.delete(
@@ -56,8 +57,6 @@ function handleEventsEdit(req, res) {
     category_id: req.body.category_id
   };
 
-  console.log('event keys', Object.keys(editedEvent));
-  console.log('event values', Object.values(editedEvent));
   db.update(id, editedEvent)
     .then(() => {
       res.status(201).json({ message: 'your event was edited successfully!' });
@@ -81,9 +80,6 @@ function handleEventsPost(req, res) {
     participation_type: req.body.participation_type,
     category_id: req.body.category_id
   };
-
-  console.log('event keys', Object.keys(event));
-  console.log('event values', Object.values(event));
 
   db.add(event)
     .then(data => {
