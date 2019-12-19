@@ -15,6 +15,7 @@ const endDate = moment('03/01/2020').format();
 
 beforeEach(async () => {
   await db.raw('TRUNCATE TABLE event_categories,users, events CASCADE');
+  // eslint-disable-next-line no-unused-vars
   const response = await request(server)
     .post('/api/auth/register')
     .send(addUser);
@@ -32,7 +33,7 @@ describe('user can add/edit/delete/get an event', () => {
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    let categoryId = response5.body.category_id;
+    const categoryId = response5.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -47,7 +48,7 @@ describe('user can add/edit/delete/get an event', () => {
         participation_type: 'both',
         category_id: categoryId
       });
-    console.log(response3.body);
+
     expect(response3.status).toBe(201);
   });
   test('[GET] /events', async () => {
@@ -71,7 +72,7 @@ describe('user can add/edit/delete/get an event', () => {
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    let categoryId = response5.body.category_id;
+    const categoryId = response5.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -87,7 +88,7 @@ describe('user can add/edit/delete/get an event', () => {
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
-    let eventId = response3.body.event_id;
+    const eventId = response3.body.event_id;
     const response4 = await request(server)
       .put(`/api/events/${eventId}`)
       .set('authorization', token)
@@ -102,7 +103,6 @@ describe('user can add/edit/delete/get an event', () => {
         participation_type: 'both',
         category_id: categoryId
       });
-    console.log(response4.body);
     expect(response4.status).toBe(201);
   });
   test('[DELETE] /events', async () => {
@@ -116,7 +116,7 @@ describe('user can add/edit/delete/get an event', () => {
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    let categoryId = response5.body.category_id;
+    const categoryId = response5.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -132,14 +132,13 @@ describe('user can add/edit/delete/get an event', () => {
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
-    let eventId = response3.body.event_id;
+    const eventId = response3.body.event_id;
     const response4 = await request(server)
       .delete(`/api/events/${eventId}`)
       .set('authorization', token);
-    console.log(response4.body);
     expect(response4.status).toBe(200);
   });
-  test('[PUT] /events will fail if event object is missing a property', async () => {
+  test('[POST] /events will fail if event object is missing a property', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -150,7 +149,7 @@ describe('user can add/edit/delete/get an event', () => {
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    let categoryId = response5.body.category_id;
+    const categoryId = response5.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -164,23 +163,6 @@ describe('user can add/edit/delete/get an event', () => {
         participation_type: 'both',
         category_id: categoryId
       });
-    expect(response3.status).toBe(201);
-    let eventId = response3.body.event_id;
-    const response4 = await request(server)
-      .put(`/api/events/${eventId}`)
-      .set('authorization', token)
-      .send({
-        event_title: 'NaijaHacks 2019',
-        event_description: "Lambda's winter hackathon",
-        creator_id: userId,
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines: 'Be human',
-        participation_type: 'both',
-        category_id: categoryId
-      });
-    console.log(response4.body);
-    expect(response4.status).toBe(201);
+    expect(response3.status).toBe(400);
   });
 });

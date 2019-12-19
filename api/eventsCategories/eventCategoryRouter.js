@@ -77,6 +77,7 @@ function handleCategoriesGet(req, res) {
 }
 
 function validateID(req, res, next) {
+  // validates provided ID is a number
   const { id } = req.params;
   if (Number(id)) {
     next();
@@ -88,6 +89,7 @@ function validateID(req, res, next) {
 }
 
 function ValidateCategory(req, res, next) {
+  // validates the provided event ID exists in the db
   const { id } = req.params;
   db.findById(id)
     .then(data => {

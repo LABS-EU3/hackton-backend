@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define */
 const express = require('express');
+const moment = require('moment');
 const db = require('./eventsModel');
 const authenticate = require('../auth/authenticate');
-const moment = require('moment');
 const eventsObjectValidator = require('../../utils/eventsValidator');
 
 const router = express.Router();
@@ -104,6 +104,7 @@ function handleEventsGet(req, res) {
 }
 
 function validateID(req, res, next) {
+  // validates provided ID is a number
   const { id } = req.params;
   if (Number(id)) {
     next();
@@ -115,6 +116,7 @@ function validateID(req, res, next) {
 }
 
 function ValidateEvent(req, res, next) {
+  // validates the provided Id exists in the db
   const { id } = req.params;
   db.findById(id)
     .then(data => {
