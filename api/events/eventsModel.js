@@ -9,28 +9,33 @@ module.exports = {
   findById
 };
 
-function findById(id) {
-  return db('events').where({ id });
+async function findById(id) {
+  const eventId = await db('events').where({ id });
+  return eventId;
 }
 
-function update(id, event) {
-  return db('events')
+async function update(id, event) {
+  const eventUpdate = await db('events')
     .where({ id })
     .update(event);
+  return eventUpdate;
 }
 
-function remove(id) {
-  return db('events')
+async function remove(id) {
+  const eventId = await db('events')
     .where({ id })
     .delete();
+  return eventId;
 }
 
-function add(event) {
-  return db('events')
+async function add(event) {
+  const newEvent = await db('events')
     .insert(event)
     .returning('id');
+  return newEvent;
 }
 
-function find() {
-  return db('events');
+async function find() {
+  const foundEvent = await db('events');
+  return foundEvent;
 }
