@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 exports.up = function(knex) {
   return knex.schema.createTable('event_categories', table => {
     table.increments();

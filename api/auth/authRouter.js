@@ -29,18 +29,19 @@ router.post('/register', bodyValidator, (req, res) => { //endpoint to register
 router.post('/login', bodyValidator, (req, res) => { //login endpoint
     let {email, password} = req.body;
 
-    db.getUserBy({email})
-    .then( user => {
-        if(user && bcrypt.compareSync(password, user.password)) {
-            const token = generateToken(user)
-            res.status(200).json({
-                token: token
-            })
-        } else {
-            res.status(400).json({
-                message: 'Invalid password!'
-            })
-        }
+  db.getUserBy({ email })
+    .then(user => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = generateToken(user);
+        res.status(200).json({
+          token,
+          userId: user.id
+        });
+      } else {
+        res.status(400).json({
+          message: 'Invalid password!'
+        });
+      }
     })
     .catch(error => {
         res.status(500).json({

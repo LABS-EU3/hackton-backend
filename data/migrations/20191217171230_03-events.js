@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 exports.up = function(knex) {
   return knex.schema.createTable('events', table => {
     table.increments();
@@ -5,10 +6,12 @@ exports.up = function(knex) {
     table.text('event_description').notNullable();
     table
       .integer('creator_id')
-      .notNullable()
       .unsigned()
-      .references('id')
-      .inTable('users')
+      .notNullable();
+
+    table
+      .foreign('creator_id')
+      .references('users.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
     table.datetime('start_date').notNullable();
@@ -20,12 +23,12 @@ exports.up = function(knex) {
       .notNullable();
     table
       .integer('category_id')
-      .notNullable()
       .unsigned()
-      .references('id')
-      .inTable('event_categories')
+      .notNullable();
+    table
+      .foreign('category_id')
+      .references('event_categories.id')
       .onUpdate('CASCADE')
-
       .onDelete('CASCADE');
     table.timestamps(true, true);
   });

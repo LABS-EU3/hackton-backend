@@ -11,6 +11,7 @@ async function getUserId(id) {
 async function addUser(user) {
   const newUser = await db('users')
     .insert(user, 'id')
+    .returning('id')
     .then(([id]) => this.getUserId(id));
   return newUser;
 }
