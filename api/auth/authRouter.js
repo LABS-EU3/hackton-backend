@@ -91,11 +91,9 @@ passport.use(
 
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 
-router.get(
-  '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('https://hackton-frontend-g3tpfw81r.now.sh');
   }
 );
 
