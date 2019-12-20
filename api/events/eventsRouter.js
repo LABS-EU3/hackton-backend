@@ -12,6 +12,7 @@ router.post(
   authenticate,
   eventsObjectValidator,
   validateCharacterLength,
+  validateParticipationType,
   handleEventsPost
 );
 router.get('/', authenticate, handleEventsGet);
@@ -21,6 +22,7 @@ router.put(
   validateID,
   ValidateEvent,
   validateCharacterLength,
+  validateParticipationType,
   handleEventsEdit
 );
 router.delete(
@@ -165,6 +167,22 @@ function validateCharacterLength(req, res, next) {
     res.status(400).json({
       error:
         'Please provide an event description and guidelines of 150 characters or more'
+    });
+  }
+}
+
+function validateParticipationType(req, res, next) {
+  const eventParticipation = req.body.participation_type;
+  if (
+    eventParticipation === 'individual' ||
+    eventParticipation === 'team' ||
+    eventParticipation === 'both'
+  ) {
+    next();
+  } else {
+    res.status(400).json({
+      message:
+        "please pick between these three options for participation type ['individual','team','both'] "
     });
   }
 }
