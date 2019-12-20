@@ -1,33 +1,37 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('./authModel');
-const generateToken = require('../../utils/generateToken')
-const router = express.Router()
+const generateToken = require('../../utils/generateToken');
 
-const bodyValidator = require('../../utils/validator')
+const router = express.Router();
 
-router.post('/register', bodyValidator, (req, res) => { //endpoint to register
-    let user = req.body;
-    const hash = bcrypt.hashSync(user.password, 15)
-    user.password = hash;
+const bodyValidator = require('../../utils/validator');
 
-    db.addUser(user)
+router.post('/register', bodyValidator, (req, res) => {
+  // endpoint to register
+  const user = req.body;
+  const hash = bcrypt.hashSync(user.password, 15);
+  user.password = hash;
+
+  db.addUser(user)
     .then(user => {
-        const token = generateToken(user)        
-        res.status(201).json({
-            user,
-            token: token
-        })
+      const token = generateToken(user);
+      res.status(201).json({
+        user,
+        token
+      });
     })
     .catch(error => {
-        res.status(500).json({
-            message: 'Couldnt register user: ' + error.message, data: error
-        })
-    })
-})
+      res.status(500).json({
+        message: `Couldnt register user: ${error.message}`,
+        data: error
+      });
+    });
+});
 
-router.post('/login', bodyValidator, (req, res) => { //login endpoint
-    let {email, password} = req.body;
+router.post('/login', bodyValidator, (req, res) => {
+  // login endpoint
+  const { email, password } = req.body;
 
   db.getUserBy({ email })
     .then(user => {
@@ -44,10 +48,10 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
       }
     })
     .catch(error => {
-        res.status(500).json({
-            message: 'Internal server error' + error.message
-        })
-    })
-})
+      res.status(500).json({
+        message: `Internal server error${error.message}`
+      });
+    });
+});
 
 module.exports = router;
