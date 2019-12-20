@@ -7,8 +7,14 @@ module.exports = {
   remove,
   update,
   findById,
-  findByTitle
+  findByTitle,
+  getByUserId
 };
+
+async function getByUserId(id) {
+  const foundEvents = await db('events').where({ creator_id: id });
+  return foundEvents;
+}
 
 async function findByTitle(title) {
   const foundTitle = await db('events').where({ event_title: title });

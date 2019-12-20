@@ -17,6 +17,7 @@ router.post(
   handleEventsPost
 );
 router.get('/', authenticate, handleEventsGet);
+router.get('/your-events', authenticate, handleEventsGetByUSerId);
 router.put(
   '/:id',
   authenticate,
@@ -35,6 +36,17 @@ router.delete(
   handleEventsDelete
 );
 router.get('/:id', authenticate, validateID, ValidateEvent, handleEventGetById);
+
+function handleEventsGetByUSerId(req, res) {
+  const userId = req.decodedToken.subject;
+  db.getByUserId(userId)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res.status(500).json(error.message);
+    });
+}
 
 function handleEventGetById(req, res) {
   const { id } = req.params;

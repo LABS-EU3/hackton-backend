@@ -296,4 +296,38 @@ describe('user can add/edit/delete/get an event', () => {
         'This event title already exists in the database, please pick a new event title!'
     });
   });
+  test('[GET] /events/your-events for each logged in user', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const { userId } = response.body;
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response5.status).toBe(201);
+    const categoryId = response5.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('authorization', token)
+      .send({
+        event_title: 'Winter hackathon 2019',
+        event_description:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        creator_id: userId,
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    const response4 = await request(server)
+      .get('/api/events/your-events')
+      .set('authorization', token);
+    expect(response4.status).toBe(200);
+  });
 });
