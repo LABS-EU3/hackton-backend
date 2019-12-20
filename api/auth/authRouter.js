@@ -2,13 +2,12 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('./authModel');
 const generateToken = require('../../utils/generateToken')
+const bodyValidator = require('../../utils/validator')
 const router = express.Router()
 
 const passport = require('passport');
-
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const bodyValidator = require('../../utils/validator')
 
 router.post('/register', bodyValidator, (req, res) => { //endpoint to register
     let user = req.body;
@@ -53,22 +52,38 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
     })
 })
 
+router.use(passport.initialize())
+passport.serializeUser((user, done) => {
+    done(null, user);
+})
+
+passport.deserializeUser((user, done) => {
+    done(null, user);
+})
+
 passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:4000/api/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-       User.findOrCreate({ googleId: profile.id }, function (err, user) {
-         return done(err, user);
-       });
+      done(null, {
+          accessToken,
+          refreshToken,
+          profile
+      })
+    //    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //      return done(err, user);
+    //    });
+    console.log( profile);
+    
   }
 ));
 
-router.get('/auth/google',
-passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+router.get('/google',
+passport.authenticate('google', { scope: ['profile', ] }));
 
-router.get('/auth/google/callback', 
+router.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
