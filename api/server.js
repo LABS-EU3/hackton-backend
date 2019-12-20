@@ -60,7 +60,6 @@ server.get(
         });
       }
       const user = await userModel.getUserBy({ username });
-      console.log(user, '=====')
       if (!user) {
         userModel
           .addUser({
