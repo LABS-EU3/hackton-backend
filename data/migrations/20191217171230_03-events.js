@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('events', table => {
     table.increments();
-    table.text('event_title').notNullable();
+    table.text('event_title').notNullable().unique();
     table.text('event_description').notNullable();
     table
       .integer('creator_id')

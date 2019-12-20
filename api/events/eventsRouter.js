@@ -7,9 +7,22 @@ const eventsObjectValidator = require('../../utils/eventsValidator');
 
 const router = express.Router();
 
-router.post('/', authenticate, eventsObjectValidator, handleEventsPost);
+router.post(
+  '/',
+  authenticate,
+  eventsObjectValidator,
+  validateCharacterLength,
+  handleEventsPost
+);
 router.get('/', authenticate, handleEventsGet);
-router.put('/:id', authenticate, validateID, ValidateEvent, handleEventsEdit);
+router.put(
+  '/:id',
+  authenticate,
+  validateID,
+  ValidateEvent,
+  validateCharacterLength,
+  handleEventsEdit
+);
 router.delete(
   '/:id',
   authenticate,
@@ -75,6 +88,7 @@ function handleEventsEdit(req, res) {
 function handleEventsPost(req, res) {
   const startDate = moment(new Date(req.body.start_date), 'MMM D LTS').format();
   const endDate = moment(new Date(req.body.end_date), 'MMM D LTS').format();
+
   const event = {
     event_title: req.body.event_title,
     event_description: req.body.event_description,
@@ -139,6 +153,20 @@ function ValidateEvent(req, res, next) {
     .catch(error => {
       res.status(500).json(error.message);
     });
+}
+
+function validateCharacterLength(req, res, next) {
+  // checks that the description and guidelines have more that 150 characters.
+  const eventDescription = req.body.event_description.split('');
+  const eventGuidelines = req.body.guidelines.split('');
+  if (eventDescription.length >= 150 && eventGuidelines.length >= 150) {
+    next();
+  } else {
+    res.status(400).json({
+      error:
+        'Please provide an event description and guidelines of 150 characters or more'
+    });
+  }
 }
 
 module.exports = router;
