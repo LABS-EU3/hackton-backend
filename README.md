@@ -28,9 +28,9 @@ Run tests
 
 npm run test
 
-Run the server
+Run the server in development
 
-npm start
+npm server
 
 To track the code coverage
 
