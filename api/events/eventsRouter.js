@@ -10,6 +10,7 @@ const router = express.Router();
 router.post(
   '/',
   authenticate,
+  validateDuplicateValues,
   eventsObjectValidator,
   validateCharacterLength,
   validateParticipationType,
@@ -19,6 +20,7 @@ router.get('/', authenticate, handleEventsGet);
 router.put(
   '/:id',
   authenticate,
+  eventsObjectValidator,
   validateID,
   ValidateEvent,
   validateCharacterLength,
@@ -125,6 +127,8 @@ function handleEventsGet(req, res) {
     });
 }
 
+// validators
+
 function validateID(req, res, next) {
   // validates provided ID is a number
   const { id } = req.params;
@@ -172,6 +176,7 @@ function validateCharacterLength(req, res, next) {
 }
 
 function validateParticipationType(req, res, next) {
+  // checks that the participation type is  individual,team or both
   const eventParticipation = req.body.participation_type;
   if (
     eventParticipation === 'individual' ||
@@ -185,6 +190,23 @@ function validateParticipationType(req, res, next) {
         "please pick between these three options for participation type ['individual','team','both'] "
     });
   }
+}
+
+function validateDuplicateValues(req, res, next) {
+  db.findByTitle(req.body.event_title)
+    .then(event => {
+      if (event.length === 0) {
+        next();
+      } else {
+        res.status(400).json({
+          message:
+            'This event title already exists in the database, please pick a new event title!'
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error.message);
+    });
 }
 
 module.exports = router;

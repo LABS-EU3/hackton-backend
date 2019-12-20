@@ -128,9 +128,25 @@ describe('user can add/edit/delete/get an event category', () => {
       .set('authorization', token)
       .send({ category_names: 'Lambda winter hackathon' });
     expect(response3.status).toBe(500);
-    expect(response3.body).toStrictEqual({
-      errorMessage:
-        'insert into "event_categories" ("category_names") values ($1) returning "id" - column "category_names" of relation "event_categories" does not exist'
+  });
+  test('[POST] /event-category will fail if category name exists in the DB', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.token;
+    const response3 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response3.status).toBe(201);
+    const response4 = await request(server)
+      .post('/api/event-category')
+      .set('authorization', token)
+      .send({ category_name: 'Lambda winter hackathon' });
+    expect(response4.status).toBe(400);
+    expect(response4.body).toStrictEqual({
+      message:
+        'This category name already exists in the database, please pick a new category name!'
     });
   });
 });
