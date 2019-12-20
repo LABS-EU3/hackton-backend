@@ -4,6 +4,10 @@ const db = require('./authModel');
 const generateToken = require('../../utils/generateToken')
 const router = express.Router()
 
+const passport = require('passport');
+
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 const bodyValidator = require('../../utils/validator')
 
 router.post('/register', bodyValidator, (req, res) => { //endpoint to register
@@ -48,5 +52,26 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
         })
     })
 })
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+         return done(err, user);
+       });
+  }
+));
+
+router.get('/auth/google',
+passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 module.exports = router;
