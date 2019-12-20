@@ -9,11 +9,11 @@ const bodyValidator = require('../../utils/validator');
 
 router.post('/register', bodyValidator, (req, res) => {
   // endpoint to register
-  const user = req.body;
-  const hash = bcrypt.hashSync(user.password, 15);
-  user.password = hash;
+  const newUser = req.body;
+  const hash = bcrypt.hashSync(newUser.password, 15);
+  newUser.password = hash;
 
-  db.addUser(user)
+  db.addUser(newUser)
     .then(user => {
       const token = generateToken(user);
       res.status(201).json({
