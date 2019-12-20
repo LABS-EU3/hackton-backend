@@ -22,8 +22,30 @@ async function getUserBy(userValue) {
   return userData;
 }
 
+async function findBy(filter){
+  const user = await db('users')
+  .where(filter)
+  .first()
+
+  return user;
+}
+
+async function createOrFindUser(newUser){
+  let user = await findBy({email: newUser.email})
+
+  if (!user){
+    user = await addUser(newUser)
+  }
+
+
+  return user
+
+}
+
 module.exports = {
   getUserId,
   addUser,
-  getUserBy
+  getUserBy,
+  findBy,
+  createOrFindUser
 };

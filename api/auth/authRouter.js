@@ -4,7 +4,7 @@ const db = require('./authModel');
 const generateToken = require('../../utils/generateToken');
 const bodyValidator = require('../../utils/validator');
 const router = express.Router();
-
+const server = require('../server');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -53,6 +53,7 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
 });
 
 router.use(passport.initialize());
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -68,32 +69,39 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:4000/api/auth/google/callback'
     },
-    function(accessToken, refreshToken, profile, done) {
+    async function(accessToken, refreshToken, profile, done) {
+      const userCredentials = {
+        id: profile.id,
+        username: profile.name.givenName,
+        password: profile.id,
+        email: profile.emails[0].value,
+        fullname: profile.displayName
+      };
+
+      const user = await db.createOrFindUser(userCredentials);
+
       done(null, {
         accessToken,
         refreshToken,
         profile
       });
-      //    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      //      return done(err, user);
-      //    });
-      console.log(profile);
-
-      const userCredentials = {
-          username: given_name,
-          password: sub,
-          email: email,
-          fullname: name
-      }
     }
   )
 );
 
-router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
+router.get('/google',passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('https://hackton-frontend-g3tpfw81r.now.sh');
+    const token = generateToken(req.user.profile);
+    // res.status(200).json({
+    //   user: req.user.profile,
+    //   token
+    // })
+    
+    // We can only use res once
+    res.redirect('https://hackton-frontend-g3tpfw81r.now.sh/');
+    // res.redirect(`https://hackton-frontend-g3tpfw81r.now.sh/google-sign-in/${token}`); //redirect with the token so that the frontend can extract it for user details
   }
 );
 
