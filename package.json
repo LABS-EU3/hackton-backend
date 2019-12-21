@@ -7,6 +7,7 @@
     "test": "cross-env DB_ENV=test jest --detectOpenHandles --testTimeout=10000 --coverage --forceExit",
     "start": "node index.js",
     "server": "nodemon index.js",
+    "pretest": "npm run unmigrate && npm run migrate",
     "migrate": "knex migrate:latest",
     "unmigrate": "knex migrate:rollback",
     "coverage": "npm test && cat ./coverage/lcov.info | coveralls"
