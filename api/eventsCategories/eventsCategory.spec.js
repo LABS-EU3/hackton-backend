@@ -26,7 +26,7 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
   });
@@ -38,7 +38,7 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .get('/api/event-category')
-      .set('authorization', token);
+      .set('Authorization', token);
     expect(response3.status).toBe(200);
   });
   test('[PUT] /event-category', async () => {
@@ -49,13 +49,13 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
     const categoryId = response3.body.category_id;
     const response4 = await request(server)
       .put(`/api/event-category/${categoryId}`)
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
     expect(response4.status).toBe(201);
   });
@@ -67,13 +67,13 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
     const categoryId = response3.body.category_id;
     const response4 = await request(server)
       .delete(`/api/event-category/${categoryId}`)
-      .set('authorization', token);
+      .set('Authorization', token);
     expect(response4.status).toBe(200);
   });
   test('[PUT] /event-category will fail if ID is not in database', async () => {
@@ -83,13 +83,13 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
     const categoryId = response3.body.category_id;
     const response4 = await request(server)
       .put(`/api/event-category/${categoryId + 1}`)
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
     expect(response4.status).toBe(404);
     expect(response4.body).toStrictEqual({
@@ -104,14 +104,14 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
     // eslint-disable-next-line no-unused-vars
     const categoryId = response3.body.category_id;
     const response4 = await request(server)
       .put(`/api/event-category/awesomeness`)
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
     expect(response4.status).toBe(400);
     expect(response4.body).toStrictEqual({
@@ -125,7 +125,7 @@ describe('user can add/edit/delete/get an event category', () => {
     token = response.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
-      .set('authorization', token)
+      .set('Authorization', token)
       .send({ category_names: 'Lambda winter hackathon' });
     expect(response3.status).toBe(500);
   });
