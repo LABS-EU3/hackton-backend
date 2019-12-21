@@ -6,8 +6,20 @@ module.exports = {
   find,
   remove,
   update,
-  findById
+  findById,
+  findByTitle,
+  getByUserId
 };
+
+async function getByUserId(id) {
+  const foundEvents = await db('events').where({ creator_id: id });
+  return foundEvents;
+}
+
+async function findByTitle(title) {
+  const foundTitle = await db('events').where({ event_title: title });
+  return foundTitle;
+}
 
 async function findById(id) {
   const eventId = await db('events').where({ id });

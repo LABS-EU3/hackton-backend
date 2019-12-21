@@ -6,7 +6,7 @@ const authenticate = require('../auth/authenticate');
 
 const router = express.Router();
 
-router.post('/', authenticate, handleCategoriesPost);
+router.post('/', authenticate, validateDuplicateValues, handleCategoriesPost);
 router.get('/', authenticate, handleCategoriesGet);
 router.put(
   '/:id',
@@ -76,6 +76,8 @@ function handleCategoriesGet(req, res) {
     });
 }
 
+// validators
+
 function validateID(req, res, next) {
   // validates provided ID is a number
   const { id } = req.params;
@@ -105,6 +107,24 @@ function ValidateCategory(req, res, next) {
     })
     .catch(error => {
       res.status(500).json(error);
+    });
+}
+
+function validateDuplicateValues(req, res, next) {
+  // checks if the category name already exists in the database
+  db.findByTitle(req.body.category_name)
+    .then(event => {
+      if (event.length === 0) {
+        next();
+      } else {
+        res.status(400).json({
+          message:
+            'This category name already exists in the database, please pick a new category name!'
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error.message);
     });
 }
 

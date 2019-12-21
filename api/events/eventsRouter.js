@@ -7,9 +7,27 @@ const eventsObjectValidator = require('../../utils/eventsValidator');
 
 const router = express.Router();
 
-router.post('/', authenticate, eventsObjectValidator, handleEventsPost);
+router.post(
+  '/',
+  authenticate,
+  validateDuplicateValues,
+  eventsObjectValidator,
+  validateCharacterLength,
+  validateParticipationType,
+  handleEventsPost
+);
 router.get('/', authenticate, handleEventsGet);
-router.put('/:id', authenticate, validateID, ValidateEvent, handleEventsEdit);
+router.get('/your-events', authenticate, handleEventsGetByUSerId);
+router.put(
+  '/:id',
+  authenticate,
+  eventsObjectValidator,
+  validateID,
+  ValidateEvent,
+  validateCharacterLength,
+  validateParticipationType,
+  handleEventsEdit
+);
 router.delete(
   '/:id',
   authenticate,
@@ -18,6 +36,17 @@ router.delete(
   handleEventsDelete
 );
 router.get('/:id', authenticate, validateID, ValidateEvent, handleEventGetById);
+
+function handleEventsGetByUSerId(req, res) {
+  const userId = req.decodedToken.subject;
+  db.getByUserId(userId)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res.status(500).json(error.message);
+    });
+}
 
 function handleEventGetById(req, res) {
   const { id } = req.params;
@@ -109,6 +138,8 @@ function handleEventsGet(req, res) {
     });
 }
 
+// validators
+
 function validateID(req, res, next) {
   // validates provided ID is a number
   const { id } = req.params;
@@ -134,6 +165,59 @@ function ValidateEvent(req, res, next) {
       } else {
         req.event = data;
         next();
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error.message);
+    });
+}
+
+function validateCharacterLength(req, res, next) {
+  // checks that the description, title and guidelines have more that 150 characters.
+  const eventDescription = req.body.event_description.split('');
+  const eventGuidelines = req.body.guidelines.split('');
+  const eventTitle = req.body.event_title.split('');
+  if (
+    eventDescription.length >= 150 &&
+    eventGuidelines.length >= 150 &&
+    eventTitle.length >= 10
+  ) {
+    next();
+  } else {
+    res.status(400).json({
+      error:
+        'Please provide an event description and guidelines of 150 characters or more. The event title should be atleast 10 characters'
+    });
+  }
+}
+
+function validateParticipationType(req, res, next) {
+  // checks that the participation type is  individual,team or both
+  const eventParticipation = req.body.participation_type;
+  if (
+    eventParticipation === 'individual' ||
+    eventParticipation === 'team' ||
+    eventParticipation === 'both'
+  ) {
+    next();
+  } else {
+    res.status(400).json({
+      message:
+        "please pick between these three options for participation type ['individual','team','both'] "
+    });
+  }
+}
+
+function validateDuplicateValues(req, res, next) {
+  db.findByTitle(req.body.event_title)
+    .then(event => {
+      if (event.length === 0) {
+        next();
+      } else {
+        res.status(400).json({
+          message:
+            'This event title already exists in the database, please pick a new event title!'
+        });
       }
     })
     .catch(error => {
