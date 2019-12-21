@@ -3,13 +3,15 @@ const bcrypt = require('bcrypt');
 const db = require('./authModel');
 const generateToken = require('../../utils/generateToken');
 const bodyValidator = require('../../utils/validator');
+
 const router = express.Router();
 const server = require('../server');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-router.post('/register', bodyValidator, (req, res) => { //endpoint to register
-  let user = req.body;
+router.post('/register', bodyValidator, (req, res) => {
+  // endpoint to register
+  const user = req.body;
   const hash = bcrypt.hashSync(user.password, 15);
   user.password = hash;
 
@@ -18,19 +20,20 @@ router.post('/register', bodyValidator, (req, res) => { //endpoint to register
       const token = generateToken(user);
       res.status(201).json({
         user,
-        token: token
+        token
       });
     })
     .catch(error => {
       res.status(500).json({
-        message: 'Couldnt register user: ' + error.message,
+        message: `Couldnt register user: ${error.message}`,
         data: error
       });
     });
 });
 
-router.post('/login', bodyValidator, (req, res) => { //login endpoint
-  let { email, password } = req.body;
+router.post('/login', bodyValidator, (req, res) => {
+  // login endpoint
+  const { email, password } = req.body;
 
   db.getUserBy({ email })
     .then(user => {
@@ -48,7 +51,7 @@ router.post('/login', bodyValidator, (req, res) => { //login endpoint
     })
     .catch(error => {
       res.status(500).json({
-        message: 'Internal server error' + error.message
+        message: `Internal server error${error.message}`
       });
     });
 });
@@ -90,16 +93,21 @@ passport.use(
   )
 );
 
-router.get('/google',passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     const token = generateToken(req.user.profile);
     // res.status(200).json({
     //   user: req.user.profile,
     //   token
     // })
-    
+
     // We can only use res once
     res.redirect('https://hackton-frontend-g3tpfw81r.now.sh/');
     // res.redirect(`https://hackton-frontend-g3tpfw81r.now.sh/google-sign-in/${token}`); //redirect with the token so that the frontend can extract it for user details
