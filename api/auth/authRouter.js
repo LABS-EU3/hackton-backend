@@ -1,21 +1,21 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('./authModel');
 const generateToken = require('../../utils/generateToken');
 const bodyValidator = require('../../utils/validator');
 
 const router = express.Router();
 const server = require('../server');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 router.post('/register', bodyValidator, (req, res) => {
   // endpoint to register
-  const user = req.body;
-  const hash = bcrypt.hashSync(user.password, 15);
-  user.password = hash;
+  const newUser = req.body;
+  const hash = bcrypt.hashSync(newUser.password, 15);
+  newUser.password = hash;
 
-  db.addUser(user)
+  db.addUser(newUser)
     .then(user => {
       const token = generateToken(user);
       res.status(201).json({
@@ -83,7 +83,7 @@ passport.use(
       };
 
       const user = await db.createOrFindUser(userCredentials);
-
+      server.locals = user;
       done(null, {
         accessToken,
         refreshToken,
@@ -102,6 +102,7 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
+    server.locals.profile = req.user.profile;
     const token = generateToken(req.user.profile);
     res.redirect(
       `https://hackton-frontend-g3tpfw81r.now.sh/register?google=${token}`
