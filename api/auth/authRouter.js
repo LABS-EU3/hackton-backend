@@ -101,16 +101,11 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
+  (req, res) => {
     const token = generateToken(req.user.profile);
-    // res.status(200).json({
-    //   user: req.user.profile,
-    //   token
-    // })
-
-    // We can only use res once
-    res.redirect('https://hackton-frontend-g3tpfw81r.now.sh/');
-    // res.redirect(`https://hackton-frontend-g3tpfw81r.now.sh/google-sign-in/${token}`); //redirect with the token so that the frontend can extract it for user details
+    res.redirect(
+      `https://hackton-frontend-g3tpfw81r.now.sh/register?google=${token}`
+    ); // redirect with the token so that the frontend can extract it for user details
   }
 );
 
