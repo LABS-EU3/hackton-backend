@@ -10,6 +10,17 @@ const bodyValidator = require('../../utils/validator');
 const router = express.Router();
 const server = require('../server');
 
+// Passportjs config
+router.use(passport.initialize());
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 router.post('/register', bodyValidator, (req, res) => {
   // endpoint to register
   const newUser = req.body;
@@ -58,15 +69,6 @@ router.post('/login', bodyValidator, (req, res) => {
 });
 
 // google
-router.use(passport.initialize());
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
 
 passport.use(
   new GoogleStrategy(
@@ -75,7 +77,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:4000/api/auth/google/callback'
     },
-    async function(accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
         username: profile.name.givenName,
         password: bcrypt.hashSync('Hackton', 15),
@@ -112,14 +114,6 @@ router.get(
 );
 
 // github
-
-router.use(passport.initialize());
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
 
 passport.use(
   new GitHubStrategy(
@@ -166,7 +160,9 @@ router.get(
         });
       }
       res.locals.token = server.locals.token;
-      res.redirect(process.env.REDIRECT_URL);
+      res.redirect(
+        `${process.env.REDIRECT_URL_GIT}/register?github=${server.locals.token}`
+      );
     } catch (error) {
       return error;
     }
