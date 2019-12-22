@@ -75,7 +75,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:4000/api/auth/google/callback'
+      callbackURL: process.env.CALLBACK_URL_1 || process.env.SERVER_URL_GOOGLE
     },
     async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
@@ -85,9 +85,8 @@ passport.use(
         fullname: profile.displayName
       };
       const user = await db.createOrFindUser(userCredentials);
-      const token = await generateToken(user);
       server.locals = user;
-      server.locals.token = token;
+      server.locals.authType = 'Google';
       done(null, {
         accessToken,
         refreshToken,
@@ -105,11 +104,18 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.locals.token = server.locals.token;
-    res.redirect(
-      `${process.env.REDIRECT_URL_GOOGLE}/register?google=${server.locals.token}`
-    ); // redirect with the token so that the frontend can extract it for user details
+  async (req, res) => {
+    try {
+      const data = req.user.profile;
+      if (!data) {
+        res.status(400).json({
+          ErrorMessage: 'Google Authentication Failed'
+        });
+      }
+      res.redirect(process.env.REDIRECT_URL_GOOGLE); // redirect with the token so that the frontend can extract it for user details
+    } catch (error) {
+      return error;
+    }
   }
 );
 
@@ -120,7 +126,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.URL || 'http://localhost:4000/api/auth/github'
+      callbackURL: process.env.CALLBACK_URL_2 || process.env.SERVER_URL_GIT
     },
     async (accessToken, refreshToken, profile, done) => {
       const { id, username, _json } = profile;
@@ -133,9 +139,8 @@ passport.use(
         password: bcrypt.hashSync('Hackton', 15)
       };
       const user = await db.createOrFindUser(userCredentials);
-      const token = generateToken(user);
       server.locals = user;
-      server.locals.token = token;
+      server.locals.authType = 'Github';
 
       done(null, {
         accessToken,
@@ -153,20 +158,41 @@ router.get(
   }),
   async (req, res) => {
     try {
-      const data = server.locals;
+      const data = req.user.profile;
       if (!data) {
         res.status(400).json({
           ErrorMessage: 'Github Authentication Failed'
         });
       }
-      res.locals.token = server.locals.token;
-      res.redirect(
-        `${process.env.REDIRECT_URL_GIT}/register?github=${server.locals.token}`
-      );
+      res.redirect(process.env.REDIRECT_URL_GIT);
     } catch (error) {
       return error;
     }
   }
 );
+
+router.get('/token', async (req, res) => {
+  try {
+    const data = server.locals;
+    if (!data) {
+      res.status(400).json({
+        statusCode: 400,
+        message: 'Authentication Failed'
+      });
+    }
+    const user = await db.createOrFindUser(data);
+    if (user) {
+      req.user = server.locals;
+      const token = generateToken(req.user.id);
+      res.status(200).json({
+        statusCode: 200,
+        message: `${req.user.authType} Login was successfull`,
+        token
+      });
+    }
+  } catch (error) {
+    return error;
+  }
+});
 
 module.exports = router;
