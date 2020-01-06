@@ -180,8 +180,8 @@ function validateCharacterLength(req, res, next) {
   const eventGuidelines = req.body.guidelines.split('');
   const eventTitle = req.body.event_title.split('');
   if (
-    eventDescription.length >= 150 &&
-    eventGuidelines.length >= 150 &&
+    eventDescription.length >= 50 &&
+    eventGuidelines.length >= 50 &&
     eventTitle.length >= 10
   ) {
     next();
