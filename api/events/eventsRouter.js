@@ -175,7 +175,7 @@ function ValidateEvent(req, res, next) {
 }
 
 function validateCharacterLength(req, res, next) {
-  // checks that the description, title and guidelines have more that 150 characters.
+  // checks that the description, title and guidelines have more that 50 characters.
   const eventDescription = req.body.event_description.split('');
   const eventGuidelines = req.body.guidelines.split('');
   const eventTitle = req.body.event_title.split('');

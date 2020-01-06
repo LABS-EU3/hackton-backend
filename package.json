@@ -9,6 +9,7 @@
     "server": "nodemon index.js",
     "pretest": "npm run unmigrate && npm run migrate",
     "migrate": "knex migrate:latest",
+    "seed": "knex seed:run",
     "unmigrate": "knex migrate:rollback",
     "coverage": "npm test && cat ./coverage/lcov.info | coveralls"
   },
