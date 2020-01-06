@@ -8,7 +8,7 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "pretest": "npm run unmigrate && npm run migrate",
-    "migrate": "knex migrate:latest && npm run seed",
+    "migrate": "knex migrate:latest && knex seed:run",
     "seed": "knex seed:run",
     "unmigrate": "knex migrate:rollback",
     "coverage": "npm test && cat ./coverage/lcov.info | coveralls"
