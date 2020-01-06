@@ -188,7 +188,7 @@ function validateCharacterLength(req, res, next) {
   } else {
     res.status(400).json({
       error:
-        'Please provide an event description and guidelines of 150 characters or more. The event title should be atleast 10 characters'
+        'Please provide an event description and guidelines of 50 characters or more. The event title should be atleast 10 characters'
     });
   }
 }
