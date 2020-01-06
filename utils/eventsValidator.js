@@ -4,7 +4,6 @@ function eventsObjectValidator(req, res, next) {
     if (
       req.body.event_title &&
       req.body.event_description &&
-      req.body.creator_id &&
       req.body.start_date &&
       req.body.end_date &&
       req.body.location &&
