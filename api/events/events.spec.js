@@ -175,7 +175,7 @@ describe('user can add/edit/delete/get an event', () => {
       });
     expect(response3.status).toBe(400);
   });
-  test('[POST] /events will fail if event descriptions and guidelines is less than 150 characters', async () => {
+  test('[POST] /events will fail if event descriptions and guidelines is less than 50 characters', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -205,7 +205,7 @@ describe('user can add/edit/delete/get an event', () => {
     expect(response3.status).toBe(400);
     expect(response3.body).toStrictEqual({
       error:
-        'Please provide an event description and guidelines of 150 characters or more. The event title should be atleast 10 characters'
+        'Please provide an event description and guidelines of 50 characters or more. The event title should be atleast 10 characters'
     });
   });
   test('[POST] /events will fail if participation type is not individual,team or both', async () => {
