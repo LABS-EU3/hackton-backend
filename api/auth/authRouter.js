@@ -183,11 +183,16 @@ router.get('/token', async (req, res) => {
     const user = await db.createOrFindUser(data);
     if (user) {
       req.user = server.locals;
-      const token = generateToken(req.user.id);
+      const token = generateToken(user);
       res.status(200).json({
         statusCode: 200,
         message: `${req.user.authType} Login was successfull`,
-        token
+        token,
+        userDetails: {
+          username: user.username,
+          email: user.email,
+          fullname: user.fullname
+        }
       });
     }
   } catch (error) {
