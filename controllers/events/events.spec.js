@@ -1,6 +1,6 @@
 const request = require('supertest');
 const moment = require('moment');
-const server = require('../server');
+const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 let token;

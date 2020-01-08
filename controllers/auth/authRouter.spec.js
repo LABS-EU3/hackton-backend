@@ -1,5 +1,5 @@
 const request = require('supertest');
-const server = require('../server');
+const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 const addUser = {
@@ -27,15 +27,6 @@ describe('api/auth/* endpoints', () => {
         .send(addUser);
       expect(response.status).toBe(201);
     });
-
-    // test('should return user credentials', async () => {
-    //   const response = await request(server)
-    //     .post('/api/auth/register')
-    //     .send(addUser);
-    //   expect(response.body.user.email).toBe(addUser.email);
-    //   expect(response.body.user.bio).toBe(addUser.bio);
-    //   expect(response.body.user.username).toBe(addUser.username);
-    // });
 
     test('Email is required', async () => {
       const userCopy = { ...addUser };
