@@ -12,7 +12,7 @@ async function getUserId(id) {
 const addUser = async user => {
   const newUser = await db('users')
     .insert(user)
-    .returning('*')
+    .returning('id')
     .then(data => data[0]);
   return newUser;
 };
@@ -43,7 +43,6 @@ async function createOrFindUser(newUser) {
   if (hash) {
     return user;
   }
-  // return user;
 }
 
 module.exports = {
