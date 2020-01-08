@@ -6,7 +6,7 @@ let token;
 
 const addUser = {
   email: 'test@email.com',
-  password: 'test'
+  password: 'test1234'
 };
 
 beforeEach(async () => {

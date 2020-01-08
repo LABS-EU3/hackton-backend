@@ -7,7 +7,7 @@ let token;
 
 const addUser = {
   email: 'test@email.com',
-  password: 'test'
+  password: 'test1234'
 };
 
 const startDate = moment(new Date('2019-12-23'), 'MMM D LTS').format();

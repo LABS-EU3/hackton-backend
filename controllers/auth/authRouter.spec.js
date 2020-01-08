@@ -1,6 +1,9 @@
-const request = require('supertest');
 const server = require('../../api/server');
+const request = require('supertest')(server);
 const db = require('../../data/dbConfig');
+const mockUsers = require('../../data/mock/auth.mock');
+
+const baseUrl = '/api';
 
 const addUser = {
   username: 'test',
@@ -20,95 +23,105 @@ beforeEach(async () => {
 });
 
 describe('api/auth/* endpoints', () => {
-  describe('[POST] /api/auth', () => {
-    test('should return 201 Created', async () => {
-      const response = await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-      expect(response.status).toBe(201);
+  describe('Register [POST] /api/auth', () => {
+    test('should signup user and return 201 Created', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.validInput1);
+      expect(res.status).toBe(201);
+      expect(res.statusCode).toBe(201);
+      expect(res.body.success).toEqual(true);
+      expect(res.body.token);
     });
 
-    test('Email is required', async () => {
-      const userCopy = { ...addUser };
-      delete userCopy.email;
-
-      const response = await request(server)
-        .post('/api/auth/register')
-        .send(userCopy);
-
-      expect(response.status).toBe(400);
+    test('should throw an error if any field is empty', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.emptyData);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.check).toEqual({
+        email: 'email field can not be blank',
+        password: 'password field can not be blank'
+      });
     });
 
-    test('Password is required', async () => {
-      const userCopy = { ...addUser };
-      delete userCopy.password;
+    test('should throw an error if the email has already been used by another user', async () => {
+      await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.validInput1);
 
-      const response = await request(server)
-        .post('/api/auth/register')
-        .send(userCopy);
-
-      expect(response.status).toBe(400);
+      const res = await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.existingEmail);
+      expect(res.statusCode).toBe(409);
+      expect(res.body.success).toEqual(false);
+      expect(res.body.message).toEqual(
+        'User with email banner@yahoo.com already exist'
+      );
     });
 
-    test('should return a token', async () => {
-      const response = await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-      expect(response.body.token).not.toBe(undefined);
+    test('should throw an error if any field is invalid', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.improperData);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.check).toEqual({
+        email: 'Invalid email',
+        password: 'password must between 8 and 50 characters'
+      });
     });
   });
 
-  describe('[POST] /api/auth', () => {
+  describe('LOGIN [POST] /api/auth', () => {
     test('should return 200 OK', async () => {
-      await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
+      await request
+        .post(`${baseUrl}/auth/register`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.validInput1);
 
-      const response = await request(server)
-        .post('/api/auth/login')
-        .send(loginUser);
-      expect(response.status).toBe(200);
+      const res = await request
+        .post(`${baseUrl}/auth/login`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.userOneLogin);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.success).toEqual(true);
+      expect(res.body.token);
     });
 
-    test('Email is required', async () => {
-      const userCopy = { ...addUser };
-      delete userCopy.email;
-
-      await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-
-      const response = await request(server)
-        .post('/api/auth/login')
-        .send(userCopy);
-
-      expect(response.status).toBe(400);
+    test('should throw an error when email field is empty', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/login`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.noEmail);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.check).toEqual({
+        email: 'email field can not be blank'
+      });
     });
 
-    test('Password is required', async () => {
-      const userCopy = { ...addUser };
-      delete userCopy.password;
-
-      await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-
-      const response = await request(server)
-        .post('/api/auth/login')
-        .send(userCopy);
-
-      expect(response.status).toBe(400);
+    test('should throw an error when password is empty', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/login`)
+        .set('Content-Type', 'application/json')
+        .send(mockUsers.noPassword);
+      expect(res.statusCode).toBe(400);
+      expect(res.body.check).toEqual({
+        password: 'password field can not be blank'
+      });
     });
 
-    test('should return a token', async () => {
-      await request(server)
-        .post('/api/auth/register')
-        .send(addUser);
-
-      const response = await request(server)
-        .post('/api/auth/login')
-        .send(loginUser);
-      expect(response.body.token).not.toBe(undefined);
+    test('should not let unregistered users login', async () => {
+      const res = await request
+        .post(`${baseUrl}/auth/login`)
+        .set('Content-Type', 'application/json')
+        .send({ ...mockUsers.unregisteredEmail, ...mockUsers.newPassword });
+      expect(res.statusCode).toBe(400);
+      expect(res.body.message).toEqual('wrong credentials');
     });
   });
 });

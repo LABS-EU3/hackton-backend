@@ -5,6 +5,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const db = require('../controllers/auth/authModel');
 const bodyValidator = require('../utils/validator');
+const UserValidation = require('../middlewares/UserValidation');
 const {
   register,
   Login,
@@ -17,9 +18,9 @@ const server = require('../api/server');
 /**
  * User Registration and Login Routes
  */
-router.post('/register', bodyValidator, register);
+router.post('/register', UserValidation.userInput, register);
 
-router.post('/login', bodyValidator, Login);
+router.post('/login', UserValidation.userLogin, Login);
 
 // Passportjs config
 router.use(passport.initialize());
