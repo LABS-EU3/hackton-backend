@@ -31,7 +31,7 @@ async function update(id, event) {
     .where({ id })
     .update(event)
     .returning('*')
-    .then(hack => hack[0]);
+    .then(newEvent => newEvent[0]);
   return eventUpdate;
 }
 

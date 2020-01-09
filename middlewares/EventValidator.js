@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
-const categoriesModel = require('../controllers/eventsCategories/eventCategoryModel');
 const eventModel = require('../controllers/events/eventsModel');
 require('dotenv').config();
 
@@ -28,8 +27,6 @@ module.exports = class EventValidator {
         data: [check]
       });
     }
-    const query = req.baseUrl.split('/')[1]
-    console.log(req.baseUrl.split('/'), '====');
     eventModel
       .findById(id)
       .then(data => {

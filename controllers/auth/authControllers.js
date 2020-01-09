@@ -9,7 +9,7 @@ const register = (req, res) => {
   // endpoint to register
   try {
     const newUser = req.newuser;
-    generateToken(res, 201, 'Signup succesful', newUser);
+    generateToken(res, 201, 'Signup succesful', { id: newUser });
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
   }
@@ -23,27 +23,6 @@ const Login = (req, res) => {
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err}`);
   }
-  // const { email, password } = req.body;
-
-  // db.getUserBy({ email })
-  //   .then(user => {
-  //     if (user && bcrypt.compareSync(password, user.password)) {
-  //       const token = generateToken(user);
-  //       res.status(200).json({
-  //         token,
-  //         userId: user.id
-  //       });
-  //     } else {
-  //       res.status(400).json({
-  //         message: 'Invalid password!'
-  //       });
-  //     }
-  //   })
-  //   .catch(error => {
-  //     res.status(500).json({
-  //       message: `Internal server error${error.message}`
-  //     });
-  //   });
 };
 
 const getAuthToken = async (req, res) => {

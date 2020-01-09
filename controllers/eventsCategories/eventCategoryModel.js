@@ -25,7 +25,9 @@ async function findById(id) {
 async function update(id, category) {
   const eventUpdate = await db('event_categories')
     .where({ id })
-    .update(category);
+    .update(category)
+    .returning('*')
+    .then(newCategory => newCategory[0]);
   return eventUpdate;
 }
 

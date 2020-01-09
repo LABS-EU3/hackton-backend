@@ -108,7 +108,7 @@ function handleEventsPost(req, res) {
       return requestHandler.success(
         res,
         201,
-        `your event was added successfully!`,
+        'your event was added successfully!',
         { event_id: Number(data.toString()) }
       );
     })

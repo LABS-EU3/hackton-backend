@@ -5,29 +5,28 @@ const {
   handleCategoriesPost,
   handleCategoriesGet
 } = require('../controllers/eventsCategories/categoryControllers');
-const {
-  validateID,
-  ValidateCategory,
-  validateDuplicateValues
-} = require('../middlewares/categoryValidation');
+const CategoryValidator = require('../middlewares/CategoryValidator');
 const authenticate = require('../api/auth/authenticate');
 
 const router = Router();
 
-router.post('/', authenticate, validateDuplicateValues, handleCategoriesPost);
+router.post(
+  '/',
+  authenticate,
+  CategoryValidator.categoryValidation,
+  handleCategoriesPost
+);
 router.get('/', authenticate, handleCategoriesGet);
 router.put(
   '/:id',
   authenticate,
-  validateID,
-  ValidateCategory,
+  CategoryValidator.validateID,
   handleCategoriesEdit
 );
 router.delete(
   '/:id',
   authenticate,
-  validateID,
-  ValidateCategory,
+  CategoryValidator.validateID,
   handleCategoriesDelete
 );
 
