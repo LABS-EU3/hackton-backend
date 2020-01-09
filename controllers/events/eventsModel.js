@@ -29,7 +29,9 @@ async function findById(id) {
 async function update(id, event) {
   const eventUpdate = await db('events')
     .where({ id })
-    .update(event);
+    .update(event)
+    .returning('*')
+    .then(hack => hack[0]);
   return eventUpdate;
 }
 

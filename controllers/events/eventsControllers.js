@@ -74,11 +74,12 @@ function handleEventsEdit(req, res) {
   };
 
   db.update(id, editedEvent)
-    .then(() => {
+    .then(data => {
       return requestHandler.success(
         res,
         200,
-        'your event was edited successfully!'
+        'your event was edited successfully!',
+        { event: data }
       );
     })
     .catch(error => {
