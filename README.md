@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/LABS-EU3/hackton-backend.svg?branch=develop)](https://travis-ci.org/LABS-EU3/hackton-backend) [![Coverage Status](https://coveralls.io/repos/github/LABS-EU3/hackton-backend/badge.svg?branch=develop)](https://coveralls.io/github/LABS-EU3/hackton-backend?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a78c4b6d22f122a7a261/maintainability)](https://codeclimate.com/github/LABS-EU3/hackton-backend/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a78c4b6d22f122a7a261/test_coverage)](https://codeclimate.com/github/LABS-EU3/hackton-backend/test_coverage)
 
 ### Hackton
 

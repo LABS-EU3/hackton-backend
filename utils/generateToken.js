@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+const requestHandler = require('../utils/requestHandler');
 
-function generateToken(user) {
+const generateToken = (res, statusCode, message, user) => {
   const payload = {
-    subject: user.id,
+    userId: user.id,
     email: user.email
   };
   const options = {
@@ -13,7 +14,7 @@ function generateToken(user) {
     process.env.SECRET || 'testing test',
     options
   );
-  return result;
-}
+  return requestHandler.success(res, statusCode, message, { token: result });
+};
 
 module.exports = generateToken;

@@ -1,12 +1,12 @@
 const request = require('supertest');
-const server = require('../server');
+const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 let token;
 
 const addUser = {
   email: 'test@email.com',
-  password: 'test'
+  password: 'test1234'
 };
 
 beforeEach(async () => {
@@ -57,7 +57,7 @@ describe('user can add/edit/delete/get an event category', () => {
       .put(`/api/event-category/${categoryId}`)
       .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
-    expect(response4.status).toBe(201);
+    expect(response4.status).toBe(200);
   });
   test('[DELETE] /event-category', async () => {
     // logged in user can successfully delete an event category
@@ -92,10 +92,9 @@ describe('user can add/edit/delete/get an event category', () => {
       .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
     expect(response4.status).toBe(404);
-    expect(response4.body).toStrictEqual({
-      ErrorMessage:
-        'This event category id cannot be found,please provide a valid event category id'
-    });
+    expect(response4.body.message).toStrictEqual(
+      'This event category id cannot be found,please provide a valid event category id'
+    );
   });
   test('[PUT] /event-category will fail if provided ID is not a number', async () => {
     const response = await request(server)
@@ -114,8 +113,8 @@ describe('user can add/edit/delete/get an event category', () => {
       .set('Authorization', token)
       .send({ category_name: 'Kenya Innovation hackathon' });
     expect(response4.status).toBe(400);
-    expect(response4.body).toStrictEqual({
-      Error: 'Please provide a valid id,an id can only be a number'
+    expect(response4.body.message).toStrictEqual({
+      id: 'Please provide a valid id,an id can only be a number'
     });
   });
   test('[PUT] /event-category will fail if property provided is wrong', async () => {
@@ -143,10 +142,9 @@ describe('user can add/edit/delete/get an event category', () => {
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
-    expect(response4.status).toBe(400);
-    expect(response4.body).toStrictEqual({
-      message:
-        'This category name already exists in the database, please pick a new category name!'
-    });
+    expect(response4.status).toBe(409);
+    expect(response4.body.message).toStrictEqual(
+      'This category name already exists in the database, please pick a new category name!'
+    );
   });
 });
