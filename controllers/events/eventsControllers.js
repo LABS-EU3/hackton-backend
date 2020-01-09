@@ -1,15 +1,21 @@
 /* eslint-disable no-use-before-define */
 const moment = require('moment');
 const db = require('./eventsModel');
+const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetByUSerId(req, res) {
   const userId = req.decodedToken.subject;
   db.getByUserId(userId)
     .then(data => {
-      res.status(200).json(data);
+      return requestHandler.success(
+        res,
+        200,
+        'Events retrieved Successfully',
+        data
+      );
     })
     .catch(error => {
-      res.status(500).json(error.message);
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 
@@ -17,10 +23,15 @@ function handleEventGetById(req, res) {
   const { id } = req.params;
   db.findById(id)
     .then(data => {
-      res.status(200).json(data);
+      return requestHandler.success(
+        res,
+        200,
+        'Events retrieved Successfully',
+        data
+      );
     })
     .catch(error => {
-      res.status(500).json({ errorMessage: error.message });
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 
@@ -28,10 +39,14 @@ function handleEventsDelete(req, res) {
   const { id } = req.params;
   db.remove(id)
     .then(() => {
-      res.status(200).json({ message: 'your event was deleted successfully!' });
+      return requestHandler.success(
+        res,
+        200,
+        'your event was deleted successfully!'
+      );
     })
     .catch(error => {
-      res.status(500).json({ errorMessage: error.message });
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 
@@ -60,10 +75,14 @@ function handleEventsEdit(req, res) {
 
   db.update(id, editedEvent)
     .then(() => {
-      res.status(201).json({ message: 'your event was edited successfully!' });
+      return requestHandler.success(
+        res,
+        200,
+        'your event was edited successfully!'
+      );
     })
     .catch(error => {
-      res.status(500).json({ errorMessage: error.message });
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 
@@ -85,23 +104,30 @@ function handleEventsPost(req, res) {
 
   db.add(event)
     .then(data => {
-      res.status(201).json({
-        message: `your event was added successfully!`,
-        event_id: Number(data.toString())
-      });
+      return requestHandler.success(
+        res,
+        201,
+        `your event was added successfully!`,
+        { event_id: Number(data.toString()) }
+      );
     })
     .catch(error => {
-      res.status(500).json({ errorMessage: error.message });
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 
 function handleEventsGet(req, res) {
   db.find()
     .then(data => {
-      res.status(200).json(data);
+      return requestHandler.success(
+        res,
+        200,
+        'All Events retrieved Successfully',
+        data
+      );
     })
     .catch(error => {
-      res.status(500).json({ errorMessage: error.message });
+      return requestHandler.error(res, 500, `server error ${error.message}`);
     });
 }
 

@@ -11,7 +11,7 @@ const register = (req, res) => {
     const newUser = req.newuser;
     generateToken(res, 201, 'Signup succesful', newUser);
   } catch (err) {
-    return requestHandler.error(res, 500, `server error ${err}`);
+    return requestHandler.error(res, 500, `server error ${err.message}`);
   }
 };
 

@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-const bcrypt = require('bcrypt');
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const eventModel = require('../controllers/events/eventsModel');
@@ -77,10 +76,7 @@ module.exports = class EventValidator {
     });
 
     if (Object.keys(check).length > 0) {
-      return res.status(400).json({
-        statusCode: 400,
-        data: [check]
-      });
+      return requestHandler.error(res, 400, check);
     }
     return next();
   }

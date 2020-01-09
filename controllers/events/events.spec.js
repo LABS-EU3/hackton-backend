@@ -109,7 +109,7 @@ describe('user can add/edit/delete/get an event', () => {
         participation_type: 'both',
         category_id: categoryId
       });
-    expect(response4.status).toBe(201);
+    expect(response4.status).toBe(200);
   });
   test('[DELETE] /events', async () => {
     const response = await request(server)
@@ -192,20 +192,21 @@ describe('user can add/edit/delete/get an event', () => {
       .set('authorization', token)
       .send({
         event_title: 'W',
-        event_description: 'A hackathon',
+        event_description: 'A hack',
         creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
-        guidelines: 'A hackathon',
+        guidelines: 'A hack',
         participation_type: 'both',
         category_id: categoryId
       });
 
     expect(response3.status).toBe(400);
-    expect(response3.body).toStrictEqual({
-      error:
-        'Please provide an event description and guidelines of 50 characters or more. The event title should be atleast 10 characters'
+    expect(response3.body.message).toStrictEqual({
+      event_title: 'event_title must be between 10 to 50 characters',
+      event_description: 'event_description must be between 10 to 100 characters',
+      guidelines: 'guidelines must be between 10 to 100 characters'
     });
   });
   test('[POST] /events will fail if participation type is not individual,team or both', async () => {
@@ -238,9 +239,9 @@ describe('user can add/edit/delete/get an event', () => {
       });
 
     expect(response3.status).toBe(400);
-    expect(response3.body).toStrictEqual({
-      message:
-        "please pick between these three options for participation type ['individual','team','both'] "
+    expect(response3.body.message).toStrictEqual({
+      participation_type:
+        "please pick between these three options for participation type ['individual','team','both']"
     });
   });
   test('[POST] /events will fail if event title already exists in the database', async () => {
@@ -290,11 +291,10 @@ describe('user can add/edit/delete/get an event', () => {
         category_id: categoryId
       });
 
-    expect(response4.status).toBe(400);
-    expect(response4.body).toStrictEqual({
-      message:
-        'This event title already exists in the database, please pick a new event title!'
-    });
+    expect(response4.status).toBe(409);
+    expect(response4.body.message).toStrictEqual(
+      'This event title already exists in the database, please pick a new event title!'
+    );
   });
   test('[GET] /events/your-events for each logged in user', async () => {
     const response = await request(server)
