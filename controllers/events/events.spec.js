@@ -6,7 +6,7 @@ const db = require('../../data/dbConfig');
 let token;
 
 const addUser = {
-  email: 'test@email.com',
+  email: 'test2@email.com',
   password: 'test1234'
 };
 
