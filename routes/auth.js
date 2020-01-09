@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
-const db = require('../controllers/auth/authModel');
+const db = require('../controllers/authUser/authModel');
 const UserValidator = require('../middlewares/UserValidator');
 const {
   register,
   Login,
   getAuthToken
-} = require('../controllers/auth/authControllers');
+} = require('../controllers/authUser/authControllers');
 
 const router = Router();
 const server = require('../api/server');

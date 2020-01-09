@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
-const userModel = require('../controllers/auth/authModel');
+const userModel = require('../controllers/authUser/authModel');
 require('dotenv').config();
 
 /**

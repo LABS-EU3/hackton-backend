@@ -12,7 +12,7 @@ async function getUserId(id) {
 const addUser = async user => {
   const newUser = await db('users')
     .insert(user)
-    .returning('id')
+    .returning('*')
     .then(data => data[0]);
   return newUser;
 };

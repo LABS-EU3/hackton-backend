@@ -1,22 +1,10 @@
 const server = require('../../api/server');
+// eslint-disable-next-line import/order
 const request = require('supertest')(server);
 const db = require('../../data/dbConfig');
 const mockUsers = require('../../data/mock/auth.mock');
 
 const baseUrl = '/api';
-
-const addUser = {
-  username: 'test',
-  password: 'test',
-  bio: 'I am a robot',
-  email: 'test@email.com',
-  fullname: 'tests tests'
-};
-
-const loginUser = {
-  password: 'test',
-  email: 'test@email.com'
-};
 
 beforeEach(async () => {
   await db.raw('TRUNCATE TABLE event_categories,events, users CASCADE');

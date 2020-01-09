@@ -9,7 +9,7 @@ const register = (req, res) => {
   // endpoint to register
   try {
     const newUser = req.newuser;
-    generateToken(res, 201, 'Signup succesful', { id: newUser });
+    generateToken(res, 201, 'Signup succesful', newUser);
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
   }
