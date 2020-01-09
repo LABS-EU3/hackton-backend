@@ -26,14 +26,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('Authorization', token)
@@ -41,7 +40,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -57,7 +55,7 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .get('/api/events')
       .set('Authorization', token);
@@ -67,14 +65,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('Authorization', token)
@@ -82,7 +79,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -92,7 +88,7 @@ describe('user can add, edit, delete and get an event', () => {
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
-    const eventId = response3.body.event_id;
+    const eventId = response3.body.body.event_id;
     const response4 = await request(server)
       .put(`/api/events/${eventId}`)
       .set('Authorization', token)
@@ -100,7 +96,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'NaijaHacks 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -115,14 +110,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('Authorization', token)
@@ -130,7 +124,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -140,7 +133,7 @@ describe('user can add, edit, delete and get an event', () => {
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
-    const eventId = response3.body.event_id;
+    const eventId = response3.body.body.event_id;
     const response4 = await request(server)
       .delete(`/api/events/${eventId}`)
       .set('Authorization', token);
@@ -150,14 +143,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('Authorization', token)
@@ -165,7 +157,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         end_date: endDate,
         location: 'remote',
         guidelines:
@@ -179,21 +170,19 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
       .send({
         event_title: 'W',
         event_description: 'A hack',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -214,14 +203,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -229,7 +217,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -249,14 +236,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -264,7 +250,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -282,7 +267,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -301,14 +285,13 @@ describe('user can add, edit, delete and get an event', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
-    const { userId } = response.body;
+    token = response.body.body.token;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response5.status).toBe(201);
-    const categoryId = response5.body.category_id;
+    const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
       .post('/api/events')
       .set('authorization', token)
@@ -316,7 +299,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',

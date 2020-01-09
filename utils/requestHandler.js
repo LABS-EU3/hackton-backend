@@ -5,7 +5,7 @@ const requestHandler = {
         success: true,
         statusCode,
         message,
-        ...body
+        body
       });
     }
     return res.status(statusCode).json({

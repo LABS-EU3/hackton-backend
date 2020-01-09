@@ -23,7 +23,7 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -35,7 +35,7 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .get('/api/event-category')
       .set('Authorization', token);
@@ -46,13 +46,13 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
-    const categoryId = response3.body.category_id;
+    const categoryId = response3.body.body.category_id;
     const response4 = await request(server)
       .put(`/api/event-category/${categoryId}`)
       .set('Authorization', token)
@@ -64,13 +64,13 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
-    const categoryId = response3.body.category_id;
+    const categoryId = response3.body.body.category_id;
     const response4 = await request(server)
       .delete(`/api/event-category/${categoryId}`)
       .set('Authorization', token);
@@ -80,13 +80,13 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
       .send({ category_name: 'Lambda winter hackathon' });
     expect(response3.status).toBe(201);
-    const categoryId = response3.body.category_id;
+    const categoryId = response3.body.body.category_id;
     const response4 = await request(server)
       .put(`/api/event-category/${categoryId + 1}`)
       .set('Authorization', token)
@@ -100,7 +100,7 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -121,7 +121,7 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -132,7 +132,7 @@ describe('user can add/edit/delete/get an event category', () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
-    token = response.body.token;
+    token = response.body.body.token;
     const response3 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
