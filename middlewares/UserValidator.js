@@ -6,9 +6,9 @@ require('dotenv').config();
 
 /**
  * Validates all routes
- * @class UserValidation
+ * @class UserValidator
  */
-module.exports = class UserValidation {
+module.exports = class UserValidator {
   /**
    * Validates all user details
    * @param {obj} req
