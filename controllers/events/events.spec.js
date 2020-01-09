@@ -27,7 +27,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -41,7 +40,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -68,7 +66,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -82,7 +79,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -100,7 +96,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'NaijaHacks 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -116,7 +111,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -130,7 +124,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -151,7 +144,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -165,7 +157,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         end_date: endDate,
         location: 'remote',
         guidelines:
@@ -180,7 +171,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
@@ -193,7 +183,6 @@ describe('user can add, edit, delete and get an event', () => {
       .send({
         event_title: 'W',
         event_description: 'A hack',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -215,7 +204,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
@@ -229,7 +217,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -250,7 +237,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
@@ -264,7 +250,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -282,7 +267,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
@@ -302,7 +286,6 @@ describe('user can add, edit, delete and get an event', () => {
       .post('/api/auth/login')
       .send(addUser);
     token = response.body.body.token;
-    // const { userId } = response.body;
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
@@ -316,7 +299,6 @@ describe('user can add, edit, delete and get an event', () => {
         event_title: 'Winter hackathon 2019',
         event_description:
           'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        // creator_id: userId,
         start_date: startDate,
         end_date: endDate,
         location: 'remote',
