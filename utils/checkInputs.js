@@ -5,8 +5,8 @@ const checkInput = inputValue => {
   Object.keys(inputValue).forEach(key => {
     if (
       !inputValue[key] ||
-      validator.isEmpty(inputValue[key]) ||
-      inputValue[key].trim() === '' ||
+      validator.isEmpty(String(inputValue[key])) ||
+      String(inputValue[key]).trim() === '' ||
       inputValue[key] === ''
     ) {
       errors[key] = `${key} field can not be blank`;
@@ -14,14 +14,30 @@ const checkInput = inputValue => {
       /*
        *signup input Validation
        */
-      if (key === 'username' || key === 'type' || key === 'title') {
-        if (!validator.isLength(inputValue[key], { min: 3, max: 50 })) {
-          errors[key] = `${key} must be between 3 to 50 characters`;
+      if (key === 'username' || key === 'type' || key === 'event_title') {
+        if (!validator.isLength(inputValue[key], { min: 10 })) {
+          errors[key] = `${key} must be between 10 to 50 characters`;
         }
       }
-      if (key === 'steps' || key === 'review') {
-        if (!validator.isLength(inputValue[key], { min: 3, max: 100 })) {
-          errors[key] = `${key} must be between 3 to 100 characters`;
+      if (key === 'event_description' || key === 'guidelines') {
+        if (!validator.isLength(inputValue[key], { min: 10 })) {
+          errors[key] = `${key} must be between 10 to 100 characters`;
+        }
+      }
+
+      if (key === 'participation_type') {
+        if (!['individual', 'team', 'both'].includes(inputValue[key])) {
+          errors[
+            key
+          ] = `please pick between these three options for participation type ['individual','team','both']`;
+        }
+      }
+
+      if (key === 'id' || key === 'category_id') {
+        if (!validator.isNumeric(String(inputValue[key]))) {
+          errors[
+            key
+          ] = `Please provide a valid ${key},an ${key} can only be a number`;
         }
       }
 

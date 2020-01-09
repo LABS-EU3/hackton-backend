@@ -4,7 +4,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const db = require('../controllers/auth/authModel');
-const bodyValidator = require('../utils/validator');
 const UserValidation = require('../middlewares/UserValidation');
 const {
   register,

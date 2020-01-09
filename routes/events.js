@@ -16,6 +16,7 @@ const {
   validateParticipationType,
   validateDuplicateValues
 } = require('../middlewares/eventsValidation');
+const EventValidator = require('../middlewares/EventValidator');
 const eventsObjectValidator = require('../utils/eventsValidator');
 
 const router = Router();
@@ -23,10 +24,7 @@ const router = Router();
 router.post(
   '/',
   authenticate,
-  validateDuplicateValues,
-  eventsObjectValidator,
-  validateCharacterLength,
-  validateParticipationType,
+  EventValidator.eventValidation,
   handleEventsPost
 );
 router.get('/', authenticate, handleEventsGet);
