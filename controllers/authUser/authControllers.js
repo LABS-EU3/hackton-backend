@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require('./authModel');
 const generateToken = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');

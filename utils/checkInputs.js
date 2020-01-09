@@ -14,7 +14,7 @@ const checkInput = inputValue => {
       /*
        *signup input Validation
        */
-      if (key === 'username' || key === 'type' || key === 'event_title') {
+      if (key === 'event_title') {
         if (!validator.isLength(inputValue[key], { min: 10 })) {
           errors[key] = `${key} must be between 10 to 50 characters`;
         }
@@ -38,12 +38,6 @@ const checkInput = inputValue => {
           errors[
             key
           ] = `Please provide a valid ${key},an ${key} can only be a number`;
-        }
-      }
-
-      if (key === 'fullname') {
-        if (inputValue[key].search(/[^A-Za-z\s]/) !== -1) {
-          errors[key] = `${key} can only be alphabetical`;
         }
       }
 
