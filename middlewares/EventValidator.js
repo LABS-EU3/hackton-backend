@@ -28,7 +28,22 @@ module.exports = class EventValidator {
         data: [check]
       });
     }
-    return next();
+    eventModel
+      .findById(id)
+      .then(data => {
+        if (data.length === 0) {
+          return requestHandler.error(
+            res,
+            404,
+            'This event id cannot be found,please provide a valid event id'
+          );
+        }
+        req.event = data;
+        return next();
+      })
+      .catch(error => {
+        return requestHandler.error(res, 500, `Server error ${error}`);
+      });
   }
 
   static async eventValidation(req, res, next) {
