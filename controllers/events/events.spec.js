@@ -21,8 +21,8 @@ beforeEach(async () => {
     .send(addUser);
 });
 
-describe('user can add/edit/delete/get an event', () => {
-  test('[POST] /events', async () => {
+describe('user can add, edit, delete and get an event', () => {
+  test('user can [POST] /events', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -53,7 +53,7 @@ describe('user can add/edit/delete/get an event', () => {
 
     expect(response3.status).toBe(201);
   });
-  test('[GET] /events', async () => {
+  test('user can [GET] /events', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -63,7 +63,7 @@ describe('user can add/edit/delete/get an event', () => {
       .set('Authorization', token);
     expect(response3.status).toBe(200);
   });
-  test('[PUT] /events', async () => {
+  test('user can [PUT] /events', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -111,7 +111,7 @@ describe('user can add/edit/delete/get an event', () => {
       });
     expect(response4.status).toBe(200);
   });
-  test('[DELETE] /events', async () => {
+  test('user can [DELETE] /events', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -205,7 +205,8 @@ describe('user can add/edit/delete/get an event', () => {
     expect(response3.status).toBe(400);
     expect(response3.body.message).toStrictEqual({
       event_title: 'event_title must be between 10 to 50 characters',
-      event_description: 'event_description must be between 10 to 100 characters',
+      event_description:
+        'event_description must be between 10 to 100 characters',
       guidelines: 'guidelines must be between 10 to 100 characters'
     });
   });
