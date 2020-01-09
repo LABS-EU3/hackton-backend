@@ -36,17 +36,12 @@ const getAuthToken = async (req, res) => {
     const user = await db.createOrFindUser(data);
     if (user) {
       req.user = server.locals;
-      const token = generateToken(user);
-      res.status(200).json({
-        statusCode: 200,
-        message: `${req.user.authType} Login was successfull`,
-        token,
-        userDetails: {
-          username: user.username,
-          email: user.email,
-          fullname: user.fullname
-        }
-      });
+      generateToken(
+        res,
+        200,
+        `${req.user.authType} Login was successfull`,
+        user
+      );
     }
   } catch (error) {
     return error;
