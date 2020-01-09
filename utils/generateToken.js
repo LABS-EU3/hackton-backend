@@ -3,7 +3,7 @@ const requestHandler = require('../utils/requestHandler');
 
 const generateToken = (res, statusCode, message, user) => {
   const payload = {
-    subject: user.id,
+    userId: user.id,
     email: user.email
   };
   const options = {

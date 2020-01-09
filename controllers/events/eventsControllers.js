@@ -4,7 +4,7 @@ const db = require('./eventsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetByUSerId(req, res) {
-  const userId = req.decodedToken.subject;
+  const { userId } = req.decodedToken;
   db.getByUserId(userId)
     .then(data => {
       return requestHandler.success(
@@ -52,7 +52,7 @@ function handleEventsDelete(req, res) {
 
 function handleEventsEdit(req, res) {
   const { id } = req.params;
-  const userId = req.decodedToken.subject;
+  const { userId } = req.decodedToken;
   const editedStartDate = moment(
     new Date(req.body.start_date),
     'MMM D LTS'
@@ -90,7 +90,7 @@ function handleEventsEdit(req, res) {
 function handleEventsPost(req, res) {
   const startDate = moment(new Date(req.body.start_date), 'MMM D LTS').format();
   const endDate = moment(new Date(req.body.end_date), 'MMM D LTS').format();
-  const userId = req.decodedToken.subject;
+  const { userId } = req.decodedToken;
   const event = {
     event_title: req.body.event_title,
     event_description: req.body.event_description,
