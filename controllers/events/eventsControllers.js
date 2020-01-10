@@ -53,14 +53,8 @@ function handleEventsDelete(req, res) {
 function handleEventsEdit(req, res) {
   const { id } = req.params;
   const { userId } = req.decodedToken;
-  const editedStartDate = moment(
-    new Date(req.body.start_date),
-    'MMM D LTS'
-  ).format();
-  const editedEndDate = moment(
-    new Date(req.body.end_date),
-    'MMM D LTS'
-  ).format();
+  const editedStartDate = moment(req.body.start_date).format('YYYY-MM-DD');
+  const editedEndDate = moment(req.body.end_date).format('YYYY-MM-DD');
   const editedEvent = {
     event_title: req.body.event_title,
     event_description: req.body.event_description,
@@ -88,8 +82,8 @@ function handleEventsEdit(req, res) {
 }
 
 function handleEventsPost(req, res) {
-  const startDate = moment(new Date(req.body.start_date), 'MMM D LTS').format();
-  const endDate = moment(new Date(req.body.end_date), 'MMM D LTS').format();
+  const startDate = moment(req.body.start_date).format('YYYY-MM-DD');
+  const endDate = moment(req.body.end_date).format('YYYY-MM-DD');
   const { userId } = req.decodedToken;
   const event = {
     event_title: req.body.event_title,
@@ -102,7 +96,6 @@ function handleEventsPost(req, res) {
     participation_type: req.body.participation_type,
     category_id: req.body.category_id
   };
-
   db.add(event)
     .then(data => {
       return requestHandler.success(

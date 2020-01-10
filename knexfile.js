@@ -1,4 +1,19 @@
+const { types } = require('pg');
+const { builtins } = require('pg-types');
+const moment = require('moment');
 require('dotenv').config();
+/**
+ * Handle Date FORMAT RETURNED FROM DATABASE
+ *
+ * @param {*} val
+ * @returns
+ */
+const parseFn = val => {
+  return val === null ? null : moment(val).format('YYYY-MM-DD');
+};
+
+types.setTypeParser(builtins.TIMESTAMPTZ, parseFn);
+types.setTypeParser(builtins.TIMESTAMP, parseFn);
 
 module.exports = {
   development: {
