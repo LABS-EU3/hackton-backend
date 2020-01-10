@@ -46,6 +46,7 @@ module.exports = class EventValidator {
   }
 
   static async eventValidation(req, res, next) {
+    const { id } = req.params;
     const {
       event_title,
       participation_type,
@@ -56,13 +57,15 @@ module.exports = class EventValidator {
       location,
       category_id
     } = req.body;
-    const exists = await eventModel.findByTitle(event_title);
-    if (exists.length !== 0) {
-      return requestHandler.error(
-        res,
-        409,
-        'This event title already exists in the database, please pick a new event title!'
-      );
+    if (!id) {
+      const exists = await eventModel.findByTitle(event_title);
+      if (exists.length !== 0) {
+        return requestHandler.error(
+          res,
+          409,
+          'This event title already exists in the database, please pick a new event title!'
+        );
+      }
     }
     const check = checkItem({
       event_title,

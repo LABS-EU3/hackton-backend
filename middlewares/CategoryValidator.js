@@ -44,15 +44,20 @@ module.exports = class CategoryValidator {
 
   static async categoryValidation(req, res, next) {
     try {
+      const { id } = req.params;
       const { category_name } = req.body;
-      const exists = await categoriesModel.findByTitle(category_name);
-      if (exists.length !== 0) {
-        return requestHandler.error(
-          res,
-          409,
-          'This category name already exists in the database, please pick a new category name!'
-        );
+
+      if (!id) {
+        const exists = await categoriesModel.findByTitle(category_name);
+        if (exists.length !== 0) {
+          return requestHandler.error(
+            res,
+            409,
+            'This category name already exists in the database, please pick a new category name!'
+          );
+        }
       }
+
       const check = checkItem({
         category_name
       });
