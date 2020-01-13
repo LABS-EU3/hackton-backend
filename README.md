@@ -12,7 +12,7 @@ A comprehensive portal for hackathons where students can submit their work and j
 
 # Getting Started
 
-o install this application, you'll need Node.js 8+ (which comes with npm) installed on your computer.
+To install this application, you'll need Node.js 8+ (which comes with npm) installed on your computer.
 
 Install dependencies:
 
