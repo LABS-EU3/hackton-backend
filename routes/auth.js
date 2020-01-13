@@ -93,10 +93,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL:
-        process.env.PRODUCTION_CALLBACK_GIT ||
-        process.env.STAGING_CALLBACK_GIT ||
-        process.env.LOCAL_URL_GIT
+      callbackURL: process.env.PRODUCTION_CALLBACK_GIT
     },
     async (accessToken, refreshToken, profile, done) => {
       const { id, username, _json } = profile;
