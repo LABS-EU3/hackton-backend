@@ -39,10 +39,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        process.env.PRODUCTION_CALLBACK_GG ||
-        process.env.STAGING_CALLBACK_GG ||
-        process.env.LOCAL_URL_GG
+      callbackURL: process.env.PRODUCTION_CALLBACK_GG
     },
     async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
