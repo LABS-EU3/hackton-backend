@@ -14,6 +14,9 @@ const {
 const router = Router();
 const server = require('../api/server');
 
+const baseUrl = process.env.BASE_URL;
+const redirectUrl = process.env.REDIRECT_URL;
+
 /**
  * User Registration and Login Routes
  */
@@ -39,7 +42,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.PRODUCTION_CALLBACK_GG || process.env.STAGING_CALLBACK_GG || process.env.LOCAL_URL_GG
+      callbackURL: `${baseUrl}/api/auth/google/callback` || process.env.LOCAL_URL_GG
     },
     async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
@@ -76,7 +79,7 @@ router.get(
           ErrorMessage: 'Google Authentication Failed'
         });
       }
-      res.redirect(process.env.REDIRECT_URL_GOOGLE); // redirect with the token so that the frontend can extract it for user details
+      res.redirect(`${redirectUrl}/register?google=true`); // redirect with the token so that the frontend can extract it for user details
     } catch (error) {
       return error;
     }
@@ -90,7 +93,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.PRODUCTION_CALLBACK_GIT || process.env.STAGING_CALLBACK_GIT || process.env.LOCAL_URL_GIT
+      callbackURL: `${baseUrl}/api/auth/github` || process.env.LOCAL_URL_GIT
     },
     async (accessToken, refreshToken, profile, done) => {
       const { id, username, _json } = profile;
@@ -128,7 +131,7 @@ router.get(
           ErrorMessage: 'Github Authentication Failed'
         });
       }
-      res.redirect(process.env.REDIRECT_URL_GIT);
+      res.redirect(`${redirectUrl}/register?github=true`);
     } catch (error) {
       return error;
     }
