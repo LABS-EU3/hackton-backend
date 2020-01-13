@@ -39,7 +39,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.PRODUCTION_CALLBACK_GG
+      callbackURL: process.env.PRODUCTION_CALLBACK_GG || process.env.STAGING_CALLBACK_GG || process.env.LOCAL_URL_GG
     },
     async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
@@ -90,7 +90,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.PRODUCTION_CALLBACK_GIT
+      callbackURL: process.env.PRODUCTION_CALLBACK_GIT || process.env.STAGING_CALLBACK_GIT || process.env.LOCAL_URL_GIT
     },
     async (accessToken, refreshToken, profile, done) => {
       const { id, username, _json } = profile;
