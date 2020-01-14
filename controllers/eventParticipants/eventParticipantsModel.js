@@ -29,9 +29,17 @@ async function update (id, credentials) {
     return credentialsUpdate;
 }
 
+async function remove (id) {
+    const deleteEvent = await db('event_participants')
+    .where({ id })
+    .delete()
+    return deleteEvent
+}
+
 module.exports = {
     getById,
     getAll,
     addCredentials,
-    update
+    update,
+    remove
 }
