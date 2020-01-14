@@ -21,3 +21,14 @@ function handleEventGetAll (res, req) {
         return requestHandler.error(res, 404, `Events Not Found ${error.message}`)
     })
 }
+
+function handleEventDelete (res, req) {
+    const { id } = req.params;
+    db.remove(id)
+    .then(data => {
+        return requestHandler.success(res, 200, 'Event deleted successfully', data );
+    })
+    .catch(error => {
+        return requestHandler.error(res, 500, `Internal server error ${error.message}`)
+    })
+}
