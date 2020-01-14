@@ -9,6 +9,6 @@ const router = Router();
 router.use('/auth', authRoutes);
 router.use('/events', eventRoutes);
 router.use('/event-category', categoriesRoutes);
-router.use('/participant', eventParticipantsRoutes)
+router.use('/participants', eventParticipantsRoutes)
 
 module.exports = router;
