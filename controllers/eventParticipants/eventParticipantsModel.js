@@ -20,8 +20,18 @@ async function addCredentials (credentials) {
     return newCredentials;
 }
 
+async function update (id, credentials) {
+    const credentialsUpdate = await db('event_participants')
+    .where('event_participants.id', id)
+    .insert(credentials)
+    .returning('*')
+    .then(data => data[0])
+    return credentialsUpdate;
+}
+
 module.exports = {
     getById,
     getAll,
-    addCredentials
+    addCredentials,
+    update
 }
