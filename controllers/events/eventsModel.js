@@ -50,6 +50,21 @@ async function add(event) {
 }
 
 async function find() {
-  const foundEvent = await db('events');
+  const foundEvent = await db('events as e')
+    .join('users as u', ' u.id', 'e.creator_id')
+    .select(
+      'e.id',
+      'e.event_title',
+      'e.event_description',
+      'e.start_date',
+      'e.end_date',
+      'e.location',
+      'e.guidelines',
+      'e.creator_id',
+      'e.participation_type',
+      'u.fullname as organizer_name',
+      'u.email as organizer_email',
+      'u.username as organizer_username'
+    );
   return foundEvent;
 }
