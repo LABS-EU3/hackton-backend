@@ -61,8 +61,11 @@ function handleEventRegistration(req, res) {
 }
 
 function handleEventDelete(req, res) {
-  const { id } = req.params;
-  db.remove(id)
+  const { participants_id, id } = req.params;
+  db.remove(
+    participants_id,
+    id
+  )
     .then(data => {
       return requestHandler.success(
         res,

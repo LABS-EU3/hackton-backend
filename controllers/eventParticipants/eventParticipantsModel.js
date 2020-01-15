@@ -1,28 +1,8 @@
 const db = require('../../data/dbConfig');
 
-async function getById(id) {
-  const eventId = await db('events').where({ id });
-  return eventId;
-}
-/**
- * Get by user id
- * @param {*} eventId
- * @returns
- */
-async function getByUserId(eventId) {
+async function getByEventId(userId, eventId) {
   const eventSelected = await db('event_participants')
-    .where('event_id', eventId)
-    // .first();
-  return eventSelected;
-}
-/**
- * Do a join between events and users
- *Get all users signed up for a particular hackathon
- * @param {*} eventId
- * @returns
- */
-async function getByEventId(eventId) {
-  const eventSelected = await db('event_participants')
+    .where('event_participants.user_id', userId)
     .where('event_participants.event_id', eventId)
     .first();
   return eventSelected;
@@ -41,28 +21,17 @@ async function addCredentials(credentials) {
   return newCredentials;
 }
 
-async function update(id, credentials) {
-  const credentialsUpdate = await db('event_participants')
-    .where('event_participants.id', id)
-    .insert(credentials)
-    .returning('*')
-    .then(data => data[0]);
-  return credentialsUpdate;
-}
-
-async function remove(id) {
-  const deleteEvent = await db('event_participants')
-    .where({ id })
-    .delete();
-  return deleteEvent;
+async function remove(user_id, event_id) {
+  const deleteEvent = await db("event_participants as e")
+    .where("e.user_id", user_id)
+    .where("e.event_id", event_id)
+    .del();
+  return deleteEvent
 }
 
 module.exports = {
-  getById,
-  getByUserId,
   getByEventId,
   getAll,
   addCredentials,
-  update,
   remove
 };
