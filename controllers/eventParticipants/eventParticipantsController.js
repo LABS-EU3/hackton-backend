@@ -42,9 +42,10 @@ function handleEventRegistration(req, res) {
 }
 
 function handleEventDelete(req, res) {
-  const { participants_id, id } = req.params;
+  const { userId } = req.decodedToken;
+  const { id } = req.params;
   db.remove(
-    participants_id,
+    userId,
     id
   )
     .then(data => {

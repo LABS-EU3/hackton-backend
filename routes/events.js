@@ -60,7 +60,7 @@ router.post(
 );
 
 router.delete(
-  '/:id/participants/:participants_id',
+  '/:id/participants',
   authenticate,
   EventValidator.validateID,
   handleEventDelete
