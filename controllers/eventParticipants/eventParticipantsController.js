@@ -1,7 +1,7 @@
 const db = require('./eventParticipantsModel');
 const requestHandler = require('../../utils/requestHandler');
 
-function handleEventGetById (res, req) {
+function handleParticipantsEventGetById (res, req) {
     const { id } = req.params;
     db.getById(id)
         .then(data => {
@@ -46,7 +46,7 @@ function handleEventDelete (res, req) {
 }
 
 module.exports = {
-    handleEventGetById,
+    handleParticipantsEventGetById,
     handleEventGetAll,
     handleEventRegistration,
     handleEventDelete

@@ -10,6 +10,14 @@ const {
   handleEventsGet
 } = require('../controllers/events/eventsControllers');
 const EventValidator = require('../middlewares/EventValidator');
+const {
+  handleParticipantsEventGetById,
+  handleEventGetAll,
+  handleEventRegistration,
+  handleEventDelete
+} = require('../controllers/eventParticipants/eventParticipantsController');
+
+const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
 
 const router = Router();
 
@@ -35,5 +43,7 @@ router.delete(
   handleEventsDelete
 );
 router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
+
+router.get('/:id/participants', authenticate, EventParticipantValidator.validateID, handleParticipantsEventGetById);
 
 module.exports = router;
