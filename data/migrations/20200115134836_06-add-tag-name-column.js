@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.raw(`ALTER TABLE "events"
-  ADD tag_name text[] not null default '{}'`);
+  ADD tag_name text[] default '{}'`);
 };
 
 exports.down = function(knex) {
