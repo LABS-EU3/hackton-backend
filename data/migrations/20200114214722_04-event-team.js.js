@@ -12,7 +12,7 @@ exports.up = function(knex) {
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
     table 
-        .enu('role_type', ['participant', 'organizer', 'judge'])
+        .enu('role_type', ['organizer', 'judge'])
         .notNullable();
   });
 };

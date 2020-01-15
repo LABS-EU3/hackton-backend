@@ -9,4 +9,5 @@ router.use('/auth', authRoutes);
 router.use('/events', eventRoutes);
 router.use('/event-category', categoriesRoutes);
 
+
 module.exports = router;
