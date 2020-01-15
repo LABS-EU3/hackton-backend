@@ -44,6 +44,10 @@ router.delete(
 );
 router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
 
+// Events participants endpoints
+
 router.get('/:id/participants', authenticate, EventParticipantValidator.validateID, handleParticipantsEventGetById);
+
+router.post('/:id/participants', authenticate, EventParticipantValidator.validateUserID, EventParticipantValidator.validateEventID, handleEventRegistration);
 
 module.exports = router;
