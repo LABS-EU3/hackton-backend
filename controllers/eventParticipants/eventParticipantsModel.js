@@ -4,14 +4,23 @@ async function getById(id) {
   const eventId = await db('events').where({ id });
   return eventId;
 }
-
-async function getByUserId(userId) {
+/**
+ * Get by user id
+ * @param {*} eventId
+ * @returns
+ */
+async function getByUserId(eventId) {
   const eventSelected = await db('event_participants')
-    .where('event_participants.user_id', userId)
+    .where('event_id', eventId)
     // .first();
   return eventSelected;
 }
-
+/**
+ * Do a join between events and users
+ *Get all users signed up for a particular hackathon
+ * @param {*} eventId
+ * @returns
+ */
 async function getByEventId(eventId) {
   const eventSelected = await db('event_participants')
     .where('event_participants.event_id', eventId)
