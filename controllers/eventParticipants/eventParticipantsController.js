@@ -22,6 +22,18 @@ function handleEventGetAll (res, req) {
     })
 }
 
+function handleEventRegistration (res, req) {
+    const user_id = req.decodedToken.userId;
+    const { event_id } = req.params;
+    db.addCredentials({user_id, event_id})
+    .then(data => {
+        return requestHandler.success(res, 201, 'Event registered successfully', data );
+    })
+    .catch(error => {
+        return requestHandler.error(res, 500, `Internal server error ${error.message}`)
+    })
+}
+
 function handleEventDelete (res, req) {
     const { id } = req.params;
     db.remove(id)
