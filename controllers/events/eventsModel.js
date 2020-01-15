@@ -59,6 +59,7 @@ async function find() {
       'e.start_date',
       'e.end_date',
       'e.location',
+      'e.tag_name',
       'e.guidelines',
       'e.creator_id',
       'e.participation_type',
