@@ -50,4 +50,6 @@ router.get('/:id/participants', authenticate, EventParticipantValidator.validate
 
 router.post('/:id/participants', authenticate, EventParticipantValidator.validateUserID, EventParticipantValidator.validateEventID, handleEventRegistration);
 
+router.delete('/:id/participants/:participants_id', authenticate, EventParticipantValidator.validateUserID, handleEventDelete);
+
 module.exports = router;
