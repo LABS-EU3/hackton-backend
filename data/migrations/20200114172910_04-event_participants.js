@@ -1,7 +1,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('event_participants', table => {
     table.increments();
-
+    table.unique(['event_id', 'user_id']);
     table
       .integer('event_id')
       .references('id')
@@ -15,7 +15,6 @@ exports.up = function(knex) {
       .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
-
   });
 };
 

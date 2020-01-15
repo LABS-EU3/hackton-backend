@@ -12,12 +12,11 @@ const {
 const EventValidator = require('../middlewares/EventValidator');
 const {
   handleEventsGetById,
-  handleEventGetAll,
   handleEventRegistration,
   handleEventDelete
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
-const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
+// const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
 
 const router = Router();
 
@@ -46,10 +45,25 @@ router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
 
 // Events participants endpoints
 
-router.get('/:id/participants', authenticate, EventParticipantValidator.validateID, handleEventsGetById);
+router.get(
+  '/:id/participants',
+  authenticate,
+  EventValidator.validateID,
+  handleEventsGetById
+);
 
-router.post('/:id/participants', authenticate, EventParticipantValidator.validateUserID, EventParticipantValidator.validateEventID, handleEventRegistration);
+router.post(
+  '/:id/participants',
+  authenticate,
+  EventValidator.validateID,
+  handleEventRegistration
+);
 
-router.delete('/:id/participants/:participants_id', authenticate, EventParticipantValidator.validateUserID, handleEventDelete);
+router.delete(
+  '/:id/participants/:participants_id',
+  authenticate,
+  EventValidator.validateID,
+  handleEventDelete
+);
 
 module.exports = router;
