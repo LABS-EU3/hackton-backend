@@ -8,7 +8,7 @@ async function getById(id) {
 async function getByUserId(userId) {
   const eventSelected = await db('event_participants')
     .where('event_participants.user_id', userId)
-    .first();
+    // .first();
   return eventSelected;
 }
 

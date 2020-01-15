@@ -11,7 +11,7 @@ const {
 } = require('../controllers/events/eventsControllers');
 const EventValidator = require('../middlewares/EventValidator');
 const {
-  handleParticipantsEventGetById,
+  handleEventsGetById,
   handleEventGetAll,
   handleEventRegistration,
   handleEventDelete
@@ -46,7 +46,7 @@ router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
 
 // Events participants endpoints
 
-router.get('/:id/participants', authenticate, EventParticipantValidator.validateID, handleParticipantsEventGetById);
+router.get('/:id/participants', authenticate, EventParticipantValidator.validateID, handleEventsGetById);
 
 router.post('/:id/participants', authenticate, EventParticipantValidator.validateUserID, EventParticipantValidator.validateEventID, handleEventRegistration);
 
