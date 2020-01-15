@@ -8,7 +8,7 @@ require('dotenv').config();
  * Validates all routes
  * @class EventParticipantsValidator
  */
-module.exports = class EventValidator {
+module.exports = class EventParticipantsValidator {
     /**
      * Validates all event details
      * @param {obj} req
@@ -34,7 +34,7 @@ module.exports = class EventValidator {
             return requestHandler.error(
               res,
               404,
-              'This event id cannot be found,please provide a valid id'
+              'This event id cannot be found, please provide a valid id'
             );
           }
           req.event = data;
@@ -45,31 +45,33 @@ module.exports = class EventValidator {
         });
     }
   
-    // static async ValidateOtherId(req, res, next) {
-    //     const { id } = req.params;
-    //     const {
-    //       event_id,
-    //       user_id
-    //     } = req.params;
-    //     if (!id) {
-    //       const exists = await eventParticipantsModel.findByTitle(event_title);
-    //       if (exists.length !== 0) {
-    //         return requestHandler.error(
-    //           res,
-    //           409,
-    //           'This event title already exists in the database, please pick a new event title!'
-    //         );
-    //       }
-    //     }
-    //     const check = checkItem({
-    //         event_id,
-    //         user_id
-    //     });
+    static async validateUserID(req, res, next) {
+        // validates provided ID is a number
+        const { user_id } = req.params;
+        const check = checkItem({ id: user_id });
     
-    //     if (Object.keys(check).length > 0) {
-    //       return requestHandler.error(res, 400, check);
-    //     }
-    //     return next();
-    // }
+        if (Object.keys(check).length > 0) {
+          return res.status(400).json({
+            statusCode: 400,
+            data: [check]
+          });
+        }
+        eventParticipantsModel
+          .getByUserId(id)
+          .then(data => {
+            if (data.length === 0) {
+              return requestHandler.error(
+                res,
+                404,
+                'This event id cannot be found, please provide a valid id'
+              );
+            }
+            req.event = data;
+            return next();
+          })
+          .catch(error => {
+            return requestHandler.error(res, 500, `Server error ${error}`);
+          });
+      }
 };
   
