@@ -3,7 +3,7 @@ const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetById(req, res) {
   const { id } = req.params;
-  db.getByUserId(id)
+  db.getByEventId(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -14,25 +14,6 @@ function handleEventsGetById(req, res) {
     })
     .catch(error => {
       return requestHandler.error(res, 404, `Event Not Found ${error.message}`);
-    });
-}
-
-function handleEventGetAll(req, res) {
-  db.getAll()
-    .then(data => {
-      return requestHandler.success(
-        res,
-        200,
-        'All events retrieved successfully',
-        data
-      );
-    })
-    .catch(error => {
-      return requestHandler.error(
-        res,
-        404,
-        `Events Not Found ${error.message}`
-      );
     });
 }
 
@@ -85,7 +66,6 @@ function handleEventDelete(req, res) {
 
 module.exports = {
   handleEventsGetById,
-  handleEventGetAll,
   handleEventRegistration,
   handleEventDelete
 };

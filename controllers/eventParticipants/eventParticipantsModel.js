@@ -1,23 +1,18 @@
 const db = require('../../data/dbConfig');
 
-async function getByEventId(userId, eventId) {
-  const eventSelected = await db('event_participants')
-    .where('event_participants.user_id', userId)
-    .where('event_participants.event_id', eventId)
-    .first();
+async function getByEventId(id) {
+  const eventSelected = await db('event_participants as e')
+    .join('users as u', 'u.id', 'e.user_id')
+    .select('user_id', 'email')
+    .where('e.event_id', id)
   return eventSelected;
-}
-
-async function getAll() {
-  const allSelectedEvents = await db('event_participants');
-  return allSelectedEvents;
 }
 
 async function addCredentials(credentials) {
   const newCredentials = await db('event_participants')
     .insert(credentials)
     .returning('*')
-    .then(data => data[0]);
+    .then(data => data[0])
   return newCredentials;
 }
 
@@ -31,7 +26,6 @@ async function remove(user_id, event_id) {
 
 module.exports = {
   getByEventId,
-  getAll,
   addCredentials,
   remove
 };

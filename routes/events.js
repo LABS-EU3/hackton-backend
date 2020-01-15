@@ -12,7 +12,6 @@ const {
 const EventValidator = require('../middlewares/EventValidator');
 const {
   handleEventsGetById,
-  handleEventGetAll,
   handleEventRegistration,
   handleEventDelete
 } = require('../controllers/eventParticipants/eventParticipantsController');
