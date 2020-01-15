@@ -44,3 +44,10 @@ function handleEventDelete (res, req) {
         return requestHandler.error(res, 500, `Internal server error ${error.message}`)
     })
 }
+
+module.exports = {
+    handleEventGetById,
+    handleEventGetAll,
+    handleEventRegistration,
+    handleEventDelete
+}
