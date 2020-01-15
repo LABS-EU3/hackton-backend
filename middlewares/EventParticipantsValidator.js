@@ -45,6 +45,31 @@ module.exports = class EventValidator {
         });
     }
   
+    // static async ValidateOtherId(req, res, next) {
+    //     const { id } = req.params;
+    //     const {
+    //       event_id,
+    //       user_id
+    //     } = req.params;
+    //     if (!id) {
+    //       const exists = await eventParticipantsModel.findByTitle(event_title);
+    //       if (exists.length !== 0) {
+    //         return requestHandler.error(
+    //           res,
+    //           409,
+    //           'This event title already exists in the database, please pick a new event title!'
+    //         );
+    //       }
+    //     }
+    //     const check = checkItem({
+    //         event_id,
+    //         user_id
+    //     });
     
-  };
+    //     if (Object.keys(check).length > 0) {
+    //       return requestHandler.error(res, 400, check);
+    //     }
+    //     return next();
+    // }
+};
   
