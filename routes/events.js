@@ -9,6 +9,10 @@ const {
   handleEventsPost,
   handleEventsGet
 } = require('../controllers/events/eventsControllers');
+const {
+  handleAddTeamMember,
+  handleGetTeamMembers
+} = require('../controllers/eventTeam/eventTeamController');
 const EventValidator = require('../middlewares/EventValidator');
 
 const router = Router();
@@ -35,5 +39,17 @@ router.delete(
   handleEventsDelete
 );
 router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
+router.get(
+  '/:id/team',
+  authenticate,
+  EventValidator.validateID,
+  handleGetTeamMembers
+);
+router.post(
+  '/:id/team',
+  authenticate,
+  EventValidator.validateID,
+  handleAddTeamMember
+);
 
 module.exports = router;
