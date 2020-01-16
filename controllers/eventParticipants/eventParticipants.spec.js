@@ -3,7 +3,7 @@ const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 let token;
-
+const invalidId = '849612'
 const addUser = {
   email: 'test@mail.com',
   password: 'testingtesting'
@@ -41,7 +41,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
@@ -64,7 +64,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const eventRegister = await request(server)
       .post(`/api/events/3/participants`)
@@ -78,7 +78,7 @@ describe('Event participants endpoints', () => {
     );
   });
 
-  test('organizer can get all participants by logging in with correct credentials', async () => {
+  test('organizer can get all participants for an event by logging in with correct credentials', async () => {
     const response = await request(server)
       .post('/api/auth/login')
       .send(addUser);
@@ -89,7 +89,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
@@ -117,7 +117,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
@@ -166,7 +166,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
@@ -189,7 +189,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent)
-    eventId = eventCreation.body.body.event_id
+    const eventId = eventCreation.body.body.event_id
 
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
@@ -217,7 +217,7 @@ describe('Event participants endpoints', () => {
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent);
-    eventId = eventCreation.body.body.event_id;
+    const eventId = eventCreation.body.body.event_id;
 
     const eventUnregister = await request(server)
       .delete(`/api/events/2/participants/`)
@@ -236,7 +236,7 @@ describe('Event participants endpoints', () => {
     token = response.body.body.token;
   
     const eventUnregister = await request(server)
-      .delete(`/api/events/${eventId}/participants/`)
+      .delete(`/api/events/${invalidId}/participants/`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
     expect(eventUnregister.status).toBe(404);
