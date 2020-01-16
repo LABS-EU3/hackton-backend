@@ -131,38 +131,42 @@ describe('Event participants endpoints', () => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      expect(eventRegister.status).toBe(201)
+      .set('Content-Type', 'application/json');
+    expect(eventRegister.status).toBe(201);
 
     const eventUnregister = await request(server)
       .delete(`/api/events/${eventId}/participants/`)
       .set('Authorization', token)
-      .set('Content-Type', 'application/json')
+      .set('Content-Type', 'application/json');
     expect(eventUnregister.status).toBe(200);
     expect(eventUnregister.statusCode).toBe(200);
     expect(eventUnregister.body.success).toEqual(true);
-    expect(eventUnregister.body.message).toEqual('Event deleted successfully')
-  })
+    expect(eventUnregister.body.message).toEqual('Event deleted successfully');
+  });
 
   test('user can not unregister as a participant for an event he didnt register for', async () => {
     const eventUnregister = await request(server)
       .delete(`/api/events/2/participants/`)
       .set('Authorization', token)
-      .set('Content-Type', 'application/json')
+      .set('Content-Type', 'application/json');
     expect(eventUnregister.status).toBe(404);
     expect(eventUnregister.statusCode).toBe(404);
     expect(eventUnregister.body.success).toEqual(false);
-    expect(eventUnregister.body.message).toEqual('This event id cannot be found,please provide a valid event id');
+    expect(eventUnregister.body.message).toEqual(
+      'This event id cannot be found,please provide a valid event id'
+    );
   });
 
   test('user can not unregister as a participant for an invalid event', async () => {
     const eventUnregister = await request(server)
       .delete(`/api/events/${invalidId}/participants/`)
       .set('Authorization', token)
-      .set('Content-Type', 'application/json')
+      .set('Content-Type', 'application/json');
     expect(eventUnregister.status).toBe(404);
     expect(eventUnregister.statusCode).toBe(404);
     expect(eventUnregister.body.success).toEqual(false);
-    expect(eventUnregister.body.message).toEqual('This event id cannot be found,please provide a valid event id');
+    expect(eventUnregister.body.message).toEqual(
+      'This event id cannot be found,please provide a valid event id'
+    );
   });
 });
