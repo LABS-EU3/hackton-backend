@@ -32,21 +32,81 @@ describe('Event participants endpoints', () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
-    // console.log(response.body);
     token = response.body.body.token;
+
     const eventCreation = await request(server)
       .post('/api/events')
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(newEvent)
-    console.log(eventCreation.body)
     eventId = eventCreation.body.body.event_id
+
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
+
     expect(eventRegister.status).toBe(201);
     expect(eventRegister.statusCode).toBe(201);
     expect(eventRegister.body.success).toEqual(true);
     expect(eventRegister.body.message).toEqual('Event registered successfully')
   })
+
+
+  test('user can get all events he registered for', async () => {
+    const response = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+    token = response.body.body.token;
+
+    const eventCreation = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(newEvent)
+    eventId = eventCreation.body.body.event_id
+
+    const eventRegister = await request(server)
+      .post(`/api/events/${eventId}/participants`)
+      .set('Authorization', token)
+
+    expect(eventRegister.status).toBe(201);
+    expect(eventRegister.statusCode).toBe(201);
+    expect(eventRegister.body.success).toEqual(true);
+    expect(eventRegister.body.message).toEqual('Event registered successfully')
+  })
+
+
+
+  // test('user can unregister as a participant for an event', async () => {
+  //   const response = await request(server)
+  //   .post('/api/auth/login')
+  //   .send(addUser);
+  //   token = response.body.body.token;
+  //   const eventCreation = await request(server)
+  //     .post('/api/events')
+  //     .set('Authorization', token)
+  //     .set('Content-Type', 'application/json')
+  //     .send(newEvent)
+  //   eventId = eventCreation.body.body.event_id
+
+  //   console.log(eventId)
+
+  //   const eventRegister = await request(server)
+  //     .post(`/api/events/${eventId}/participants`)
+  //     .set('Authorization', token)
+  //     .set('Content-Type', 'application/json')
+  //     expect(eventRegister.status).toBe(201)
+  //     console.log(eventRegister)
+  //     const evId = eventRegister.body.body.event_id
+  //   eventParticipantId = eventRegister.body.body.id
+  //   console.log(eventParticipantId)
+
+  //   const eventUnregister = await request(server)
+  //     .delete(`/api/events/${eventId}/participants/${eventParticipantId}`) 
+  //   expect(eventUnregister.status).toBe(200);
+  //   expect(eventUnregister.statusCode).toBe(200);
+  //   expect(eventUnregister.body.success).toEqual(true);
+  //   expect(eventUnregister.body.message).toEqual('Event deleted successfully')
+  //   console.log(eventUnregister)
+  // })
 })

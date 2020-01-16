@@ -8,7 +8,7 @@ function handleEventsGetById(req, res) {
       return requestHandler.success(
         res,
         200,
-        'Event retrieved successfully',
+        'Participant(s) retrieved successfully',
         data
       );
     })
