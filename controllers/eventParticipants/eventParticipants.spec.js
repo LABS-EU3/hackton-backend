@@ -52,7 +52,31 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user can get all events he registered for by logging in with credentials', async () => {
+  test('user cannot register as a participant for an invalid event', async () => {
+    const response = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+    token = response.body.body.token;
+
+    const eventCreation = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(newEvent)
+    eventId = eventCreation.body.body.event_id
+
+    const eventRegister = await request(server)
+      .post(`/api/events/3/participants`)
+      .set('Authorization', token)
+
+    expect(eventRegister.status).toBe(404);
+    expect(eventRegister.statusCode).toBe(404);
+    expect(eventRegister.body.success).toEqual(false);
+    expect(eventRegister.body.message).toEqual('This event id cannot be found,please provide a valid event id')
+  })
+
+
+  test('user can get all events he registered for by logging in with correct credentials', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -76,6 +100,33 @@ describe('Event participants endpoints', () => {
     expect(allParticipants.statusCode).toBe(200);
     expect(allParticipants.body.success).toEqual(true);
     expect(allParticipants.body.message).toEqual('Participant(s) retrieved successfully')
+  })
+
+
+  test('user cannot get all events he registered for by providing invalid event id', async () => {
+    const response = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+    token = response.body.body.token;
+
+    const eventCreation = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(newEvent)
+    eventId = eventCreation.body.body.event_id
+
+    const eventRegister = await request(server)
+      .post(`/api/events/1/participants`)
+      .set('Authorization', token)
+
+    const allParticipants = await request(server)
+    .get(`/api/events/1/participants`)
+    .set('Authorization', token)
+    expect(allParticipants.status).toBe(404);
+    expect(allParticipants.statusCode).toBe(404);
+    expect(allParticipants.body.success).toEqual(false);
+    expect(allParticipants.body.message).toEqual('This event id cannot be found,please provide a valid event id')
   })
 
 
