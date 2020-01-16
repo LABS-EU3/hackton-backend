@@ -13,7 +13,7 @@ before_script:
 
 script:
   - npm install
-  - npm run test
+  - npm run test --maxWorkers=4
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
