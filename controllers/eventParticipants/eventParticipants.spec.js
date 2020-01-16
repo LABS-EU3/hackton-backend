@@ -43,7 +43,7 @@ beforeEach(async () => {
 });
 
 describe('Event participants endpoints', () => {
-  test('user can register as a participant for an event', async () => {
+  test('user can register as a participant for an event', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token);
@@ -52,9 +52,10 @@ describe('Event participants endpoints', () => {
     expect(eventRegister.statusCode).toBe(201);
     expect(eventRegister.body.success).toEqual(true);
     expect(eventRegister.body.message).toEqual('Event registered successfully');
+    done();
   });
 
-  test('user cannot register as a participant for an invalid event (post)', async () => {
+  test('user cannot register as a participant for an invalid event (post)', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/3/participants`)
       .set('Authorization', token);
@@ -65,9 +66,10 @@ describe('Event participants endpoints', () => {
     expect(eventRegister.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 
-  test('organizer can get all participants for an event by logging in with correct credentials', async () => {
+  test('organizer can get all participants for an event by logging in with correct credentials', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token);
@@ -81,9 +83,10 @@ describe('Event participants endpoints', () => {
     expect(allParticipants.body.message).toEqual(
       'Participant(s) retrieved successfully'
     );
+    done();
   });
 
-  test('organizer cannot get all participants for by providing invalid event id', async () => {
+  test('organizer cannot get all participants for by providing invalid event id', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -97,9 +100,10 @@ describe('Event participants endpoints', () => {
     expect(allParticipants.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 
-  test('user cannot register for invalid event (get)', async () => {
+  test('user cannot register for invalid event (get)', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -113,9 +117,10 @@ describe('Event participants endpoints', () => {
     expect(allParticipants.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 
-  test('user cannot get events he didnt register for', async () => {
+  test('user cannot get events he didnt register for', async done => {
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -125,9 +130,10 @@ describe('Event participants endpoints', () => {
     expect(allParticipants.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 
-  test('user can unregister as a participant for an event', async () => {
+  test('user can unregister as a participant for an event', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
@@ -142,9 +148,10 @@ describe('Event participants endpoints', () => {
     expect(eventUnregister.statusCode).toBe(200);
     expect(eventUnregister.body.success).toEqual(true);
     expect(eventUnregister.body.message).toEqual('Event deleted successfully');
+    done();
   });
 
-  test('user can not unregister as a participant for an event he didnt register for', async () => {
+  test('user can not unregister as a participant for an event he didnt register for', async done => {
     const eventUnregister = await request(server)
       .delete(`/api/events/2/participants/`)
       .set('Authorization', token)
@@ -155,9 +162,10 @@ describe('Event participants endpoints', () => {
     expect(eventUnregister.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 
-  test('user can not unregister as a participant for an invalid event', async () => {
+  test('user can not unregister as a participant for an invalid event', async done => {
     const eventUnregister = await request(server)
       .delete(`/api/events/${invalidId}/participants/`)
       .set('Authorization', token)
@@ -168,5 +176,6 @@ describe('Event participants endpoints', () => {
     expect(eventUnregister.body.message).toEqual(
       'This event id cannot be found,please provide a valid event id'
     );
+    done();
   });
 });
