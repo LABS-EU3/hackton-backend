@@ -28,13 +28,19 @@ beforeEach(async () => {
 });
 
 describe('Event participants endpoints', () => {
-  test('user can register for as a participant for an event', () => {
+  test('user can register for as a participant for an event', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
     token = response.body.body.token;
     const eventCreation = await request(server)
     .post('/api/events')
-    .send()
+    .set('Authorization', token)
+    .send(newEvent)
+    eventId = eventCreation.body.body.id
+    const eventRegister = await request(server)
+    .post(`/api/events/${eventId}/participants`)
+    .set('Authorization', token)
+    .expect(eventRegister.status).toBe(201);
   })
 })
