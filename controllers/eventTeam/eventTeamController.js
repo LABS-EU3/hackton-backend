@@ -34,7 +34,17 @@ async function handleGetUserList(req, res) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
   }
 }
+async function handleGetSingleUser(req, res) {
+  const { id } = req.params;
+  try {
+    const user = await EventTeam.getUsersById(id);
+    return requestHandler.success(res, 200, 'User Fetched successfully!', {
+      user
+    });
+  } catch (error) {
+    return requestHandler.error(res, 500, `server error ${error.message}`);
+  }
+}
 
 
-
-module.exports = { handleAddTeamMember, handleGetTeamMembers, handleGetUserList };
+module.exports = { handleAddTeamMember, handleGetTeamMembers, handleGetUserList, handleGetSingleUser };

@@ -12,11 +12,20 @@ async function addTeamMember(data) {
 
 async function getUsers() {
   const users = await db('users');
-  for (let i = 0; i < users.length; i++){
+  for (let i = 0; i <= users.length; i++){
     const { id, email } = users[i]
-    return {id: id, email}
+    return {id: id, email: email}
   }
   return users;
 };
+async function getUsersById(filter) {
+  const singleUser = await db('users').where(filter).first();
+  for (let i = 0; i <= users.length; i++){
+    const { id, email } = users[i]
+    return {id: id, email: email}
+  }
+  return singleUser;
+};
 
-module.exports = { getTeam, addTeamMember, getUsers };
+
+module.exports = { getTeam, addTeamMember, getUsers, getUsersById };
