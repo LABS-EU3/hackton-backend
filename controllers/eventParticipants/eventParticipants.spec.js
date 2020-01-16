@@ -130,6 +130,48 @@ describe('Event participants endpoints', () => {
   })
 
 
+  test('user cannot register for invalid event', async () => {
+    const response = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+    token = response.body.body.token;
+
+    const eventRegister = await request(server)
+      .post(`/api/events/1/participants`)
+      .set('Authorization', token)
+
+    const allParticipants = await request(server)
+    .get(`/api/events/1/participants`)
+    .set('Authorization', token)
+    expect(allParticipants.status).toBe(404);
+    expect(allParticipants.statusCode).toBe(404);
+    expect(allParticipants.body.success).toEqual(false);
+    expect(allParticipants.body.message).toEqual('This event id cannot be found,please provide a valid event id')
+  })
+
+
+  test('user cannot get events he didnt register for', async () => {
+    const response = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+    token = response.body.body.token;
+
+    const eventCreation = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(newEvent)
+    eventId = eventCreation.body.body.event_id
+
+    const allParticipants = await request(server)
+    .get(`/api/events/${eventId}/participants`)
+    .set('Authorization', token)
+    expect(allParticipants.status).toBe(404);
+    expect(allParticipants.statusCode).toBe(404);
+    expect(allParticipants.body.success).toEqual(false);
+    expect(allParticipants.body.message).toEqual('This event id cannot be found,please provide a valid event id')
+  })
+
 
   // test('user can unregister as a participant for an event', async () => {
   //   const response = await request(server)
