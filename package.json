@@ -7,7 +7,7 @@
     "test": "cross-env DB_ENV=test jest --detectOpenHandles --testTimeout=10000 --coverage --forceExit",
     "start": "node index.js",
     "server": "nodemon index.js",
-    "pretest": "npm run unmigrate && npm run migrate && npm run seed",
+    "pretest": "knex migrate:rollback --env=test && knex migrate:latest --env=test && knex seed:run --env=test",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "unmigrate": "knex migrate:rollback",

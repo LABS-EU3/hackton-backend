@@ -19,7 +19,7 @@ const newEvent = {
   guidelines:
     'Run yarn or npm test. Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 200lj0 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 ofhe Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum',
   participation_type: 'team',
-  category_id: 33
+  category_id: 1
 };
 
 beforeEach(async () => {
@@ -191,24 +191,20 @@ describe('Event participants endpoints', () => {
       .send(newEvent)
     eventId = eventCreation.body.body.event_id
 
-    console.log(eventId)
-
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       expect(eventRegister.status).toBe(201)
-      console.log(eventRegister)
-    eventParticipantId = eventRegister.body.body.id
-    console.log(eventParticipantId)
 
     const eventUnregister = await request(server)
-      .delete(`/api/events/${eventId}/participants/${eventParticipantId}`)
+      .delete(`/api/events/${eventId}/participants/`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
     expect(eventUnregister.status).toBe(200);
     expect(eventUnregister.statusCode).toBe(200);
     expect(eventUnregister.body.success).toEqual(true);
     expect(eventUnregister.body.message).toEqual('Event deleted successfully')
-    console.log(eventUnregister)
   })
 
   test('user can not unregister as a participant for an event he didnt register for', async () => {
@@ -223,9 +219,10 @@ describe('Event participants endpoints', () => {
       .send(newEvent);
     eventId = eventCreation.body.body.event_id;
 
-    const eventUnregister = await request(server).delete(
-      `/api/events/${eventId}/participants/1`
-    );
+    const eventUnregister = await request(server)
+      .delete(`/api/events/2/participants/`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
     expect(eventUnregister.status).toBe(404);
     expect(eventUnregister.statusCode).toBe(404);
     expect(eventUnregister.body.success).toEqual(false);
@@ -238,9 +235,10 @@ describe('Event participants endpoints', () => {
       .send(addUser);
     token = response.body.body.token;
   
-    const eventUnregister = await request(server).delete(
-      `/api/events/1/participants/1`
-    );
+    const eventUnregister = await request(server)
+      .delete(`/api/events/${eventId}/participants/`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
     expect(eventUnregister.status).toBe(404);
     expect(eventUnregister.statusCode).toBe(404);
     expect(eventUnregister.body.success).toEqual(false);
