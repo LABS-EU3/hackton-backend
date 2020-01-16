@@ -1,6 +1,6 @@
 const server = require('./api/server');
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 6000;
 
 server.listen(port, err => {
   if (err) return console.error(err.message);

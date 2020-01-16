@@ -12,6 +12,10 @@ async function addTeamMember(data) {
 
 async function getUsers() {
   const users = await db('users');
+  for (let i = 0; i < users.length; i++){
+    const { id, email } = users[i]
+    return {id: id, email}
+  }
   return users;
 };
 
