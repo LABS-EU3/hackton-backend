@@ -6,7 +6,7 @@ let token;
 
 const addUser = {
   email: 'test@mail.com',
-  password: 'test'
+  password: 'testingtesting'
 };
 
 const newEvent = {
@@ -17,30 +17,36 @@ const newEvent = {
   location: "Remotes", 
  	guidelines: "Run yarn or npm test. Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 200lj0 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 ofhe Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum", 
  	participation_type: "team", 
- 	category_id: 2 
+ 	category_id: 33 
 }
 
 beforeEach(async () => {
-  await db.raw('TRUNCATE TABLE event_categories, users, events CASCADE');
+  await db.raw('TRUNCATE TABLE users, events CASCADE');
   const response = await request(server)
     .post('/api/auth/register')
     .send(addUser);
 });
 
 describe('Event participants endpoints', () => {
-  test('user can register for as a participant for an event', async () => {
+  test('user can register as a participant for an event', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
+    // console.log(response.body);
     token = response.body.body.token;
     const eventCreation = await request(server)
-    .post('/api/events')
-    .set('Authorization', token)
-    .send(newEvent)
-    eventId = eventCreation.body.body.id
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(newEvent)
+    console.log(eventCreation.body)
+    eventId = eventCreation.body.body.event_id
     const eventRegister = await request(server)
-    .post(`/api/events/${eventId}/participants`)
-    .set('Authorization', token)
-    .expect(eventRegister.status).toBe(201);
+      .post(`/api/events/${eventId}/participants`)
+      .set('Authorization', token)
+    expect(eventRegister.status).toBe(201);
+    expect(eventRegister.statusCode).toBe(201);
+    expect(eventRegister.body.success).toEqual(true);
+    expect(eventRegister.body.message).toEqual('Event registered successfully')
   })
 })
