@@ -8,6 +8,10 @@ const addUser = {
   email: 'test2@email.com',
   password: 'test1234'
 };
+const secondUser = {
+    email:"test2@email.com",
+    password:"test2345"
+}
 
 
 beforeEach(async () => {
@@ -30,8 +34,8 @@ describe('user can add/get team members to an event', () => {
           .set('Authorization', token);
         expect(response3.status).toBe(200);
       });
+// register 3 users , signin the first(event created) and second user, get request from other users and add them.
 
-      
       test('[POST] will fail is event id does not exist', async () => {
         const response = await request(server)
           .post('/api/auth/login')
