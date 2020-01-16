@@ -229,19 +229,19 @@ describe('Event participants endpoints', () => {
     expect(eventUnregister.body.message).toEqual('This event id cannot be found,please provide a valid event id');
   });
 
-  // test('user can not unregister as a participant for an invalid event', async () => {
-  //   const response = await request(server)
-  //     .post('/api/auth/login')
-  //     .send(addUser);
-  //   token = response.body.body.token;
+  test('user can not unregister as a participant for an invalid event', async () => {
+    const response = await request(server)
+      .post('/api/auth/login')
+      .send(addUser);
+    token = response.body.body.token;
   
-  //   const eventUnregister = await request(server)
-  //     .delete(`/api/events/${eventId}/participants/`)
-  //     .set('Authorization', token)
-  //     .set('Content-Type', 'application/json')
-  //   expect(eventUnregister.status).toBe(404);
-  //   expect(eventUnregister.statusCode).toBe(404);
-  //   expect(eventUnregister.body.success).toEqual(false);
-  //   expect(eventUnregister.body.message).toEqual('This event id cannot be found,please provide a valid event id');
+    const eventUnregister = await request(server)
+      .delete(`/api/events/${eventId}/participants/`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+    expect(eventUnregister.status).toBe(404);
+    expect(eventUnregister.statusCode).toBe(404);
+    expect(eventUnregister.body.success).toEqual(false);
+    expect(eventUnregister.body.message).toEqual('This event id cannot be found,please provide a valid event id');
   });
 });
