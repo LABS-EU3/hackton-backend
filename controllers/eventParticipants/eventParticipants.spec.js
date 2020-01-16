@@ -52,7 +52,7 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user can get all events he registered for', async () => {
+  test('user can get all events he registered for by logging in with credentials', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -69,10 +69,13 @@ describe('Event participants endpoints', () => {
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
 
-    expect(eventRegister.status).toBe(201);
-    expect(eventRegister.statusCode).toBe(201);
-    expect(eventRegister.body.success).toEqual(true);
-    expect(eventRegister.body.message).toEqual('Event registered successfully')
+    const allParticipants = await request(server)
+    .get(`/api/events/${eventId}/participants`)
+    .set('Authorization', token)
+    expect(allParticipants.status).toBe(200);
+    expect(allParticipants.statusCode).toBe(200);
+    expect(allParticipants.body.success).toEqual(true);
+    expect(allParticipants.body.message).toEqual('Participant(s) retrieved successfully')
   })
 
 
