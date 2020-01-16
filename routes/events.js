@@ -39,6 +39,7 @@ router.delete(
   handleEventsDelete
 );
 router.get('/:id', authenticate, EventValidator.validateID, handleEventGetById);
+
 router.get(
   '/:id/team',
   authenticate,

@@ -24,4 +24,17 @@ async function handleGetTeamMembers(req, res) {
   }
 }
 
-module.exports = { handleAddTeamMember, handleGetTeamMembers };
+function handleGetUserList(req, res) {
+  try {
+    const users = await EventTeam.getUsers();
+    return requestHandler.success(res, 200, 'Users Fetched successfully!', {
+      users
+    });
+  } catch (error) {
+    return requestHandler.error(res, 500, `server error ${error.message}`);
+  }
+}
+
+
+
+module.exports = { handleAddTeamMember, handleGetTeamMembers, handleGetUserList };
