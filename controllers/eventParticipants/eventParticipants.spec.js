@@ -3,6 +3,7 @@ const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 let token;
+let eventId;
 const invalidId = '849612';
 const addUser = {
   email: 'test@mail.com',
@@ -27,22 +28,22 @@ beforeEach(async () => {
   const response = await request(server)
     .post('/api/auth/register')
     .send(addUser);
+
+  const response2 = await request(server)
+    .post('/api/auth/login')
+    .send(addUser);
+  token = response2.body.body.token;
+
+  const eventCreation = await request(server)
+    .post('/api/events')
+    .set('Authorization', token)
+    .set('Content-Type', 'application/json')
+    .send(newEvent);
+  eventId = await eventCreation.body.body.event_id;
 });
 
 describe('Event participants endpoints', () => {
   test('user can register as a participant for an event', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token);
@@ -54,18 +55,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('user cannot register as a participant for an invalid event (post)', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const eventRegister = await request(server)
       .post(`/api/events/3/participants`)
       .set('Authorization', token);
@@ -79,18 +68,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('organizer can get all participants for an event by logging in with correct credentials', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token);
@@ -107,18 +84,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('organizer cannot get all participants for by providing invalid event id', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -135,11 +100,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('user cannot register for invalid event (get)', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -156,18 +116,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('user cannot get events he didnt register for', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
       .set('Authorization', token);
@@ -180,17 +128,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('user can unregister as a participant for an event', async () => {
-    const response = await request(server)
-    .post('/api/auth/login')
-    .send(addUser);
-    token = response.body.body.token;
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent)
-    const eventId = await eventCreation.body.body.event_id
-
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
       .set('Authorization', token)
@@ -208,17 +145,6 @@ describe('Event participants endpoints', () => {
   })
 
   test('user can not unregister as a participant for an event he didnt register for', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-    const eventCreation = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(newEvent);
-    const eventId = await eventCreation.body.body.event_id;
-
     const eventUnregister = await request(server)
       .delete(`/api/events/2/participants/`)
       .set('Authorization', token)
@@ -230,11 +156,6 @@ describe('Event participants endpoints', () => {
   });
 
   test('user can not unregister as a participant for an invalid event', async () => {
-    const response = await request(server)
-      .post('/api/auth/login')
-      .send(addUser);
-    token = response.body.body.token;
-  
     const eventUnregister = await request(server)
       .delete(`/api/events/${invalidId}/participants/`)
       .set('Authorization', token)
