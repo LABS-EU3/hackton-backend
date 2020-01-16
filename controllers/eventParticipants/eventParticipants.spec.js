@@ -6,7 +6,7 @@ let token;
 let eventId;
 const invalidId = '849612';
 const addUser = {
-  email: 'test@mail.com',
+  email: 'testuser123@mail.com',
   password: 'testingtesting'
 };
 
