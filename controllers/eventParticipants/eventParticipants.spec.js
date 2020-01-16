@@ -3,7 +3,7 @@ const server = require('../../api/server');
 const db = require('../../data/dbConfig');
 
 let token;
-const invalidId = '849612'
+const invalidId = '849612';
 const addUser = {
   email: 'test@mail.com',
   password: 'testingtesting'
