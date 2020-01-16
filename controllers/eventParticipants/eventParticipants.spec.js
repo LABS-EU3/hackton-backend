@@ -52,7 +52,7 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user cannot register as a participant for an invalid event', async () => {
+  test('user cannot register as a participant for an invalid event (post)', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -76,7 +76,7 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user can get all events he registered for by logging in with correct credentials', async () => {
+  test('organizer can get all participants by logging in with correct credentials', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -103,7 +103,7 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user cannot get all events he registered for by providing invalid event id', async () => {
+  test('organizer cannot get all participants for by providing invalid event id', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -130,7 +130,7 @@ describe('Event participants endpoints', () => {
   })
 
 
-  test('user cannot register for invalid event', async () => {
+  test('user cannot register for invalid event (get)', async () => {
     const response = await request(server)
     .post('/api/auth/login')
     .send(addUser);
@@ -164,7 +164,7 @@ describe('Event participants endpoints', () => {
     eventId = eventCreation.body.body.event_id
 
     const allParticipants = await request(server)
-    .get(`/api/events/${eventId}/participants`)
+    .get(`/api/events/1/participants`)
     .set('Authorization', token)
     expect(allParticipants.status).toBe(404);
     expect(allParticipants.statusCode).toBe(404);
