@@ -1,11 +1,14 @@
 const db = require('../../data/dbConfig');
 
 module.exports = {
+  // Project requirements models
   add,
   find,
   findByEventId,
   update,
   remove,
+
+  // Project entries models
   addProject,
   findProject,
   findAllProjectsByEventId,
@@ -13,6 +16,7 @@ module.exports = {
   removeProject
 };
 
+// project entries models
 async function addProject(project) {
   const submittedProject = await db('project_entries')
     .insert(project)
@@ -27,10 +31,29 @@ async function findAllProjectsByEventId(id) {
     .returning('*');
   return foundAllSubmissions;
 }
-async function findProject() {}
-async function updateProject() {}
-async function removeProject() {}
+async function findProject(id) {
+  const foundSubmission = await db('project_entries')
+    .where({
+      id
+    })
+    .returning('*');
+  return foundSubmission;
+}
+async function updateProject(id, project) {
+  const updateSubmission = await db('project_entries')
+    .where({ id })
+    .update(project)
+    .returning('*');
+  return updateSubmission;
+}
+async function removeProject(id) {
+  const deletedSubmission = await db('project_entries')
+    .where({ id })
+    .delete();
+  return deletedSubmission;
+}
 
+// project requirements models
 async function add(project) {
   const addedRequirements = await db('project_requirements')
     .insert(project)

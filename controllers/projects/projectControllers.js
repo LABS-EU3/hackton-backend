@@ -3,6 +3,48 @@ const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements
 
+function handleProjectEntriesDelete(req, res) {
+  const { id } = req.params;
+  db.removeProject(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project submission deleted successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleProjectEntriesEdit(req, res) {
+  const { userId } = req.decodedToken;
+  const { id } = req.params;
+  const projectSubmit = {
+    project_title: req.body.project_title,
+    participant_or_team_name: req.body.participant_or_team_name,
+    event_id: req.body.event_id,
+    project_writeups: req.body.project_writeups,
+    git_url: req.body.git_url,
+    video_url: req.body.video_url,
+    submitted_by: userId
+  };
+  db.updateProject(id, projectSubmit)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project edited successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
 function handleprojectEntriesPost(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
@@ -37,6 +79,22 @@ function handleGetAllProjectEntries(req, res) {
         res,
         200,
         'All Project submissions retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleGetProjectEntry(req, res) {
+  const { id } = req.params;
+  db.findProject(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project submission retrieved successfully',
         data
       );
     })
@@ -145,5 +203,8 @@ module.exports = {
   handleprojectsReqEdit,
   handlePRojectReqDelete,
   handleprojectEntriesPost,
-  handleGetAllProjectEntries
+  handleGetAllProjectEntries,
+  handleGetProjectEntry,
+  handleProjectEntriesEdit,
+  handleProjectEntriesDelete
 };

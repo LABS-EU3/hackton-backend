@@ -22,7 +22,10 @@ const {
   handleGetProjectReqById,
   handlePRojectReqDelete,
   handleprojectEntriesPost,
-  handleGetAllProjectEntries
+  handleGetAllProjectEntries,
+  handleGetProjectEntry,
+  handleProjectEntriesEdit,
+  handleProjectEntriesDelete
 } = require('../controllers/projects/projectControllers');
 
 const router = Router();
@@ -112,6 +115,27 @@ router.get(
   authenticate,
   EventValidator.validateID,
   handleGetAllProjectEntries
+);
+
+router.get(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleGetProjectEntry
+);
+
+router.put(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleProjectEntriesEdit
+);
+
+router.delete(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleProjectEntriesDelete
 );
 
 module.exports = router;
