@@ -14,14 +14,14 @@ async function getUsers() {
   const users = await db('users');
   for (let i = 0; i <= users.length; i++){
     const { id, email } = users[i]
-    return {id: id, email: email}
+    return {id: id, email: email};
   }
   return users;
 };
 async function getUsersById(filter) {
   const singleUser = await db('users').where(filter).first();
-  for (let i = 0; i <= users.length; i++){
-    const { id, email } = users[i]
+  for (let i = 0; i <= singleUser.length; i++){
+    const { id, email } = singleUser[i]
     return {id: id, email: email}
   }
   return singleUser;
