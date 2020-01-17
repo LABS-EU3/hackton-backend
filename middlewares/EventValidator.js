@@ -109,4 +109,26 @@ module.exports = class EventValidator {
     req.team = data;
     return next();
   }
+
+  static async checkEventOwner(req, res, next) {
+    const { id } = req.params;
+    const { teammate_id } = req.params;
+    const { userId } = req.decodedToken;
+    const checkEvent = await eventModel.getByUserId(userId);
+    if (!checkEvent) {
+      return requestHandler.error(
+        res,
+        409,
+        'You are not authorized to access to do this!'
+      );
+    }
+    const team = await EventTeam.getTeam(id);
+    const check = await team.find(user => String(user.user_id) === teammate_id);
+    console.log(team, '===members===', teammate_id, '===checked', check);
+    if (!check) {
+      return requestHandler.error(res, 400, 'This user is not in the team!');
+    }
+    req.team = check;
+    return next();
+  }
 };

@@ -24,4 +24,12 @@ async function addTeamMember(data) {
   return member;
 }
 
-module.exports = { getTeam, addTeamMember };
+async function removeTeamMember(data) {
+  const deleteEvent = await db('event_team as e')
+    .where('e.user_id', data.user_id)
+    .where('e.event_id', data.event_id)
+    .del();
+  return deleteEvent;
+}
+
+module.exports = { getTeam, addTeamMember, removeTeamMember };

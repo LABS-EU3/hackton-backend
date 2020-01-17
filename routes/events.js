@@ -11,7 +11,8 @@ const {
 } = require('../controllers/events/eventsControllers');
 const {
   handleAddTeamMember,
-  handleGetTeamMembers
+  handleGetTeamMembers,
+  handleDeleteTeamMember
 } = require('../controllers/eventTeam/eventTeamController');
 const EventValidator = require('../middlewares/EventValidator');
 const {
@@ -19,8 +20,6 @@ const {
   handleEventRegistration,
   handleEventDelete
 } = require('../controllers/eventParticipants/eventParticipantsController');
-
-// const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
 
 const router = Router();
 
@@ -58,6 +57,14 @@ router.post(
   EventValidator.validateID,
   EventValidator.teamValidation,
   handleAddTeamMember
+);
+
+router.delete(
+  '/:id/team/:teammate_id',
+  authenticate,
+  EventValidator.validateID,
+  EventValidator.checkEventOwner,
+  handleDeleteTeamMember
 );
 
 // Events participants endpoints

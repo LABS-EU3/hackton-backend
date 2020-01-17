@@ -27,7 +27,24 @@ async function handleGetTeamMembers(req, res) {
   }
 }
 
+async function handleDeleteTeamMember(req, res) {
+  const teamMate = req.team;
+  try {
+    const members = await EventTeam.removeTeamMember({
+      user_id: teamMate.user_id,
+      event_id: teamMate.event_id
+    });
+    const currentTeam = await EventTeam.getTeam(teamMate.event_id);
+    return requestHandler.success(res, 200, 'User deleted successfully!', {
+      currentTeam
+    });
+  } catch (error) {
+    return requestHandler.error(res, 500, `server error ${error.message}`);
+  }
+}
+
 module.exports = {
   handleAddTeamMember,
-  handleGetTeamMembers
+  handleGetTeamMembers,
+  handleDeleteTeamMember
 };
