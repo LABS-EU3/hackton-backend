@@ -2,8 +2,9 @@
 const { Router } = require('express');
 const authenticate = require('../api/auth/authenticate');
 const {
-  handleGetUserList, handleGetSingleUser
-} = require('../controllers/eventTeam/eventTeamController');
+  handleGetUserList,
+  handleGetSingleUser
+} = require('../controllers/users/userController');
 
 const router = Router();
 
