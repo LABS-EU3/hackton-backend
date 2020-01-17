@@ -2,8 +2,9 @@
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const eventModel = require('../controllers/events/eventsModel');
-const EventTeam = require('../controllers/eventTeam/eventTeamModel');
+const eventTeam = require('../controllers/eventTeam/eventTeamModel');
 const userModel = require('../controllers/users/userModel');
+const participants = require('../controllers/eventParticipants/eventParticipantsModel');
 require('dotenv').config();
 
 /**
@@ -91,8 +92,14 @@ module.exports = class EventValidator {
     const { email, role_type } = req.body;
     const userDetails = await userModel.getSingleUser({ email });
     const data = { ...userDetails, event_id: id, role_type };
-    const team = await EventTeam.getTeam(id);
-
+    const team = await eventTeam.getTeam(id);
+    const partparticipantsList = await participants.getByEventId(id);
+    const validity = partparticipantsList.find(
+      user => user.user_id === data.id
+    );
+    if (validity) {
+      return requestHandler.error(res, 400, 'This user is a participant');
+    }
     if (team.length === 0) {
       req.team = data;
       return next();
@@ -122,9 +129,8 @@ module.exports = class EventValidator {
         'You are not authorized to access to do this!'
       );
     }
-    const team = await EventTeam.getTeam(id);
+    const team = await eventTeam.getTeam(id);
     const check = await team.find(user => String(user.user_id) === teammate_id);
-    console.log(team, '===members===', teammate_id, '===checked', check);
     if (!check) {
       return requestHandler.error(res, 400, 'This user is not in the team!');
     }

@@ -1,10 +1,10 @@
-const EventTeam = require('./eventTeamModel');
+const eventTeam = require('./eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleAddTeamMember(req, res) {
   try {
     const newTeamMate = req.team;
-    const member = await EventTeam.addTeamMember({
+    const member = await eventTeam.addTeamMember({
       user_id: newTeamMate.id,
       event_id: newTeamMate.event_id,
       role_type: newTeamMate.role_type
@@ -18,7 +18,7 @@ async function handleAddTeamMember(req, res) {
 async function handleGetTeamMembers(req, res) {
   const { id } = req.params;
   try {
-    const members = await EventTeam.getTeam(id);
+    const members = await eventTeam.getTeam(id);
     return requestHandler.success(res, 200, 'Fetched successfully!', {
       members
     });
@@ -30,11 +30,11 @@ async function handleGetTeamMembers(req, res) {
 async function handleDeleteTeamMember(req, res) {
   const teamMate = req.team;
   try {
-    const members = await EventTeam.removeTeamMember({
+    await eventTeam.removeTeamMember({
       user_id: teamMate.user_id,
       event_id: teamMate.event_id
     });
-    const currentTeam = await EventTeam.getTeam(teamMate.event_id);
+    const currentTeam = await eventTeam.getTeam(teamMate.event_id);
     return requestHandler.success(res, 200, 'User deleted successfully!', {
       currentTeam
     });
