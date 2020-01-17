@@ -17,7 +17,7 @@ async function getUsers() {
   return users;
 }
 async function getUsersById(filter) {
-  const singleUser = await db('users')
+  const singleUser = await db('users as u')
     .select('u.id', 'u.email', 'u.username', 'u.fullname')
     .where(filter)
     .first();

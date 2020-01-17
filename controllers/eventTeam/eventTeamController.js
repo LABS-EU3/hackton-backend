@@ -27,7 +27,6 @@ async function handleGetTeamMembers(req, res) {
 async function handleGetUserList(req, res) {
   try {
     const users = await EventTeam.getUsers();
-    console.log(users, '====')
     return requestHandler.success(res, 200, 'Users Fetched successfully!', {
       users
     });
@@ -37,15 +36,28 @@ async function handleGetUserList(req, res) {
 }
 async function handleGetSingleUser(req, res) {
   const { id } = req.params;
+  const { email, username } = req.body;
+  const searchQuery = { email } || { username } || { id };
   try {
-    const user = await EventTeam.getUsersById(id);
-    return requestHandler.success(res, 200, 'User Fetched successfully!', {
-      user
-    });
+    const user = await EventTeam.getUsersById(searchQuery);
+    if (user) {
+      return requestHandler.success(res, 200, 'User Fetched successfully!', {
+        user
+      });
+    }
+    return requestHandler.error(
+      res,
+      400,
+      `User with ${searchQuery} does not exist`
+    );
   } catch (error) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
   }
 }
 
-
-module.exports = { handleAddTeamMember, handleGetTeamMembers, handleGetUserList, handleGetSingleUser };
+module.exports = {
+  handleAddTeamMember,
+  handleGetTeamMembers,
+  handleGetUserList,
+  handleGetSingleUser
+};

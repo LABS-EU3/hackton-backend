@@ -9,5 +9,6 @@ const router = Router();
 
 router.get('/', authenticate, handleGetUserList);
 router.get('/:id', authenticate, handleGetSingleUser);
+router.get('/search', authenticate, handleGetSingleUser);
 
 module.exports = router;
