@@ -1,0 +1,61 @@
+exports.up = function(knex) {
+  return knex.schema.createTable('project_grading', table => {
+    table.increments();
+    table
+      .integer('judge_id')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('judge_id')
+      .references('event_team.user_id')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
+    table
+      .integer('event_id')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('event_id')
+      .references('events.id')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
+    table
+      .integer('rubric_id')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('rubric_id')
+      .references('rubrics.id')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
+    table
+      .integer('project_entries_id')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('project_entries_id')
+      .references('project_entries.id')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
+    table
+      .text('project_design')
+      .notNullable()
+      .unique();
+    table
+      .text('project_functionality')
+      .notNullable()
+      .unique();
+    table
+      .text('project_innovation')
+      .notNullable()
+      .unique();
+    table
+      .text('project_product_fit')
+      .notNullable()
+      .unique();
+  });
+};
+
+exports.down = function(knex) {
+  return knex.schema.dropTableIfExists('project_grading');
+};

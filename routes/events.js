@@ -90,8 +90,6 @@ router.delete(
   handleEventDelete
 );
 
-<<<<<<< HEAD
-=======
 // Events projects requirements endpoints
 router.post(
   '/:id/projects/requirements',
@@ -154,5 +152,4 @@ router.delete(
   handleProjectEntriesDelete
 );
 
->>>>>>> 87fc3ef7ed97b0a108764a7f09d8f4975895ed1e
 module.exports = router;
