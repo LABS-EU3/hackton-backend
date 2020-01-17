@@ -1,0 +1,210 @@
+const db = require('./projectsModel');
+const requestHandler = require('../../utils/requestHandler');
+
+// Project Submissions requirements
+
+function handleProjectEntriesDelete(req, res) {
+  const { id } = req.params;
+  db.removeProject(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project submission deleted successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleProjectEntriesEdit(req, res) {
+  const { userId } = req.decodedToken;
+  const { id } = req.params;
+  const projectSubmit = {
+    project_title: req.body.project_title,
+    participant_or_team_name: req.body.participant_or_team_name,
+    event_id: req.body.event_id,
+    project_writeups: req.body.project_writeups,
+    git_url: req.body.git_url,
+    video_url: req.body.video_url,
+    submitted_by: userId
+  };
+  db.updateProject(id, projectSubmit)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project edited successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleprojectEntriesPost(req, res) {
+  const { userId } = req.decodedToken;
+  const { id } = req.params;
+  const projectSubmit = {
+    project_title: req.body.project_title,
+    participant_or_team_name: req.body.participant_or_team_name,
+    event_id: id,
+    project_writeups: req.body.project_writeups,
+    git_url: req.body.git_url,
+    video_url: req.body.video_url,
+    submitted_by: userId
+  };
+  db.addProject(projectSubmit)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project submitted successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleGetAllProjectEntries(req, res) {
+  const { id } = req.params;
+  db.findAllProjectsByEventId(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'All Project submissions retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleGetProjectEntry(req, res) {
+  const { id } = req.params;
+  db.findProject(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project submission retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+// Project requirements Helpers
+
+function handleprojectsReqPost(req, res) {
+  const { id } = req.params;
+  const projectReq = {
+    event_id: id,
+    video_url: req.body.video_url,
+    git_url: req.body.git_url,
+    project_writeup: req.body.project_writeup
+  };
+  db.add(projectReq)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project requirements recorded successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleGetAllProjectReq(req, res) {
+  db.find()
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project requirements retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleGetProjectReqById(req, res) {
+  const { id } = req.params;
+  db.findByEventId(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project requirement retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handleprojectsReqEdit(req, res) {
+  const { id } = req.params;
+  const projectReq = {
+    event_id: req.body.event_id,
+    video_url: req.body.video_url,
+    git_url: req.body.git_url,
+    project_writeup: req.body.project_writeup
+  };
+  db.update(id, projectReq)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project requirements edited successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+function handlePRojectReqDelete(req, res) {
+  const { id } = req.params;
+  db.remove(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project requirements deleted successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
+module.exports = {
+  handleprojectsReqPost,
+  handleGetAllProjectReq,
+  handleGetProjectReqById,
+  handleprojectsReqEdit,
+  handlePRojectReqDelete,
+  handleprojectEntriesPost,
+  handleGetAllProjectEntries,
+  handleGetProjectEntry,
+  handleProjectEntriesEdit,
+  handleProjectEntriesDelete
+};

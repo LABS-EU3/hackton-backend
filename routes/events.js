@@ -20,7 +20,17 @@ const {
   handleEventDelete
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
-// const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
+const {
+  handleprojectsReqPost,
+  handleprojectsReqEdit,
+  handleGetProjectReqById,
+  handlePRojectReqDelete,
+  handleprojectEntriesPost,
+  handleGetAllProjectEntries,
+  handleGetProjectEntry,
+  handleProjectEntriesEdit,
+  handleProjectEntriesDelete
+} = require('../controllers/projects/projectControllers');
 
 const router = Router();
 
@@ -80,4 +90,69 @@ router.delete(
   handleEventDelete
 );
 
+<<<<<<< HEAD
+=======
+// Events projects requirements endpoints
+router.post(
+  '/:id/projects/requirements',
+  authenticate,
+  EventValidator.validateID,
+  handleprojectsReqPost
+);
+router.get(
+  '/:id/projects/requirements',
+  authenticate,
+  EventValidator.validateID,
+  handleGetProjectReqById
+);
+router.put(
+  '/projects/requirements/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleprojectsReqEdit
+);
+router.delete(
+  '/projects/requirements/:id',
+  authenticate,
+  EventValidator.validateID,
+  handlePRojectReqDelete
+);
+
+// Events projects entries endpoints
+router.post(
+  '/:id/projects/submissions',
+  authenticate,
+  EventValidator.validateID,
+  handleprojectEntriesPost
+);
+
+router.get(
+  '/:id/projects/submissions',
+  authenticate,
+  EventValidator.validateID,
+  handleGetAllProjectEntries
+);
+
+router.get(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleGetProjectEntry
+);
+
+router.put(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleProjectEntriesEdit
+);
+
+router.delete(
+  '/projects/submissions/:id',
+  authenticate,
+  EventValidator.validateID,
+  handleProjectEntriesDelete
+);
+
+>>>>>>> 87fc3ef7ed97b0a108764a7f09d8f4975895ed1e
 module.exports = router;
