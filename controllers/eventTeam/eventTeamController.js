@@ -27,6 +27,7 @@ async function handleGetTeamMembers(req, res) {
 async function handleGetUserList(req, res) {
   try {
     const users = await EventTeam.getUsers();
+    console.log(users, '====')
     return requestHandler.success(res, 200, 'Users Fetched successfully!', {
       users
     });
