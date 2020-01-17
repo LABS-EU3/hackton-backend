@@ -27,7 +27,7 @@ async function findAllProjectsByEventId(id) {
     .returning('*');
   return foundAllSubmissions;
 }
-async function findAllProjects() {}
+async function findProject() {}
 async function updateProject() {}
 async function removeProject() {}
 
