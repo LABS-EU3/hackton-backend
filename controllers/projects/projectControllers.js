@@ -76,9 +76,26 @@ function handleprojectsReqEdit(req, res) {
     });
 }
 
+function handlePRojectReqDelete(req, res) {
+  const { id } = req.params;
+  db.remove(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'Project requirements deleted successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+};
+
 module.exports = {
   handleprojectsReqPost,
   handleGetAllProjectReq,
   handleGetProjectReqById,
-  handleprojectsReqEdit
+  handleprojectsReqEdit,
+  handlePRojectReqDelete
 };
