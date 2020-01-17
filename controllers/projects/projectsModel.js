@@ -28,6 +28,17 @@ async function find() {
   return foundAllReq;
 }
 
-async function update() {}
+async function update(id, project) {
+  const updateReq = await db('project_requirements')
+    .where({ id })
+    .update(project)
+    .returning('*');
+  return updateReq;
+}
 
-async function remove() {}
+async function remove(id) {
+  const deletedReq = await db('project_requirements')
+    .where({ id })
+    .delete();
+  return deletedReq;
+}

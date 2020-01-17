@@ -54,8 +54,31 @@ function handleGetProjectReqById(req, res) {
     });
 }
 
+function handleprojectsReqEdit(req, res) {
+  const { id } = req.params;
+  const projectReq = {
+    event_id: req.body.event_id,
+    video_url: req.body.video_url,
+    git_url: req.body.git_url,
+    project_writeup: req.body.project_writeup
+  };
+  db.update(id, projectReq)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        201,
+        'Project requirements edited successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
 module.exports = {
   handleprojectsReqPost,
   handleGetAllProjectReq,
-  handleGetProjectReqById
+  handleGetProjectReqById,
+  handleprojectsReqEdit
 };

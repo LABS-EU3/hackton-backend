@@ -18,7 +18,7 @@ const {
 
 const {
   handleprojectsReqPost,
-  handleGetAllProjectReq,
+  handleprojectsReqEdit,
   handleGetProjectReqById
 } = require('../controllers/projects/projectControllers');
 
@@ -73,4 +73,5 @@ router.delete(
 // Events projects requirements endpoint
 router.post('/:id/projects/requirements', authenticate, handleprojectsReqPost);
 router.get('/:id/projects/requirements', authenticate, handleGetProjectReqById);
+router.put('/projects/requirements/:id', authenticate, handleprojectsReqEdit);
 module.exports = router;
