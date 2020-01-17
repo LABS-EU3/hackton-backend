@@ -20,7 +20,9 @@ const {
   handleprojectsReqPost,
   handleprojectsReqEdit,
   handleGetProjectReqById,
-  handlePRojectReqDelete
+  handlePRojectReqDelete,
+  handleprojectEntriesPost,
+  handleGetAllProjectEntries
 } = require('../controllers/projects/projectControllers');
 
 const router = Router();
@@ -71,7 +73,7 @@ router.delete(
   handleEventDelete
 );
 
-// Events projects requirements endpoint
+// Events projects requirements endpoints
 router.post(
   '/:id/projects/requirements',
   authenticate,
@@ -95,6 +97,21 @@ router.delete(
   authenticate,
   EventValidator.validateID,
   handlePRojectReqDelete
+);
+
+// Events projects entries endpoints
+router.post(
+  '/:id/projects/submissions',
+  authenticate,
+  EventValidator.validateID,
+  handleprojectEntriesPost
+);
+
+router.get(
+  '/:id/projects/submissions',
+  authenticate,
+  EventValidator.validateID,
+  handleGetAllProjectEntries
 );
 
 module.exports = router;

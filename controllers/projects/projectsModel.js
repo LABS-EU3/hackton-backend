@@ -5,8 +5,31 @@ module.exports = {
   find,
   findByEventId,
   update,
-  remove
+  remove,
+  addProject,
+  findProject,
+  findAllProjectsByEventId,
+  updateProject,
+  removeProject
 };
+
+async function addProject(project) {
+  const submittedProject = await db('project_entries')
+    .insert(project)
+    .returning('*');
+  return submittedProject;
+}
+async function findAllProjectsByEventId(id) {
+  const foundAllSubmissions = await db('project_entries')
+    .where({
+      event_id: id
+    })
+    .returning('*');
+  return foundAllSubmissions;
+}
+async function findAllProjects() {}
+async function updateProject() {}
+async function removeProject() {}
 
 async function add(project) {
   const addedRequirements = await db('project_requirements')
