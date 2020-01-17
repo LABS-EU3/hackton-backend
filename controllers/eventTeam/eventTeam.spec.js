@@ -54,6 +54,9 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput2.email, role_type: 'judge' });
     expect(response.status).toEqual(200);
+    expect(response.body.message).toEqual('New member added successfully');
+    expect(response.body.body.member.role_type).toEqual('judge');
+    expect(response.body.body.member.event_id).toEqual(Number(eventId));
     done();
   });
   test('[POST] event owner can not add a person that is already in the team', async done => {
@@ -63,6 +66,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput3.email, role_type: 'judge' });
     expect(response.status).toEqual(409);
+    expect(response.body.message).toEqual('This user is already in the team');
     done();
   });
   test('[POST] none owner can not add a person the team', async done => {
@@ -72,9 +76,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput3.email, role_type: 'judge' });
     expect(response.status).toEqual(400);
-    expect(response.body.message).toEqual(
-      'You are not authorized to access to do this!'
-    );
+    expect(response.body.message).toEqual('You are not authorized to do this');
     done();
   });
   test('[GET] logged in users can get all users in their team', async done => {
@@ -83,6 +85,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response.status).toEqual(200);
+    expect(response.body.success).toEqual(true);
     done();
   });
   test('[DELETE] event owner can delete a person that is already in the team', async done => {
@@ -91,6 +94,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response.status).toEqual(200);
+    expect(response.body.message).toEqual('Team member deleted successfully');
     done();
   });
   test('[DELETE] none owner can not delete a person that is in a team', async done => {
@@ -99,9 +103,21 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Authorization', token2)
       .set('Content-Type', 'application/json');
     expect(response.status).toEqual(400);
-    expect(response.body.message).toEqual(
-      'You are not authorized to access to do this!'
-    );
+    expect(response.body.message).toEqual('You are not authorized to do this');
+    done();
+  });
+  test('[DELETE] throw error if user is not in the team', async done => {
+    const response = await app
+      .delete(`/api/events/${eventId}/team/${teamMateId}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+
+    const response2 = await app
+      .delete(`/api/events/${eventId}/team/${teamMateId}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response2.status).toEqual(400);
+    expect(response2.body.message).toEqual('This user is not in the team');
     done();
   });
 });

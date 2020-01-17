@@ -9,7 +9,9 @@ async function handleAddTeamMember(req, res) {
       event_id: newTeamMate.event_id,
       role_type: newTeamMate.role_type
     });
-    return requestHandler.success(res, 200, 'New member added successfully!', { member });
+    return requestHandler.success(res, 200, 'New member added successfully', {
+      member
+    });
   } catch (error) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
   }
@@ -38,7 +40,7 @@ async function handleDeleteTeamMember(req, res) {
     return requestHandler.success(
       res,
       200,
-      'Team member deleted successfully!',
+      'Team member deleted successfully',
       {
         currentTeam
       }

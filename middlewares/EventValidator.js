@@ -107,11 +107,7 @@ module.exports = class EventValidator {
     const check = await team.find(user => user.email === data.email);
 
     if (check) {
-      return requestHandler.error(
-        res,
-        409,
-        'This user is already in the team!'
-      );
+      return requestHandler.error(res, 409, 'This user is already in the team');
     }
     req.team = data;
     return next();
@@ -126,7 +122,7 @@ module.exports = class EventValidator {
       return requestHandler.error(
         res,
         400,
-        'You are not authorized to access to do this!'
+        'You are not authorized to do this'
       );
     }
     if (teammate_id) {
@@ -135,7 +131,7 @@ module.exports = class EventValidator {
         user => String(user.user_id) === teammate_id
       );
       if (!check) {
-        return requestHandler.error(res, 400, 'This user is not in the team!');
+        return requestHandler.error(res, 400, 'This user is not in the team');
       }
       req.team = check;
       return next();
