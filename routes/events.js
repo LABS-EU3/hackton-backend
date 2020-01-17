@@ -56,6 +56,7 @@ router.post(
   '/:id/team',
   authenticate,
   EventValidator.validateID,
+  EventValidator.teamValidation,
   handleAddTeamMember
 );
 

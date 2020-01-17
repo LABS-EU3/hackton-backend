@@ -6,7 +6,7 @@ async function getUsers() {
     .returning('*');
   return users;
 }
-async function getUsersById(filter) {
+async function getSingleUser(filter) {
   const singleUser = await db('users as u')
     .select('u.id', 'u.email', 'u.username', 'u.fullname')
     .where(filter)
@@ -14,4 +14,4 @@ async function getUsersById(filter) {
   return singleUser;
 }
 
-module.exports = { getUsers, getUsersById };
+module.exports = { getUsers, getSingleUser };

@@ -1,9 +1,9 @@
-const EventTeam = require('./userModel');
+const userModel = require('./userModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleGetUserList(req, res) {
   try {
-    const users = await EventTeam.getUsers();
+    const users = await userModel.getUsers();
     return requestHandler.success(res, 200, 'Users Fetched successfully!', {
       users
     });
@@ -14,9 +14,18 @@ async function handleGetUserList(req, res) {
 async function handleGetSingleUser(req, res) {
   const { id } = req.params;
   const { email, username } = req.body;
-  const searchQuery = { email } || { username } || { id };
+  let searchQuery;
+  if (id) {
+    searchQuery = { id };
+  }
+  if (email) {
+    searchQuery = { email };
+  }
+  if (username) {
+    searchQuery = { username };
+  }
   try {
-    const user = await EventTeam.getUsersById(searchQuery);
+    const user = await userModel.getSingleUser(searchQuery);
     if (user) {
       return requestHandler.success(res, 200, 'User Fetched successfully!', {
         user

@@ -23,7 +23,7 @@ beforeEach(async () => {
 });
 
 describe('user can get all users', () => {
-  test('user can [GET] api/users', async done => {
+  test('user can [GET] all users', async done => {
     // logged in user can successfully fetch a user `
     const response = await request(server)
       .get('/api/users')

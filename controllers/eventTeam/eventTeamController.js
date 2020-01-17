@@ -2,10 +2,13 @@ const EventTeam = require('./eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleAddTeamMember(req, res) {
-  const { id } = req.params;
-  const data = { ...req.body, event_id: id };
   try {
-    const member = await EventTeam.addTeamMember(data);
+    const newTeamMate = req.team;
+    const member = await EventTeam.addTeamMember({
+      user_id: newTeamMate.id,
+      event_id: newTeamMate.event_id,
+      role_type: newTeamMate.role_type
+    });
     return requestHandler.success(res, 200, 'Added successfully!', { member });
   } catch (error) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
@@ -24,40 +27,7 @@ async function handleGetTeamMembers(req, res) {
   }
 }
 
-async function handleGetUserList(req, res) {
-  try {
-    const users = await EventTeam.getUsers();
-    return requestHandler.success(res, 200, 'Users Fetched successfully!', {
-      users
-    });
-  } catch (error) {
-    return requestHandler.error(res, 500, `server error ${error.message}`);
-  }
-}
-async function handleGetSingleUser(req, res) {
-  const { id } = req.params;
-  const { email, username } = req.body;
-  const searchQuery = { email } || { username } || { id };
-  try {
-    const user = await EventTeam.getUsersById(searchQuery);
-    if (user) {
-      return requestHandler.success(res, 200, 'User Fetched successfully!', {
-        user
-      });
-    }
-    return requestHandler.error(
-      res,
-      400,
-      `User with ${searchQuery} does not exist`
-    );
-  } catch (error) {
-    return requestHandler.error(res, 500, `server error ${error.message}`);
-  }
-}
-
 module.exports = {
   handleAddTeamMember,
-  handleGetTeamMembers,
-  handleGetUserList,
-  handleGetSingleUser
+  handleGetTeamMembers
 };

@@ -1,27 +1,27 @@
 const db = require('../../data/dbConfig');
 
 async function getTeam(eventId) {
-  const team = await db('event_team').where({ event_id: eventId });
+  const team = await db('event_team as team')
+    .join('users as u', 'u.id', 'team.user_id')
+    .join('events as e', 'e.id', 'team.event_id')
+    .select(
+      'team.user_id',
+      'team.event_id',
+      'team.role_type',
+      'u.email',
+      'u.fullname',
+      'u.username'
+    )
+    .where({ event_id: eventId });
   return team;
 }
 
 async function addTeamMember(data) {
-  const [member] = await db('event_team').insert(data, '*');
+  const member = await db('event_team')
+    .insert(data)
+    .returning('*')
+    .then(newMember => newMember[0]);
   return member;
 }
 
-async function getUsers() {
-  const users = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname')
-    .returning('*');
-  return users;
-}
-async function getUsersById(filter) {
-  const singleUser = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname')
-    .where(filter)
-    .first();
-  return singleUser;
-}
-
-module.exports = { getTeam, addTeamMember, getUsers, getUsersById };
+module.exports = { getTeam, addTeamMember };
