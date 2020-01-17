@@ -16,7 +16,11 @@ const {
   handleEventDelete
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
-// const EventParticipantValidator = require('../middlewares/EventParticipantsValidator');
+const {
+  handleprojectsReqPost,
+  handleGetAllProjectReq,
+  handleGetProjectReqById
+} = require('../controllers/projects/projectControllers');
 
 const router = Router();
 
@@ -66,4 +70,7 @@ router.delete(
   handleEventDelete
 );
 
+// Events projects requirements endpoint
+router.post('/:id/projects/requirements', authenticate, handleprojectsReqPost);
+router.get('/:id/projects/requirements', authenticate, handleGetProjectReqById);
 module.exports = router;
