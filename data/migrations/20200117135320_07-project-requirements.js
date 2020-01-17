@@ -13,7 +13,6 @@ exports.up = function(knex) {
       .onDelete('CASCADE');
     table.boolean('video_url');
     table.boolean('git_url');
-    table.boolean('images');
     table.boolean('project_writeup');
     table.timestamps(true, true);
   });
