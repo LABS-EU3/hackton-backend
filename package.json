@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env DB_ENV=test npm run test:a && npm run test:b",
     "test:a": "jest controllers/eventParticipants/eventParticipants.spec.js --detectOpenHandles --testTimeout=10000 --coverage --runInBand --forceExit",
-    "test:b": "jest controllers/events/events.spec.js controllers/eventsCategories/eventsCategory.spec.js controllers/authUser/authRouter.spec.js api/server.spec.js --detectOpenHandles --coverage --runInBand --forceExit",
+    "test:b": "jest controllers/events/events.spec.js controllers/eventsCategories/eventsCategory.spec.js controllers/authUser/authRouter.spec.js api/server.spec.js --detectOpenHandles --testTimeout=30000 --coverage --runInBand --forceExit",
     "start": "node index.js",
     "server": "nodemon index.js",
     "pretest": "knex migrate:rollback --env=test && knex migrate:latest --env=test && knex seed:run --env=test",
