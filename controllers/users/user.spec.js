@@ -31,4 +31,25 @@ describe('user can get all users', () => {
     expect(response.status).toBe(200);
     done();
   });
+  test('user can [GET] a single user by email', async done => {
+    const response = await request(server)
+      .get('/api/users/search')
+      .set('Authorization', token)
+      .send({ email: mockUsers.validInput2.email });
+    expect(response.status).toBe(200);
+    done();
+  });
+  test('user can [GET] a single user by id', async done => {
+    const response = await request(server)
+      .get('/api/users/search')
+      .set('Authorization', token)
+      .send({ email: mockUsers.validInput2.email });
+    const userId = response.body.body.user_id;
+
+    const response2 = await request(server)
+      .get(`/api/users/${userId}`)
+      .set('Authorization', token);
+    expect(response.status).toBe(200);
+    done();
+  });
 });

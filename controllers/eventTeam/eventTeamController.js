@@ -9,7 +9,7 @@ async function handleAddTeamMember(req, res) {
       event_id: newTeamMate.event_id,
       role_type: newTeamMate.role_type
     });
-    return requestHandler.success(res, 200, 'Added successfully!', { member });
+    return requestHandler.success(res, 200, 'New member added successfully!', { member });
   } catch (error) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
   }
@@ -19,7 +19,7 @@ async function handleGetTeamMembers(req, res) {
   const { id } = req.params;
   try {
     const members = await eventTeam.getTeam(id);
-    return requestHandler.success(res, 200, 'Fetched successfully!', {
+    return requestHandler.success(res, 200, 'Team fetched successfully', {
       members
     });
   } catch (error) {
@@ -35,9 +35,14 @@ async function handleDeleteTeamMember(req, res) {
       event_id: teamMate.event_id
     });
     const currentTeam = await eventTeam.getTeam(teamMate.event_id);
-    return requestHandler.success(res, 200, 'User deleted successfully!', {
-      currentTeam
-    });
+    return requestHandler.success(
+      res,
+      200,
+      'Team member deleted successfully!',
+      {
+        currentTeam
+      }
+    );
   } catch (error) {
     return requestHandler.error(res, 500, `server error ${error.message}`);
   }
