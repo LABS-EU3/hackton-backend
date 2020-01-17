@@ -3,6 +3,7 @@ const authRoutes = require('./auth');
 const eventRoutes = require('./events');
 const categoriesRoutes = require('./categories.js');
 
+
 const router = Router();
 
 router.use('/auth', authRoutes);
