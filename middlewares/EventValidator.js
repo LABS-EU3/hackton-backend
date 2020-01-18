@@ -30,7 +30,7 @@ module.exports = class EventValidator {
         data: [check]
       });
     }
-    eventModel
+    await eventModel
       .findById(id)
       .then(data => {
         if (data.length === 0) {
@@ -94,7 +94,7 @@ module.exports = class EventValidator {
     const data = { ...userDetails, event_id: id, role_type };
     const team = await eventTeam.getTeam(id);
     const partparticipantsList = await participants.getByEventId(id);
-    const validity = partparticipantsList.find(
+    const validity = await partparticipantsList.find(
       user => user.user_id === data.id
     );
     if (validity) {

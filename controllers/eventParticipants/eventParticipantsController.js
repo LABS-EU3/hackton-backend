@@ -1,9 +1,10 @@
 const db = require('./eventParticipantsModel');
 const requestHandler = require('../../utils/requestHandler');
 
-function handleEventsGetById(req, res) {
+async function handleEventsGetById(req, res) {
   const { id } = req.params;
-  db.getByEventId(id)
+  await db
+    .getByEventId(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -17,13 +18,14 @@ function handleEventsGetById(req, res) {
     });
 }
 
-function handleEventRegistration(req, res) {
+async function handleEventRegistration(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
-  db.addCredentials({
-    user_id: userId,
-    event_id: id
-  })
+  await db
+    .addCredentials({
+      user_id: userId,
+      event_id: id
+    })
     .then(data => {
       return requestHandler.success(
         res,
@@ -41,13 +43,11 @@ function handleEventRegistration(req, res) {
     });
 }
 
-function handleEventDelete(req, res) {
+async function handleEventDelete(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
-  db.remove(
-    userId,
-    id
-  )
+  await db
+    .remove(userId, id)
     .then(data => {
       return requestHandler.success(
         res,

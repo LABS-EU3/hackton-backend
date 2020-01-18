@@ -9,7 +9,7 @@ let eventId;
 const invalidId = '849612';
 
 beforeEach(async () => {
-  await db.raw('TRUNCATE TABLE users, events CASCADE');
+  await db.raw('TRUNCATE TABLE users, event_participants, events CASCADE');
   const response = await request(server)
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
@@ -22,7 +22,6 @@ beforeEach(async () => {
     .set('Content-Type', 'application/json')
     .send(mockEvents.newEvent);
   eventId = await eventCreation.body.body.event_id;
-  return eventId;
 });
 
 describe('Event participants endpoints', () => {
