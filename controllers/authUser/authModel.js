@@ -45,10 +45,26 @@ async function createOrFindUser(newUser) {
   }
 }
 
+async function getUsers() {
+  const users = await db('users as u')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname')
+    .returning('*');
+  return users;
+}
+async function getSingleUser(filter) {
+  const singleUser = await db('users as u')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname')
+    .where(filter)
+    .first();
+  return singleUser;
+}
+
 module.exports = {
   getUserId,
   addUser,
   getUserBy,
   findBy,
-  createOrFindUser
+  createOrFindUser,
+  getUsers,
+  getSingleUser
 };

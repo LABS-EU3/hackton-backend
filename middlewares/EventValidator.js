@@ -3,7 +3,7 @@ const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const eventModel = require('../controllers/events/eventsModel');
 const eventTeam = require('../controllers/eventTeam/eventTeamModel');
-const userModel = require('../controllers/users/userModel');
+const userModel = require('../controllers/authUser/authModel');
 const participants = require('../controllers/eventParticipants/eventParticipantsModel');
 require('dotenv').config();
 
