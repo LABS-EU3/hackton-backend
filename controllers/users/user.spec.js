@@ -7,19 +7,15 @@ let token;
 
 beforeEach(async () => {
   await db.raw('TRUNCATE TABLE users CASCADE');
-  const response1 = await request(server) // creates new user before each test
+  const response1 = await request(server)
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
   token = response1.body.body.token;
-  const response2 = await request(server) // creates new user before each test
+  const response2 = await request(server)
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput2);
-  const response3 = await request(server) // creates new user before each test
-    .post('/api/auth/register')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput3);
 });
 
 describe('user can get all users', () => {
