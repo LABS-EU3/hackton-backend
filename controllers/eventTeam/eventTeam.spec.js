@@ -10,10 +10,11 @@ let token2;
 let token3;
 let eventId;
 let teamMateId;
+let categoryId;
 
 beforeEach(async () => {
   await db.raw(
-    'TRUNCATE TABLE users, event_participants, events, event_team CASCADE'
+    'TRUNCATE TABLE event_categories, users, event_participants, events, event_team CASCADE'
   );
   const response1 = await app
     .post('/api/auth/register')
@@ -38,11 +39,18 @@ beforeEach(async () => {
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput3);
 
+  const response5 = await request(server)
+    .post('/api/event-category')
+    .set('Authorization', token)
+    .set('Content-Type', 'application/json')
+    .send({ category_name: 'Lambda winter hackathon' });
+  categoryId = response5.body.body.category_id;
+
   const eventCreation = await request(server)
     .post('/api/events')
     .set('Authorization', token)
     .set('Content-Type', 'application/json')
-    .send(mockEvents.newEvent);
+    .send({ ...mockEvents.event1, category_id: categoryId });
   eventId = await eventCreation.body.body.event_id;
 
   const seedTeam = await app
