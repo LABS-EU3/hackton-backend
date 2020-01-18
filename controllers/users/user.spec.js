@@ -29,6 +29,7 @@ describe('user can get all users', () => {
       .get('/api/users')
       .set('Authorization', token);
     expect(response.status).toBe(200);
+    expect(response.body.message).toEqual('Users fetched successfully');
     done();
   });
   test('user can [GET] a single user by email', async done => {
@@ -37,6 +38,7 @@ describe('user can get all users', () => {
       .set('Authorization', token)
       .send({ email: mockUsers.validInput2.email });
     expect(response.status).toBe(200);
+    expect(response.body.message).toEqual('User fetched successfully');
     done();
   });
   test('user can [GET] a single user by id', async done => {
@@ -44,12 +46,13 @@ describe('user can get all users', () => {
       .get('/api/users/search')
       .set('Authorization', token)
       .send({ email: mockUsers.validInput2.email });
-    const userId = response.body.body.user_id;
+    const userId = response.body.body.user.id;
 
     const response2 = await request(server)
       .get(`/api/users/${userId}`)
       .set('Authorization', token);
-    expect(response.status).toBe(200);
+    expect(response2.status).toBe(200);
+    expect(response2.body.message).toEqual('User fetched successfully');
     done();
   });
 });

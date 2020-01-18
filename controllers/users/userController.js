@@ -4,7 +4,7 @@ const requestHandler = require('../../utils/requestHandler');
 async function handleGetUserList(req, res) {
   try {
     const users = await userModel.getUsers();
-    return requestHandler.success(res, 200, 'Users Fetched successfully!', {
+    return requestHandler.success(res, 200, 'Users fetched successfully', {
       users
     });
   } catch (error) {
@@ -27,7 +27,7 @@ async function handleGetSingleUser(req, res) {
   try {
     const user = await userModel.getSingleUser(searchQuery);
     if (user) {
-      return requestHandler.success(res, 200, 'User Fetched successfully!', {
+      return requestHandler.success(res, 200, 'User fetched successfully', {
         user
       });
     }

@@ -12,10 +12,12 @@ beforeEach(async () => {
   await db.raw('TRUNCATE TABLE users, events CASCADE');
   const response = await request(server)
     .post('/api/auth/register')
+    .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
 
   const response2 = await request(server)
     .post('/api/auth/login')
+    .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
   token = response2.body.body.token;
 
@@ -31,7 +33,8 @@ describe('Event participants endpoints', () => {
   test('user can register as a participant for an event', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
 
     expect(eventRegister.status).toBe(201);
     expect(eventRegister.statusCode).toBe(201);
@@ -43,7 +46,8 @@ describe('Event participants endpoints', () => {
   test('user cannot register as a participant for an invalid event (post)', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/3/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
 
     expect(eventRegister.status).toBe(404);
     expect(eventRegister.statusCode).toBe(404);
@@ -57,7 +61,8 @@ describe('Event participants endpoints', () => {
   test('organizer can get all participants for an event by logging in with correct credentials', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/${eventId}/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
 
     const allParticipants = await request(server)
       .get(`/api/events/${eventId}/participants`)
@@ -74,11 +79,13 @@ describe('Event participants endpoints', () => {
   test('organizer cannot get all participants for by providing invalid event id', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
 
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
     expect(allParticipants.status).toBe(404);
     expect(allParticipants.statusCode).toBe(404);
     expect(allParticipants.body.success).toEqual(false);
@@ -91,11 +98,13 @@ describe('Event participants endpoints', () => {
   test('user cannot register for invalid event (get)', async done => {
     const eventRegister = await request(server)
       .post(`/api/events/1/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
 
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
     expect(allParticipants.status).toBe(404);
     expect(allParticipants.statusCode).toBe(404);
     expect(allParticipants.body.success).toEqual(false);
@@ -108,7 +117,8 @@ describe('Event participants endpoints', () => {
   test('user cannot get events he didnt register for', async done => {
     const allParticipants = await request(server)
       .get(`/api/events/1/participants`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
     expect(allParticipants.status).toBe(404);
     expect(allParticipants.statusCode).toBe(404);
     expect(allParticipants.body.success).toEqual(false);
