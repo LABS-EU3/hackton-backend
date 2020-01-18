@@ -6,21 +6,31 @@ const mockUsers = require('../../data/mock/auth.mock');
 
 let token;
 let eventId;
+let categoryId;
 const invalidId = '849612';
 
 beforeEach(async () => {
-  await db.raw('TRUNCATE TABLE users, event_participants, events CASCADE');
+  await db.raw(
+    'TRUNCATE TABLE event_categories, users, event_participants, events CASCADE'
+  );
   const response = await request(server)
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
   token = response.body.body.token;
 
+  const response5 = await request(server)
+    .post('/api/event-category')
+    .set('Authorization', token)
+    .set('Content-Type', 'application/json')
+    .send({ category_name: 'Lambda winter hackathon' });
+  categoryId = response5.body.body.category_id;
+
   const eventCreation = await request(server)
     .post('/api/events')
     .set('Authorization', token)
     .set('Content-Type', 'application/json')
-    .send(mockEvents.newEvent);
+    .send({ ...mockEvents.event1, category_id: categoryId });
   eventId = await eventCreation.body.body.event_id;
 });
 
