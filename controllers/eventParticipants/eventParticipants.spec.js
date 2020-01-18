@@ -14,12 +14,7 @@ beforeEach(async () => {
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
-
-  const response2 = await request(server)
-    .post('/api/auth/login')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput1);
-  token = response2.body.body.token;
+  token = response.body.body.token;
 
   const eventCreation = await request(server)
     .post('/api/events')
@@ -27,6 +22,7 @@ beforeEach(async () => {
     .set('Content-Type', 'application/json')
     .send(mockEvents.newEvent);
   eventId = await eventCreation.body.body.event_id;
+  return eventId;
 });
 
 describe('Event participants endpoints', () => {

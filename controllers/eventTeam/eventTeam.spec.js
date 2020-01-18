@@ -18,39 +18,25 @@ beforeEach(async () => {
   const response1 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput1)
+    .send(mockUsers.validInput1);
+  token = response1.body.body.token;
 
   const response2 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUsers.validInput2);
+  token2 = response2.body.body.token;
 
   const response3 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput3);
+    .send(mockUsers.existingUsername);
+  token3 = response3.body.body.token;
 
-  const response5 = await app
+  const response4 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
-    .send(mockUsers.existingUsername);
-
-  const response = await app
-    .post('/api/auth/login')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput1);
-  token = response.body.body.token;
-  const response4 = await app
-    .post('/api/auth/login')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput2);
-  token2 = response4.body.body.token;
-
-  const response6 = await app
-    .post('/api/auth/login')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.existingUsername);
-  token3 = response6.body.body.token;
+    .send(mockUsers.validInput3);
 
   const eventCreation = await request(server)
     .post('/api/events')

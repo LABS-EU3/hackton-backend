@@ -9,17 +9,17 @@ beforeEach(async () => {
   await db.raw('TRUNCATE TABLE users CASCADE');
   const response1 = await request(server) // creates new user before each test
     .post('/api/auth/register')
+    .set('Content-Type', 'application/json')
     .send(mockUsers.validInput1);
+  token = response1.body.body.token;
   const response2 = await request(server) // creates new user before each test
     .post('/api/auth/register')
+    .set('Content-Type', 'application/json')
     .send(mockUsers.validInput2);
   const response3 = await request(server) // creates new user before each test
     .post('/api/auth/register')
+    .set('Content-Type', 'application/json')
     .send(mockUsers.validInput3);
-  const response = await request(server)
-    .post('/api/auth/login')
-    .send(mockUsers.validInput1);
-  token = response.body.body.token;
 });
 
 describe('user can get all users', () => {
@@ -27,7 +27,8 @@ describe('user can get all users', () => {
     // logged in user can successfully fetch a user `
     const response = await request(server)
       .get('/api/users')
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
     expect(response.status).toBe(200);
     expect(response.body.message).toEqual('Users fetched successfully');
     done();
@@ -36,6 +37,7 @@ describe('user can get all users', () => {
     const response = await request(server)
       .get('/api/users/search')
       .set('Authorization', token)
+      .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput2.email });
     expect(response.status).toBe(200);
     expect(response.body.message).toEqual('User fetched successfully');
@@ -45,12 +47,14 @@ describe('user can get all users', () => {
     const response = await request(server)
       .get('/api/users/search')
       .set('Authorization', token)
+      .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput2.email });
     const userId = response.body.body.user.id;
 
     const response2 = await request(server)
       .get(`/api/users/${userId}`)
-      .set('Authorization', token);
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
     expect(response2.status).toBe(200);
     expect(response2.body.message).toEqual('User fetched successfully');
     done();
