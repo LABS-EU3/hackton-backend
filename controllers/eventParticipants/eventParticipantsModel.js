@@ -21,6 +21,7 @@ async function addCredentials(credentials) {
   return newCredentials;
 }
 
+// eslint-disable-next-line camelcase
 async function remove(user_id, event_id) {
   const deleteEvent = await db('event_participants as e')
     .where('e.user_id', user_id)
