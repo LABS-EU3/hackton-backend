@@ -43,19 +43,40 @@ async function add(project) {
     .insert(project)
     .returning('*');
 
-  return addedRequirements;
+  return addedRequirements.map(requirements => {
+    return {
+      ...requirements,
+      video_url: !!requirements.video_url,
+      project_writeup: !!requirements.project_writeup,
+      git_url: !!requirements.git_url
+    };
+  });
 }
 
 async function findByEventId(id) {
   const foundReq = await db('project_requirements')
     .where({ event_id: id })
     .returning('*');
-  return foundReq;
+  return foundReq.map(requirements => {
+    return {
+      ...requirements,
+      video_url: !!requirements.video_url,
+      project_writeup: !!requirements.project_writeup,
+      git_url: !!requirements.git_url
+    };
+  });
 }
 
 async function find() {
   const foundAllReq = await db('project_requirements');
-  return foundAllReq;
+  return foundAllReq.map(requirements => {
+    return {
+      ...requirements,
+      video_url: !!requirements.video_url,
+      project_writeup: !!requirements.project_writeup,
+      git_url: !!requirements.git_url
+    };
+  });
 }
 
 async function update(id, project) {

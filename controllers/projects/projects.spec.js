@@ -2,6 +2,9 @@ const request = require('supertest');
 const moment = require('moment');
 const server = require('../../api/server');
 const db = require('../../data/dbConfig');
+const mockEvents = require('../../data/mock/event.mock');
+const mockCategory = require('../../data/mock/categories.mock');
+const mockProjects = require('../../data/mock/projects.mock');
 
 let token;
 
@@ -31,7 +34,7 @@ describe('user can add an event and  post event project requirements, event part
       .post('/api/event-category')
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({ category_name: 'Science Winter hackathon' });
+      .send(mockCategory.cat1);
     expect(response5.status).toBe(201);
     const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
@@ -39,15 +42,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
-        event_title: 'The Scientist hackathon 2019',
-        event_description:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        participation_type: 'both',
+        ...mockEvents.event1,
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
@@ -55,11 +50,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'false',
-        project_writeup: 'false',
-        git_url: 'true'
-      });
+      .send(mockProjects.requirement1);
     expect(response2.status).toBe(201);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
@@ -70,11 +61,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        git_url: 'https://github.com/LABS-EU3/hackton-backend',
-        project_title: 'The Road Not Taken is Somewhere Here',
-        participant_or_team_name: 'Furahi Day'
-      });
+      .send(mockProjects.submission1);
     expect(response7.status).toBe(201);
   });
 
@@ -83,7 +70,7 @@ describe('user can add an event and  post event project requirements, event part
       .post('/api/event-category')
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({ category_name: 'Science Winter hackathon' });
+      .send(mockCategory.cat1);
     expect(response5.status).toBe(201);
     const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
@@ -91,15 +78,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
-        event_title: 'The Scientist hackathon 2019',
-        event_description:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        participation_type: 'both',
+        ...mockEvents.event1,
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
@@ -107,21 +86,13 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'false',
-        project_writeup: 'false',
-        git_url: 'true'
-      });
+      .send(mockProjects.requirement1);
     expect(response2.status).toBe(201);
     const response10 = await request(server)
       .put(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'true',
-        project_writeup: 'true',
-        git_url: 'true'
-      });
+      .send(mockProjects.requirementUpdate);
     expect(response10.status).toBe(201);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
@@ -132,15 +103,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url:
-          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
-        git_url: 'https://github.com/LABS-EU3/hackton-backend',
-        project_writeup:
-          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
-        project_title: 'The Road Not Taken is Somewhere Here',
-        participant_or_team_name: 'Furahi Day'
-      });
+      .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
     let projectId;
     const projectArray = response7.body.body;
@@ -154,13 +117,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
-        video_url:
-          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
-        git_url: 'https://github.com/LABS-EU3/hackton-backend',
-        project_writeup:
-          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
-        project_title: 'The Road Not Taken is Somewhere Here Edited',
-        participant_or_team_name: 'Furahi Day',
+        ...mockProjects.submissionUpdate,
         event_id: response3.body.body.event_id
       });
     expect(response9.status).toBe(201);
@@ -171,7 +128,7 @@ describe('user can add an event and  post event project requirements, event part
       .post('/api/event-category')
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({ category_name: 'Science Winter hackathon' });
+      .send(mockCategory.cat1);
     expect(response5.status).toBe(201);
     const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
@@ -179,15 +136,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
-        event_title: 'The Scientist hackathon 2019',
-        event_description:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        participation_type: 'both',
+        ...mockEvents.event1,
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
@@ -195,11 +144,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'false',
-        project_writeup: 'false',
-        git_url: 'true'
-      });
+      .send(mockProjects.requirement1);
     expect(response2.status).toBe(201);
 
     let requirementsId;
@@ -223,15 +168,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url:
-          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
-        git_url: 'https://github.com/LABS-EU3/hackton-backend',
-        project_writeup:
-          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
-        project_title: 'The Road Not Taken is Somewhere Here',
-        participant_or_team_name: 'Furahi Day'
-      });
+      .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
     let projectId2;
     const projectArray2 = response7.body.body;
@@ -305,7 +242,7 @@ describe('user can add an event and  post event project requirements, event part
       .post('/api/event-category')
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({ category_name: 'Science Winter hackathon' });
+      .send(mockCategory.cat1);
     expect(response5.status).toBe(201);
     const categoryId = response5.body.body.category_id;
     const response3 = await request(server)
@@ -313,15 +250,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
-        event_title: 'The Scientist hackathon 2019',
-        event_description:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        participation_type: 'both',
+        ...mockEvents.event1,
         category_id: categoryId
       });
     expect(response3.status).toBe(201);
@@ -329,11 +258,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'true',
-        project_writeup: 'true',
-        git_url: 'true'
-      });
+      .send(mockProjects.requirementUpdate);
     expect(response2.status).toBe(201);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
@@ -344,15 +269,7 @@ describe('user can add an event and  post event project requirements, event part
       .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
-      .send({
-        video_url:
-          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
-        git_url: 'https://github.com/LABS-EU3/hackton-backend',
-        project_writeup:
-          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
-        project_title: 'The Road Not Taken is Somewhere Here',
-        participant_or_team_name: 'Furahi Day'
-      });
+      .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
     let projectId;
     const projectArray = response7.body.body;

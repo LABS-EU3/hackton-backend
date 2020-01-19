@@ -1,16 +1,4 @@
 module.exports = {
-  newEvent: {
-    event_title: 'Test Hackathon',
-    start_date: '2019-12-23',
-    end_date: '2019-12-23',
-    event_description:
-      'A test for backend It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of  (The Extremes of Good and Evil) by Cicero, written in 45 BC. Thpk;lis book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum',
-    location: 'Remotes',
-    guidelines:
-      'Run yarn or npm test. Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 200lj0 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 ofhe Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum',
-    participation_type: 'team',
-    category_id: 1
-  },
   event1: {
     event_title: 'Test Hackathon',
     start_date: '2019-12-23',
@@ -21,5 +9,16 @@ module.exports = {
     guidelines:
       'Run yarn or npm test. Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 200lj0 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 ofhe Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum',
     participation_type: 'team'
+  },
+  event2: {
+    event_title: 'The Scientist hackathon 2019',
+    event_description:
+      'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+    start_date: '2019-12-23',
+    end_date: '2020-01-03',
+    location: 'remote',
+    guidelines:
+      'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+    participation_type: 'both'
   }
 };
