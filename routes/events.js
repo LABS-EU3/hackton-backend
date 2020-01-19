@@ -124,6 +124,7 @@ router.delete(
   '/projects/requirements/:id',
   authenticate,
   EventValidator.validateID,
+  EventValidator.checkEventOwner,
   handlePRojectReqDelete
 );
 
@@ -160,6 +161,7 @@ router.delete(
   '/projects/submissions/:id',
   authenticate,
   EventValidator.validateID,
+  EventValidator.checkEventOwner,
   handleProjectEntriesDelete
 );
 
