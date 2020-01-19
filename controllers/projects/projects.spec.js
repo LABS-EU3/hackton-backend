@@ -6,7 +6,7 @@ const db = require('../../data/dbConfig');
 let token;
 
 const addUser = {
-  email: 'test2@email.com',
+  email: 'test6@email.com',
   password: 'test1234'
 };
 
@@ -152,7 +152,6 @@ describe('user can add an event and  post event project requirements, event part
         participant_or_team_name: 'Furahi Day'
       });
     expect(response7.status).toBe(201);
-    console.log('submitted project', response7.body.body);
     const submittedIds = {
       eventId: 1,
       projectId: 1
@@ -173,7 +172,7 @@ describe('user can add an event and  post event project requirements, event part
         git_url: 'https://github.com/LABS-EU3/hackton-backend',
         project_writeup:
           'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
-        project_title: 'The Road Not Taken is Somewhere Here',
+        project_title: 'The Road Not Taken is Somewhere Here Edited',
         participant_or_team_name: 'Furahi Day',
         event_id: submittedIds.eventId
       });
