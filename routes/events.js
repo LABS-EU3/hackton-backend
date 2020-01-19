@@ -115,7 +115,7 @@ router.get(
   handleGetProjectReqById
 );
 router.put(
-  '/projects/requirements/:id',
+  '/:id/projects/requirements',
   authenticate,
   EventValidator.validateID,
   handleprojectsReqEdit

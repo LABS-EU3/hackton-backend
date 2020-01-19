@@ -77,6 +77,7 @@ describe('user can add an event and  post event project requirements, event part
       });
     expect(response7.status).toBe(201);
   });
+
   test('organizer can [PUT] project requirements, participants can [PUT] projects', async () => {
     const response5 = await request(server)
       .post('/api/event-category')
@@ -112,28 +113,17 @@ describe('user can add an event and  post event project requirements, event part
         git_url: 'true'
       });
     expect(response2.status).toBe(201);
-    const Ids = {
-      eventId: 1,
-      requirementsId: 1
-    };
-    const respArray = response2.body.body;
-    respArray.map(project => {
-      Ids.eventId = project.event_id;
-      Ids.requirementsId = project.id;
-      return Ids;
-    });
-    console.log('response array', Ids.eventId, Ids.requirementsId, respArray);
-    const response8 = await request(server)
-      .put(`/api/events/projects/requirements/${Ids.requirementsId}`)
+    const response10 = await request(server)
+      .put(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
         video_url: 'true',
         project_writeup: 'true',
-        git_url: 'true',
-        event_id: Ids.eventId
+        git_url: 'true'
       });
-    expect(response8.status).toBe(201);
+    expect(response10.status).toBe(201);
+    console.log('response 10', response10.status);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
       .set('Authorization', token)
@@ -153,18 +143,16 @@ describe('user can add an event and  post event project requirements, event part
         participant_or_team_name: 'Furahi Day'
       });
     expect(response7.status).toBe(201);
-    const submittedIds = {
-      eventId: 1,
-      projectId: 1
-    };
-    response7.body.body.map(project => {
-      submittedIds.eventId = project.event_id;
-      submittedIds.projectId = project.id;
+    let projectId;
 
-      return submittedIds;
+    response7.body.body.map(project => {
+      projectId = project.id;
+
+      return projectId;
     });
+    console.log("project id",projectId);
     const response9 = await request(server)
-      .put(`/api/events/projects/submissions/${submittedIds.projectId}`)
+      .put(`/api/events/projects/submissions/${projectId}`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
@@ -175,8 +163,96 @@ describe('user can add an event and  post event project requirements, event part
           'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
         project_title: 'The Road Not Taken is Somewhere Here Edited',
         participant_or_team_name: 'Furahi Day',
-        event_id: submittedIds.eventId
+        event_id: response3.body.body.event_id
       });
     expect(response9.status).toBe(201);
+  });
+
+  test('organizer can [GET] project requirements, participants can [GET] projects', async () => {
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ category_name: 'Science Winter hackathon' });
+    expect(response5.status).toBe(201);
+    const categoryId = response5.body.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        event_title: 'The Scientist hackathon 2019',
+        event_description:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    const response2 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        video_url: 'false',
+        project_writeup: 'false',
+        git_url: 'true'
+      });
+    expect(response2.status).toBe(201);
+
+    let requirementsId;
+
+    const respArray = response2.body.body;
+    respArray.map(project => {
+      requirementsId = project.id;
+      return requirementsId;
+    });
+    console.log('response array', response3.body.body.event_id, respArray);
+    const response8 = await request(server)
+      .get(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response8.status).toBe(200);
+    const response6 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/participants`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response6.status).toBe(201);
+    const response7 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        video_url:
+          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
+        git_url: 'https://github.com/LABS-EU3/hackton-backend',
+        project_writeup:
+          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
+        project_title: 'The Road Not Taken is Somewhere Here',
+        participant_or_team_name: 'Furahi Day'
+      });
+    expect(response7.status).toBe(201);
+
+    let projectId;
+
+    response7.body.body.map(project => {
+      projectId = project.id;
+      return projectId;
+    });
+    console.log("project id",projectId);
+    const response9 = await request(server)
+      .get(`/api/events/projects/submissions/${projectId}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response9.status).toBe(200);
+    const response10 = await request(server)
+      .get(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response10.status).toBe(200);
   });
 });

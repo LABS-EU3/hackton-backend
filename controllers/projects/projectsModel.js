@@ -60,7 +60,7 @@ async function find() {
 
 async function update(id, project) {
   const updateReq = await db('project_requirements')
-    .where({ id })
+    .where({ event_id: id })
     .update(project)
     .returning('*');
   return updateReq;

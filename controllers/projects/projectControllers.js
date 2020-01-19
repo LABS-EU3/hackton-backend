@@ -161,7 +161,7 @@ function handleGetProjectReqById(req, res) {
 function handleprojectsReqEdit(req, res) {
   const { id } = req.params;
   const projectReq = {
-    event_id: req.body.event_id,
+    event_id: id,
     video_url: req.body.video_url,
     git_url: req.body.git_url,
     project_writeup: req.body.project_writeup
