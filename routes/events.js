@@ -123,7 +123,6 @@ router.put(
 router.delete(
   '/projects/requirements/:id',
   authenticate,
-  EventValidator.validateID,
   EventValidator.checkEventOwner,
   handlePRojectReqDelete
 );
@@ -143,24 +142,13 @@ router.get(
   handleGetAllProjectEntries
 );
 
-router.get(
-  '/projects/submissions/:id',
-  authenticate,
-  EventValidator.validateID,
-  handleGetProjectEntry
-);
+router.get('/projects/submissions/:id', authenticate, handleGetProjectEntry);
 
-router.put(
-  '/projects/submissions/:id',
-  authenticate,
-  EventValidator.validateID,
-  handleProjectEntriesEdit
-);
+router.put('/projects/submissions/:id', authenticate, handleProjectEntriesEdit);
 
 router.delete(
   '/projects/submissions/:id',
   authenticate,
-  EventValidator.validateID,
   EventValidator.checkEventOwner,
   handleProjectEntriesDelete
 );

@@ -123,7 +123,6 @@ describe('user can add an event and  post event project requirements, event part
         git_url: 'true'
       });
     expect(response10.status).toBe(201);
-    console.log('response 10', response10.status);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
       .set('Authorization', token)
@@ -144,13 +143,12 @@ describe('user can add an event and  post event project requirements, event part
       });
     expect(response7.status).toBe(201);
     let projectId;
-
-    response7.body.body.map(project => {
+    const projectArray = response7.body.body;
+    projectArray.map(project => {
       projectId = project.id;
 
       return projectId;
     });
-    console.log("project id",projectId);
     const response9 = await request(server)
       .put(`/api/events/projects/submissions/${projectId}`)
       .set('Authorization', token)
@@ -211,7 +209,6 @@ describe('user can add an event and  post event project requirements, event part
       requirementsId = project.id;
       return requirementsId;
     });
-    console.log('response array', response3.body.body.event_id, respArray);
     const response8 = await request(server)
       .get(`/api/events/${response3.body.body.event_id}/projects/requirements`)
       .set('Authorization', token)
@@ -236,23 +233,21 @@ describe('user can add an event and  post event project requirements, event part
         participant_or_team_name: 'Furahi Day'
       });
     expect(response7.status).toBe(201);
-
-    let projectId;
-
-    response7.body.body.map(project => {
-      projectId = project.id;
-      return projectId;
+    let projectId2;
+    const projectArray2 = response7.body.body;
+    projectArray2.map(project => {
+      projectId2 = project.id;
+      return projectId2;
     });
-    console.log("project id",projectId);
-    const response9 = await request(server)
-      .get(`/api/events/projects/submissions/${projectId}`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json');
-    expect(response9.status).toBe(200);
     const response10 = await request(server)
       .get(`/api/events/${response3.body.body.event_id}/projects/submissions`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response10.status).toBe(200);
+    const response9 = await request(server)
+      .get(`/api/events/projects/submissions/${projectId2}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response9.status).toBe(200);
   });
 });
