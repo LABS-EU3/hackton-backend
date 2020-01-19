@@ -250,4 +250,121 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json');
     expect(response9.status).toBe(200);
   });
+  test('organizer can [DELETE] project requirements', async () => {
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ category_name: 'Science Winter hackathon' });
+    expect(response5.status).toBe(201);
+    const categoryId = response5.body.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        event_title: 'The Scientist hackathon 2019',
+        event_description:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    const response2 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        video_url: 'false',
+        project_writeup: 'false',
+        git_url: 'true'
+      });
+    expect(response2.status).toBe(201);
+
+    let requirementsId;
+
+    const respArray = response2.body.body;
+    respArray.map(project => {
+      requirementsId = project.id;
+      return requirementsId;
+    });
+    const response8 = await request(server)
+      .delete(`/api/events/projects/requirements/${requirementsId}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response8.status).toBe(200);
+  });
+
+  test('participants can [DELETE] project submission', async () => {
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ category_name: 'Science Winter hackathon' });
+    expect(response5.status).toBe(201);
+    const categoryId = response5.body.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        event_title: 'The Scientist hackathon 2019',
+        event_description:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        start_date: startDate,
+        end_date: endDate,
+        location: 'remote',
+        guidelines:
+          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
+        participation_type: 'both',
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    const response2 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        video_url: 'true',
+        project_writeup: 'true',
+        git_url: 'true'
+      });
+    expect(response2.status).toBe(201);
+    const response6 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/participants`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response6.status).toBe(201);
+    const response7 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        video_url:
+          'https://www.youtube.com/watch?v=yfn9E8I-ad4&list=PLMf7VY8La5REXhuUzK3g-9Fr_bf0yBarA&index=5',
+        git_url: 'https://github.com/LABS-EU3/hackton-backend',
+        project_writeup:
+          'Two roads diverged in a yellow wood,And sorry I could not travel both And be one traveler, long I stood And looked down one as far as I could To where it bent in the undergrowth',
+        project_title: 'The Road Not Taken is Somewhere Here',
+        participant_or_team_name: 'Furahi Day'
+      });
+    expect(response7.status).toBe(201);
+    let projectId;
+    const projectArray = response7.body.body;
+    projectArray.map(project => {
+      projectId = project.id;
+
+      return projectId;
+    });
+    const response9 = await request(server)
+      .delete(`/api/events/projects/submissions/${projectId}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response9.status).toBe(200);
+  });
 });
