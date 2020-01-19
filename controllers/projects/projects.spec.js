@@ -116,12 +116,13 @@ describe('user can add an event and  post event project requirements, event part
       eventId: 1,
       requirementsId: 1
     };
+    console.log("response 2 body",response2.body.body);
     response2.body.body.map(project => {
       Ids.eventId = project.event_id;
       Ids.requirementsId = project.id;
-
       return Ids;
     });
+    console.log('Ids ==>', Ids);
     const response8 = await request(server)
       .put(`/api/events/projects/requirements/${Ids.requirementsId}`)
       .set('Authorization', token)

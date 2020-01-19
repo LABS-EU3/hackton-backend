@@ -1,21 +1,5 @@
 const db = require('../../data/dbConfig');
 
-module.exports = {
-  // Project requirements models
-  add,
-  find,
-  findByEventId,
-  update,
-  remove,
-
-  // Project entries models
-  addProject,
-  findProject,
-  findAllProjectsByEventId,
-  updateProject,
-  removeProject
-};
-
 // project entries models
 async function addProject(project) {
   const submittedProject = await db('project_entries')
@@ -88,3 +72,19 @@ async function remove(id) {
     .delete();
   return deletedReq;
 }
+
+module.exports = {
+  // Project requirements models
+  add,
+  find,
+  findByEventId,
+  update,
+  remove,
+
+  // Project entries models
+  addProject,
+  findProject,
+  findAllProjectsByEventId,
+  updateProject,
+  removeProject
+};
