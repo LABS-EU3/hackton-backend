@@ -94,6 +94,9 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json')
       .send(mockProjects.requirementUpdate);
     expect(response10.status).toBe(201);
+    expect(response10.body.message).toBe(
+      'Project requirements edited successfully'
+    );
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
       .set('Authorization', token)
@@ -121,9 +124,87 @@ describe('user can add an event and  post event project requirements, event part
         event_id: response3.body.body.event_id
       });
     expect(response9.status).toBe(201);
+    expect(response9.body.message).toEqual('Project edited successfully');
   });
 
   test('organizer can [GET] project requirements, participants can [GET] projects', async () => {
+    const response5 = await request(server)
+      .post('/api/event-category')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(mockCategory.cat1);
+    expect(response5.status).toBe(201);
+    const categoryId = response5.body.body.category_id;
+    const response3 = await request(server)
+      .post('/api/events')
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({
+        ...mockEvents.event1,
+        category_id: categoryId
+      });
+    expect(response3.status).toBe(201);
+    const response2 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(mockProjects.requirement1);
+    expect(response2.status).toBe(201);
+    expect(response2.body.message).toEqual(
+      'Project requirements recorded successfully'
+    );
+
+    let requirementsId;
+
+    const respArray = response2.body.body;
+    respArray.map(project => {
+      requirementsId = project.id;
+      return requirementsId;
+    });
+    const response8 = await request(server)
+      .get(`/api/events/${response3.body.body.event_id}/projects/requirements`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response8.status).toBe(200);
+    expect(response8.body.message).toEqual(
+      'Project requirement retrieved successfully'
+    );
+    const response6 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/participants`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response6.status).toBe(201);
+    const response7 = await request(server)
+      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send(mockProjects.submission2);
+    expect(response7.status).toBe(201);
+    expect(response7.body.message).toEqual('Project submitted successfully');
+    let projectId2;
+    const projectArray2 = response7.body.body;
+    projectArray2.map(project => {
+      projectId2 = project.id;
+      return projectId2;
+    });
+    const response10 = await request(server)
+      .get(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response10.status).toBe(200);
+    expect(response10.body.message).toEqual(
+      'All Project submissions retrieved successfully'
+    );
+    const response9 = await request(server)
+      .get(`/api/events/projects/submissions/${projectId2}`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json');
+    expect(response9.status).toBe(200);
+    expect(response9.body.message).toEqual(
+      'Project submission retrieved successfully'
+    );
+  });
+  test('organizer can [DELETE] project requirements', async () => {
     const response5 = await request(server)
       .post('/api/event-category')
       .set('Authorization', token)
@@ -155,86 +236,13 @@ describe('user can add an event and  post event project requirements, event part
       return requirementsId;
     });
     const response8 = await request(server)
-      .get(`/api/events/${response3.body.body.event_id}/projects/requirements`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json');
-    expect(response8.status).toBe(200);
-    const response6 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/participants`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json');
-    expect(response6.status).toBe(201);
-    const response7 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send(mockProjects.submission2);
-    expect(response7.status).toBe(201);
-    let projectId2;
-    const projectArray2 = response7.body.body;
-    projectArray2.map(project => {
-      projectId2 = project.id;
-      return projectId2;
-    });
-    const response10 = await request(server)
-      .get(`/api/events/${response3.body.body.event_id}/projects/submissions`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json');
-    expect(response10.status).toBe(200);
-    const response9 = await request(server)
-      .get(`/api/events/projects/submissions/${projectId2}`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json');
-    expect(response9.status).toBe(200);
-  });
-  test('organizer can [DELETE] project requirements', async () => {
-    const response5 = await request(server)
-      .post('/api/event-category')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send({ category_name: 'Science Winter hackathon' });
-    expect(response5.status).toBe(201);
-    const categoryId = response5.body.body.category_id;
-    const response3 = await request(server)
-      .post('/api/events')
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send({
-        event_title: 'The Scientist hackathon 2019',
-        event_description:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        start_date: startDate,
-        end_date: endDate,
-        location: 'remote',
-        guidelines:
-          'A hackathon (also known as a hack day, hackfest or codefest) is a design sprint-like event in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, and others, often including domain experts, collaborate intensively on software',
-        participation_type: 'both',
-        category_id: categoryId
-      });
-    expect(response3.status).toBe(201);
-    const response2 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/requirements`)
-      .set('Authorization', token)
-      .set('Content-Type', 'application/json')
-      .send({
-        video_url: 'false',
-        project_writeup: 'false',
-        git_url: 'true'
-      });
-    expect(response2.status).toBe(201);
-
-    let requirementsId;
-
-    const respArray = response2.body.body;
-    respArray.map(project => {
-      requirementsId = project.id;
-      return requirementsId;
-    });
-    const response8 = await request(server)
       .delete(`/api/events/projects/requirements/${requirementsId}`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response8.status).toBe(200);
+    expect(response8.body.message).toEqual(
+      'Project requirements deleted successfully'
+    );
   });
 
   test('participants can [DELETE] project submission', async () => {
@@ -283,5 +291,8 @@ describe('user can add an event and  post event project requirements, event part
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response9.status).toBe(200);
+    expect(response9.body.message).toEqual(
+      'Project submission deleted successfully'
+    );
   });
 });

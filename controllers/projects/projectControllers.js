@@ -3,9 +3,10 @@ const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements
 
-function handleProjectEntriesDelete(req, res) {
+async function handleProjectEntriesDelete(req, res) {
   const { id } = req.params;
-  db.removeProject(id)
+  await db
+    .removeProject(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -19,7 +20,7 @@ function handleProjectEntriesDelete(req, res) {
     });
 }
 
-function handleProjectEntriesEdit(req, res) {
+async function handleProjectEntriesEdit(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
   const projectSubmit = {
@@ -31,7 +32,8 @@ function handleProjectEntriesEdit(req, res) {
     video_url: req.body.video_url,
     submitted_by: userId
   };
-  db.updateProject(id, projectSubmit)
+  await db
+    .updateProject(id, projectSubmit)
     .then(data => {
       return requestHandler.success(
         res,
@@ -45,7 +47,7 @@ function handleProjectEntriesEdit(req, res) {
     });
 }
 
-function handleprojectEntriesPost(req, res) {
+async function handleprojectEntriesPost(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
   const projectSubmit = {
@@ -57,7 +59,8 @@ function handleprojectEntriesPost(req, res) {
     video_url: req.body.video_url,
     submitted_by: userId
   };
-  db.addProject(projectSubmit)
+  await db
+    .addProject(projectSubmit)
     .then(data => {
       return requestHandler.success(
         res,
@@ -71,9 +74,10 @@ function handleprojectEntriesPost(req, res) {
     });
 }
 
-function handleGetAllProjectEntries(req, res) {
+async function handleGetAllProjectEntries(req, res) {
   const { id } = req.params;
-  db.findAllProjectsByEventId(id)
+  await db
+    .findAllProjectsByEventId(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -87,9 +91,10 @@ function handleGetAllProjectEntries(req, res) {
     });
 }
 
-function handleGetProjectEntry(req, res) {
+async function handleGetProjectEntry(req, res) {
   const { id } = req.params;
-  db.findProject(id)
+  await db
+    .findProject(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -105,7 +110,7 @@ function handleGetProjectEntry(req, res) {
 
 // Project requirements Helpers
 
-function handleprojectsReqPost(req, res) {
+async function handleprojectsReqPost(req, res) {
   const { id } = req.params;
   const projectReq = {
     event_id: id,
@@ -113,7 +118,8 @@ function handleprojectsReqPost(req, res) {
     git_url: req.body.git_url,
     project_writeup: req.body.project_writeup
   };
-  db.add(projectReq)
+  await db
+    .add(projectReq)
     .then(data => {
       return requestHandler.success(
         res,
@@ -127,8 +133,9 @@ function handleprojectsReqPost(req, res) {
     });
 }
 
-function handleGetAllProjectReq(req, res) {
-  db.find()
+async function handleGetAllProjectReq(req, res) {
+  await db
+    .find()
     .then(data => {
       return requestHandler.success(
         res,
@@ -142,9 +149,10 @@ function handleGetAllProjectReq(req, res) {
     });
 }
 
-function handleGetProjectReqById(req, res) {
+async function handleGetProjectReqById(req, res) {
   const { id } = req.params;
-  db.findByEventId(id)
+  await db
+    .findByEventId(id)
     .then(data => {
       return requestHandler.success(
         res,
@@ -158,7 +166,7 @@ function handleGetProjectReqById(req, res) {
     });
 }
 
-function handleprojectsReqEdit(req, res) {
+async function handleprojectsReqEdit(req, res) {
   const { id } = req.params;
   const projectReq = {
     event_id: id,
@@ -166,7 +174,8 @@ function handleprojectsReqEdit(req, res) {
     git_url: req.body.git_url,
     project_writeup: req.body.project_writeup
   };
-  db.update(id, projectReq)
+  await db
+    .update(id, projectReq)
     .then(data => {
       return requestHandler.success(
         res,
@@ -180,9 +189,10 @@ function handleprojectsReqEdit(req, res) {
     });
 }
 
-function handlePRojectReqDelete(req, res) {
+async function handlePRojectReqDelete(req, res) {
   const { id } = req.params;
-  db.remove(id)
+  await db
+    .remove(id)
     .then(data => {
       return requestHandler.success(
         res,
