@@ -11,9 +11,9 @@ exports.up = function(knex) {
       .references('events.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
-    table.boolean('video_url');
-    table.boolean('git_url');
-    table.boolean('project_writeup');
+    table.boolean('video_url').defaultTo(false);
+    table.boolean('git_url').defaultTo(false);
+    table.boolean('project_writeup').defaultTo(false);
     table.timestamps(true, true);
   });
 };
