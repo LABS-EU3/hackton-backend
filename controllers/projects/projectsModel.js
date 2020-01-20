@@ -37,71 +37,7 @@ async function removeProject(id) {
   return deletedSubmission;
 }
 
-// project requirements models
-async function add(project) {
-  const addedRequirements = await db('project_requirements')
-    .insert(project)
-    .returning('*');
-
-  return addedRequirements.map(requirements => {
-    return {
-      ...requirements,
-      video_url: !!requirements.video_url,
-      project_writeup: !!requirements.project_writeup,
-      git_url: !!requirements.git_url
-    };
-  });
-}
-
-async function findByEventId(id) {
-  const foundReq = await db('project_requirements')
-    .where({ event_id: id })
-    .returning('*');
-  return foundReq.map(requirements => {
-    return {
-      ...requirements,
-      video_url: !!requirements.video_url,
-      project_writeup: !!requirements.project_writeup,
-      git_url: !!requirements.git_url
-    };
-  });
-}
-
-async function find() {
-  const foundAllReq = await db('project_requirements');
-  return foundAllReq.map(requirements => {
-    return {
-      ...requirements,
-      video_url: !!requirements.video_url,
-      project_writeup: !!requirements.project_writeup,
-      git_url: !!requirements.git_url
-    };
-  });
-}
-
-async function update(id, project) {
-  const updateReq = await db('project_requirements')
-    .where({ event_id: id })
-    .update(project)
-    .returning('*');
-  return updateReq;
-}
-
-async function remove(id) {
-  const deletedReq = await db('project_requirements')
-    .where({ id })
-    .delete();
-  return deletedReq;
-}
-
 module.exports = {
-  // Project requirements models
-  add,
-  find,
-  findByEventId,
-  update,
-  remove,
-
   // Project entries models
   addProject,
   findProject,
