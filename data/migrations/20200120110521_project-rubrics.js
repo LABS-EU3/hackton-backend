@@ -2,6 +2,10 @@
 exports.up = function(knex) {
   return knex.schema.createTable('grading_rubrics', table => {
     table
+      .integer('event_id')
+      .unsigned()
+      .notNullable();
+    table
       .foreign('event_id')
       .references('events.id')
       .onUpdate('CASCADE')
