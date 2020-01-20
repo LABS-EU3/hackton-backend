@@ -101,32 +101,6 @@ router.delete(
   handleEventDelete
 );
 
-// Events projects requirements endpoints
-router.post(
-  '/:id/projects/requirements',
-  authenticate,
-  EventValidator.validateID,
-  handleprojectsReqPost
-);
-router.get(
-  '/:id/projects/requirements',
-  authenticate,
-  EventValidator.validateID,
-  handleGetProjectReqById
-);
-router.put(
-  '/:id/projects/requirements',
-  authenticate,
-  EventValidator.validateID,
-  handleprojectsReqEdit
-);
-router.delete(
-  '/projects/requirements/:id',
-  authenticate,
-  EventValidator.checkEventOwner,
-  handlePRojectReqDelete
-);
-
 // Events projects entries endpoints
 router.post(
   '/:id/projects/submissions',
