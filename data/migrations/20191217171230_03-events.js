@@ -33,8 +33,7 @@ exports.up = function(knex) {
       .references('event_categories.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
-      table.timestamps(true, true);
-      table.array('rubrics').defaultTo('[]');
+    table.timestamps(true, true);
   });
 };
 

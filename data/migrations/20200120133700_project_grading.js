@@ -28,7 +28,6 @@ exports.up = function(knex) {
     table.integer('product_fit').defaultTo(0);
     table.integer('extensibility').defaultTo(0);
     table.integer('presentation').defaultTo(0);
-    table.unique(['project_id', 'judge_id']);
   });
 };
 
