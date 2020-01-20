@@ -6,10 +6,12 @@ exports.up = function(knex) {
       .references('events.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
-    table.boolean('design').defaultTo(false);
+    table.boolean('product_design').defaultTo(false);
     table.boolean('functionality').defaultTo(false);
     table.boolean('innovation').defaultTo(false);
     table.boolean('product_fit').defaultTo(false);
+    table.boolean('extensibility').defaultTo(false);
+    table.boolean('presentation').defaultTo(false);
   });
 };
 
