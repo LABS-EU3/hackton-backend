@@ -11,6 +11,12 @@ module.exports = {
     email: 'frod@yahoo.com',
     password: 'shire prince'
   },
+  profile: {
+    email: 'pc@hackton.com',
+    username: 'fun',
+    fullname: 'Pascal Ulor',
+    bio: "I'm the worlds greatest"
+  },
   existingUsername: {
     email: 'dave@yahoo.com',
     password: 'dave 1234'

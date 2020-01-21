@@ -84,4 +84,22 @@ module.exports = class UserValidator {
       return err;
     }
   }
+
+  static async userProfile(req, res, next) {
+    try {
+      const { email, username, fullname, bio } = req.body;
+      const check = checkItem({
+        email,
+        username,
+        fullname,
+        bio
+      });
+      if (Object.keys(check).length > 0) {
+        return requestHandler.error(res, 400, check);
+      }
+      next();
+    } catch (error) {
+      return error;
+    }
+  }
 };

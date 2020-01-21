@@ -41,7 +41,30 @@ async function handleGetSingleUser(req, res) {
   }
 }
 
+const updateUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.decodedToken;
+    const foundUser = userModel.getSingleUser({ id: userId });
+    if (foundUser) {
+      const updates = {
+        email: req.body.email || foundUser.email,
+        username: req.body.username || foundUser.username,
+        fullname: req.body.fullname || foundUser.fullname,
+        bio: req.body.bio || foundUser.bio
+      };
+      const userUpdates = await userModel.updateUser(updates, userId);
+      return requestHandler.success(res, 200, 'Profile updated successfully', {
+        userUpdates
+      });
+    }
+    return requestHandler.error(res, 400, `You are not authorized to do this`);
+  } catch (error) {
+    return requestHandler.error(res, 500, `server error ${error.message}`);
+  }
+};
+
 module.exports = {
   handleGetUserList,
-  handleGetSingleUser
+  handleGetSingleUser,
+  updateUserProfile
 };
