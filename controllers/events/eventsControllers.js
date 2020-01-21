@@ -65,7 +65,9 @@ function handleEventsEdit(req, res) {
     guidelines: req.body.guidelines,
     participation_type: req.body.participation_type,
     category_id: req.body.category_id,
-    tag_name: req.body.tag_name
+    tag_name: req.body.tag_name,
+    rubrics: req.body.rubrics,
+    requirements: req.body.requirements
   };
 
   db.update(id, editedEvent)
@@ -96,7 +98,9 @@ function handleEventsPost(req, res) {
     guidelines: req.body.guidelines,
     participation_type: req.body.participation_type,
     category_id: req.body.category_id,
-    tag_name: req.body.tag_name
+    tag_name: req.body.tag_name,
+    rubrics: req.body.rubrics,
+    requirements: req.body.requirements
   };
   db.add(event)
     .then(data => {
