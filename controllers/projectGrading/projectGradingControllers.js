@@ -32,7 +32,8 @@ async function handleProjectGradingEdit(req, res) {
     extensibility: req.body.extensibility,
     presentation: req.body.presentation,
     judge_id: userId,
-    event_id: req.body.event_id
+    event_id: req.body.event_id,
+    judge_comments: req.body.judge_comments
   };
   await db
     .updateGrading(id, editedProjectGraging)
@@ -61,7 +62,8 @@ async function handleprojectGradingPost(req, res) {
     extensibility: req.body.extensibility,
     presentation: req.body.presentation,
     judge_id: userId,
-    event_id: req.body.event_id
+    event_id: req.body.event_id,
+    judge_comments: req.body.judge_comments
   };
   await db
     .addGrading(projectGraging)
