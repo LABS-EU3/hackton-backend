@@ -4,21 +4,27 @@ exports.up = function(knex) {
     table.unique(['project_id', 'judge_id']);
     table
       .integer('event_id')
-      .references('id')
-      .inTable('events')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('event_id')
+      .references('events.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
     table
       .integer('project_id')
-      .references('id')
-      .inTable('project_entries')
+      .unsigned()
+      .notNullable();
+    table
+      .foreign('project_id')
+      .references('project_entries.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
 
     table
       .integer('judge_id')
-      .references('user_id')
-      .inTable('event_team')
+      .references('id')
+      .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
 

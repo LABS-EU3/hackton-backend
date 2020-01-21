@@ -7,6 +7,13 @@ async function addProject(project) {
     .returning('*');
   return submittedProject;
 }
+
+async function findProjectTitle(projectTitle) {
+  const submitProject = await db('project_entries')
+    .where({ project_title: projectTitle })
+    .returning('*');
+  return submitProject;
+}
 async function findAllProjectsByEventId(id) {
   const foundAllSubmissions = await db('project_entries')
     .where({
@@ -43,5 +50,6 @@ module.exports = {
   findProject,
   findAllProjectsByEventId,
   updateProject,
-  removeProject
+  removeProject,
+  findProjectTitle
 };

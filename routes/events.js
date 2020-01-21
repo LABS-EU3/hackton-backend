@@ -22,16 +22,20 @@ const {
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
 const {
-  handleprojectsReqPost,
-  handleprojectsReqEdit,
-  handleGetProjectReqById,
-  handlePRojectReqDelete,
   handleprojectEntriesPost,
   handleGetAllProjectEntries,
   handleGetProjectEntry,
   handleProjectEntriesEdit,
   handleProjectEntriesDelete
 } = require('../controllers/projects/projectControllers');
+
+const {
+  handleprojectGradingPost,
+  handleProjectGradingEdit,
+  handleGetAllProjectGrading,
+  handleGetProjectGrading,
+  handleProjectGradingDelete
+} = require('../controllers/projectGrading/projectGradingControllers');
 
 const router = Router();
 
@@ -103,28 +107,76 @@ router.delete(
 
 // Events projects entries endpoints
 router.post(
-  '/:id/projects/submissions',
+  '/:id/projects',
   authenticate,
   EventValidator.validateID,
+  EventValidator.projectValidation,
   handleprojectEntriesPost
 );
 
 router.get(
-  '/:id/projects/submissions',
+  '/:id/projects',
   authenticate,
   EventValidator.validateID,
   handleGetAllProjectEntries
 );
 
-router.get('/projects/submissions/:id', authenticate, handleGetProjectEntry);
+router.get(
+  '/projects/:id',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleGetProjectEntry
+);
 
-router.put('/projects/submissions/:id', authenticate, handleProjectEntriesEdit);
+router.put(
+  '/projects/:id',
+  authenticate,
+  EventValidator.validateProjectID,
+  EventValidator.projectValidation,
+  handleProjectEntriesEdit
+);
 
 router.delete(
-  '/projects/submissions/:id',
+  '/projects/:id',
   authenticate,
   EventValidator.checkEventOwner,
+  EventValidator.validateProjectID,
   handleProjectEntriesDelete
+);
+
+// Project Grading
+
+router.post(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleprojectGradingPost
+);
+
+router.put(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleProjectGradingEdit
+);
+
+router.get(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleGetProjectGrading
+);
+router.get(
+  '/:id/projects/grading',
+  authenticate,
+  EventValidator.validateID,
+  handleGetAllProjectGrading
+);
+router.delete(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleProjectGradingDelete
 );
 
 module.exports = router;
