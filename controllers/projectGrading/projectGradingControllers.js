@@ -6,12 +6,12 @@ const requestHandler = require('../../utils/requestHandler');
 async function handleProjectGradingDelete(req, res) {
   const { id } = req.params;
   await db
-    .removeProject(id)
+    .removeGrading(id)
     .then(data => {
       return requestHandler.success(
         res,
         200,
-        'Project submission deleted successfully',
+        'Project grading deleted successfully',
         data
       );
     })

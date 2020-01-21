@@ -32,13 +32,13 @@ async function updateGrading(id, grade) {
 }
 async function removeGrading(id) {
   const deletedSubmission = await db('project_grading')
-    .where({ id })
+    .where({ project_id: id })
     .delete();
   return deletedSubmission;
 }
 
 module.exports = {
-  // Project entries models
+  // Project grading models
   addGrading,
   findGrading,
   findAllGradingsByEventId,

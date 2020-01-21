@@ -33,7 +33,8 @@ const {
   handleprojectGradingPost,
   handleProjectGradingEdit,
   handleGetAllProjectGrading,
-  handleGetProjectGrading
+  handleGetProjectGrading,
+  handleProjectGradingDelete
 } = require('../controllers/projectGrading/projectGradingControllers');
 
 const router = Router();
@@ -150,5 +151,10 @@ router.get(
   handleGetProjectGrading
 );
 router.get('/:id/projects/grading', authenticate, handleGetAllProjectGrading);
+router.delete(
+  '/projects/submissions/:id/grading',
+  authenticate,
+  handleProjectGradingDelete
+);
 
 module.exports = router;
