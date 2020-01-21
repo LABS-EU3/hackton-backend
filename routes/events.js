@@ -22,16 +22,17 @@ const {
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
 const {
-  handleprojectsReqPost,
-  handleprojectsReqEdit,
-  handleGetProjectReqById,
-  handlePRojectReqDelete,
   handleprojectEntriesPost,
   handleGetAllProjectEntries,
   handleGetProjectEntry,
   handleProjectEntriesEdit,
   handleProjectEntriesDelete
 } = require('../controllers/projects/projectControllers');
+
+const {
+  handleprojectGradingPost,
+  handleProjectGradingEdit
+} = require('../controllers/projectGrading/projectGradingControllers');
 
 const router = Router();
 
@@ -125,6 +126,20 @@ router.delete(
   authenticate,
   EventValidator.checkEventOwner,
   handleProjectEntriesDelete
+);
+
+// Project Grading
+
+router.post(
+  '/projects/submissions/:id/grading',
+  authenticate,
+  handleprojectGradingPost
+);
+
+router.put(
+  '/projects/submissions/:id/grading/',
+  authenticate,
+  handleProjectGradingEdit
 );
 
 module.exports = router;

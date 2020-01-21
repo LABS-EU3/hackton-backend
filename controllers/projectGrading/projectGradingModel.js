@@ -1,6 +1,6 @@
 const db = require('../../data/dbConfig');
 
-// project entries models
+// project grading models
 async function addGrading(grade) {
   const submittedGrading = await db('project_grading')
     .insert(grade)
@@ -23,12 +23,12 @@ async function findGrading(id) {
     .returning('*');
   return foundSubmission;
 }
-async function updateGrading(id, project) {
-  const updateSubmission = await db('project_grading')
-    .where({ id })
-    .update(project)
+async function updateGrading(id, grade) {
+  const updateGrade = await db('project_grading')
+    .where({ project_id: id })
+    .update(grade)
     .returning('*');
-  return updateSubmission;
+  return updateGrade;
 }
 async function removeGrading(id) {
   const deletedSubmission = await db('project_grading')
