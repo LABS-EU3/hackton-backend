@@ -110,6 +110,7 @@ router.post(
   '/:id/projects',
   authenticate,
   EventValidator.validateID,
+  EventValidator.projectValidation,
   handleprojectEntriesPost
 );
 
@@ -120,28 +121,61 @@ router.get(
   handleGetAllProjectEntries
 );
 
-router.get('/projects/:id', authenticate, handleGetProjectEntry);
+router.get(
+  '/projects/:id',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleGetProjectEntry
+);
 
-router.put('/projects/:id', authenticate, handleProjectEntriesEdit);
+router.put(
+  '/projects/:id',
+  authenticate,
+  EventValidator.validateProjectID,
+  EventValidator.projectValidation,
+  handleProjectEntriesEdit
+);
 
 router.delete(
   '/projects/:id',
   authenticate,
   EventValidator.checkEventOwner,
+  EventValidator.validateProjectID,
   handleProjectEntriesDelete
 );
 
 // Project Grading
 
-router.post('/projects/:id/grading', authenticate, handleprojectGradingPost);
+router.post(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleprojectGradingPost
+);
 
-router.put('/projects/:id/grading', authenticate, handleProjectGradingEdit);
+router.put(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleProjectGradingEdit
+);
 
-router.get('/projects/:id/grading', authenticate, handleGetProjectGrading);
-router.get('/:id/projects/grading', authenticate, handleGetAllProjectGrading);
+router.get(
+  '/projects/:id/grading',
+  authenticate,
+  EventValidator.validateProjectID,
+  handleGetProjectGrading
+);
+router.get(
+  '/:id/projects/grading',
+  authenticate,
+  EventValidator.validateID,
+  handleGetAllProjectGrading
+);
 router.delete(
   '/projects/:id/grading',
   authenticate,
+  EventValidator.validateProjectID,
   handleProjectGradingDelete
 );
 

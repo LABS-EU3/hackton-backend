@@ -5,6 +5,7 @@ const eventModel = require('../controllers/events/eventsModel');
 const eventTeam = require('../controllers/eventTeam/eventTeamModel');
 const userModel = require('../controllers/authUser/authModel');
 const participants = require('../controllers/eventParticipants/eventParticipantsModel');
+const projectModel = require('../controllers/projects/projectsModel');
 require('dotenv').config();
 
 /**
@@ -38,6 +39,35 @@ module.exports = class EventValidator {
             res,
             404,
             'This event id cannot be found,please provide a valid event id'
+          );
+        }
+        req.event = data;
+        return next();
+      })
+      .catch(error => {
+        return requestHandler.error(res, 500, `Server error ${error}`);
+      });
+  }
+
+  static async validateProjectID(req, res, next) {
+    // validates provided ID is a number
+    const { id } = req.params;
+    const check = checkItem({ id });
+
+    if (Object.keys(check).length > 0) {
+      return res.status(400).json({
+        statusCode: 400,
+        data: [check]
+      });
+    }
+    await projectModel
+      .findProject(id)
+      .then(data => {
+        if (data.length === 0) {
+          return requestHandler.error(
+            res,
+            404,
+            'This project id cannot be found,please provide a valid project id'
           );
         }
         req.event = data;
@@ -110,6 +140,30 @@ module.exports = class EventValidator {
       return requestHandler.error(res, 409, 'This user is already in the team');
     }
     req.team = data;
+    return next();
+  }
+
+  static async projectValidation(req, res, next) {
+    const { id } = req.params;
+    const { project_title, participant_or_team_name } = req.body;
+    if (!id) {
+      const exists = await projectModel.findProjectTitle(project_title);
+      if (exists.length !== 0) {
+        return requestHandler.error(
+          res,
+          409,
+          'This event title already exists in the database, please pick a new event title!'
+        );
+      }
+    }
+    const check = checkItem({
+      project_title,
+      participant_or_team_name
+    });
+
+    if (Object.keys(check).length > 0) {
+      return requestHandler.error(res, 400, check);
+    }
     return next();
   }
 

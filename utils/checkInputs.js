@@ -33,7 +33,7 @@ const checkInput = inputValue => {
         }
       }
 
-      if (key === 'id' || key === 'category_id') {
+      if (key === 'id' || key === 'category_id' || key === 'project_id') {
         if (!validator.isNumeric(String(inputValue[key]))) {
           errors[
             key
