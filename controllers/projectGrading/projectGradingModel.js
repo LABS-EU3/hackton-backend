@@ -8,17 +8,17 @@ async function addGrading(grade) {
   return submittedGrading;
 }
 async function findAllGradingsByEventId(id) {
-  const foundAllSubmissions = await db('project_grading')
+  const foundAllGrades = await db('project_grading')
     .where({
       event_id: id
     })
     .returning('*');
-  return foundAllSubmissions;
+  return foundAllGrades;
 }
 async function findGrading(id) {
   const foundSubmission = await db('project_grading')
     .where({
-      id
+      project_id: id
     })
     .returning('*');
   return foundSubmission;

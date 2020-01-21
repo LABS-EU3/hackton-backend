@@ -81,12 +81,12 @@ async function handleprojectGradingPost(req, res) {
 async function handleGetAllProjectGrading(req, res) {
   const { id } = req.params;
   await db
-    .findAllProjectsByEventId(id)
+    .findAllGradingsByEventId(id)
     .then(data => {
       return requestHandler.success(
         res,
         200,
-        'All Project submissions retrieved successfully',
+        'All project grades retrieved successfully',
         data
       );
     })
@@ -98,12 +98,12 @@ async function handleGetAllProjectGrading(req, res) {
 async function handleGetProjectGrading(req, res) {
   const { id } = req.params;
   await db
-    .findProject(id)
+    .findGrading(id)
     .then(data => {
       return requestHandler.success(
         res,
         200,
-        'Project submission retrieved successfully',
+        'Project grade retrieved successfully',
         data
       );
     })

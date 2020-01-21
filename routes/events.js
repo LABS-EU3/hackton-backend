@@ -31,7 +31,9 @@ const {
 
 const {
   handleprojectGradingPost,
-  handleProjectGradingEdit
+  handleProjectGradingEdit,
+  handleGetAllProjectGrading,
+  handleGetProjectGrading
 } = require('../controllers/projectGrading/projectGradingControllers');
 
 const router = Router();
@@ -137,9 +139,16 @@ router.post(
 );
 
 router.put(
-  '/projects/submissions/:id/grading/',
+  '/projects/submissions/:id/grading',
   authenticate,
   handleProjectGradingEdit
 );
+
+router.get(
+  '/projects/submissions/:id/grading',
+  authenticate,
+  handleGetProjectGrading
+);
+router.get('/:id/projects/grading', authenticate, handleGetAllProjectGrading);
 
 module.exports = router;
