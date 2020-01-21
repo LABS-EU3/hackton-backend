@@ -13,7 +13,6 @@ exports.up = function(knex) {
       .onDelete('CASCADE');
     table
       .integer('user_id')
-      .unique()
       .unsigned()
       .notNullable();
     table

@@ -17,8 +17,8 @@ exports.up = function(knex) {
 
     table
       .integer('judge_id')
-      .references('user_id')
-      .inTable('event_team')
+      .references('id')
+      .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
 
