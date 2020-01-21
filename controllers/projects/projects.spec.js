@@ -44,7 +44,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json');
     expect(response6.status).toBe(201);
     const response7 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .post(`/api/events/${response3.body.body.event_id}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission1);
@@ -74,7 +74,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json');
     expect(response6.status).toBe(201);
     const response7 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .post(`/api/events/${response3.body.body.event_id}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission2);
@@ -87,7 +87,7 @@ describe('user can add an event and  post event project requirements, event part
       return projectId;
     });
     const response9 = await request(server)
-      .put(`/api/events/projects/submissions/${projectId}`)
+      .put(`/api/events/projects/${projectId}`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send({
@@ -114,14 +114,14 @@ describe('user can add an event and  post event project requirements, event part
         ...mockEvents.event1,
         category_id: categoryId
       });
-    expect(response3.status).toBe(201); 
+    expect(response3.status).toBe(201);
     const response6 = await request(server)
       .post(`/api/events/${response3.body.body.event_id}/participants`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response6.status).toBe(201);
     const response7 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .post(`/api/events/${response3.body.body.event_id}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission2);
@@ -134,7 +134,7 @@ describe('user can add an event and  post event project requirements, event part
       return projectId2;
     });
     const response10 = await request(server)
-      .get(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .get(`/api/events/${response3.body.body.event_id}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response10.status).toBe(200);
@@ -142,7 +142,7 @@ describe('user can add an event and  post event project requirements, event part
       'All Project submissions retrieved successfully'
     );
     const response9 = await request(server)
-      .get(`/api/events/projects/submissions/${projectId2}`)
+      .get(`/api/events/projects/${projectId2}`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response9.status).toBe(200);
@@ -175,7 +175,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json');
     expect(response6.status).toBe(201);
     const response7 = await request(server)
-      .post(`/api/events/${response3.body.body.event_id}/projects/submissions`)
+      .post(`/api/events/${response3.body.body.event_id}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission2);
@@ -188,7 +188,7 @@ describe('user can add an event and  post event project requirements, event part
       return projectId;
     });
     const response9 = await request(server)
-      .delete(`/api/events/projects/submissions/${projectId}`)
+      .delete(`/api/events/projects/${projectId}`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json');
     expect(response9.status).toBe(200);

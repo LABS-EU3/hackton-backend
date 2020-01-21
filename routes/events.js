@@ -107,25 +107,25 @@ router.delete(
 
 // Events projects entries endpoints
 router.post(
-  '/:id/projects/submissions',
+  '/:id/projects',
   authenticate,
   EventValidator.validateID,
   handleprojectEntriesPost
 );
 
 router.get(
-  '/:id/projects/submissions',
+  '/:id/projects',
   authenticate,
   EventValidator.validateID,
   handleGetAllProjectEntries
 );
 
-router.get('/projects/submissions/:id', authenticate, handleGetProjectEntry);
+router.get('/projects/:id', authenticate, handleGetProjectEntry);
 
-router.put('/projects/submissions/:id', authenticate, handleProjectEntriesEdit);
+router.put('/projects/:id', authenticate, handleProjectEntriesEdit);
 
 router.delete(
-  '/projects/submissions/:id',
+  '/projects/:id',
   authenticate,
   EventValidator.checkEventOwner,
   handleProjectEntriesDelete
@@ -133,26 +133,14 @@ router.delete(
 
 // Project Grading
 
-router.post(
-  '/projects/submissions/:id/grading',
-  authenticate,
-  handleprojectGradingPost
-);
+router.post('/projects/:id/grading', authenticate, handleprojectGradingPost);
 
-router.put(
-  '/projects/submissions/:id/grading',
-  authenticate,
-  handleProjectGradingEdit
-);
+router.put('/projects/:id/grading', authenticate, handleProjectGradingEdit);
 
-router.get(
-  '/projects/submissions/:id/grading',
-  authenticate,
-  handleGetProjectGrading
-);
+router.get('/projects/:id/grading', authenticate, handleGetProjectGrading);
 router.get('/:id/projects/grading', authenticate, handleGetAllProjectGrading);
 router.delete(
-  '/projects/submissions/:id/grading',
+  '/projects/:id/grading',
   authenticate,
   handleProjectGradingDelete
 );
