@@ -24,10 +24,7 @@ module.exports = class UserValidator {
       password
     });
     if (Object.keys(check).length > 0) {
-      return res.status(400).json({
-        statusCode: 400,
-        check
-      });
+      return requestHandler.error(res, 400, check);
     }
     const userEmail = await userModel.getUserBy({ email });
     let existingUser;
@@ -60,10 +57,7 @@ module.exports = class UserValidator {
         password
       });
       if (Object.keys(check).length > 0) {
-        return res.status(400).json({
-          statusCode: 400,
-          check
-        });
+        return requestHandler.error(res, 400, check);
       }
       const returnUser = await userModel.getUserBy({ email });
 
@@ -82,6 +76,24 @@ module.exports = class UserValidator {
       return requestHandler.error(res, 400, 'wrong credentials');
     } catch (err) {
       return err;
+    }
+  }
+
+  static async userProfile(req, res, next) {
+    try {
+      const { email, username, fullname, bio } = req.body;
+      const check = checkItem({
+        email,
+        username,
+        fullname,
+        bio
+      });
+      if (Object.keys(check).length > 0) {
+        return requestHandler.error(res, 400, check);
+      }
+      next();
+    } catch (error) {
+      return error;
     }
   }
 };

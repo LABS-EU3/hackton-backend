@@ -12,7 +12,7 @@ const checkInput = inputValue => {
       errors[key] = `${key} field can not be blank`;
     } else {
       /*
-       *signup input Validation
+       *input Validation
        */
       if (key === 'event_title') {
         if (!validator.isLength(inputValue[key], { min: 10 })) {
@@ -38,6 +38,18 @@ const checkInput = inputValue => {
           errors[
             key
           ] = `Please provide a valid ${key},an ${key} can only be a number`;
+        }
+      }
+
+      if (key === 'username' || key === 'bio') {
+        if (!validator.isLength(inputValue[key], { min: 3 })) {
+          errors[key] = `${key} must be at least 3 characters`;
+        }
+      }
+
+      if (key === 'fullname') {
+        if (inputValue[key].search(/[^A-Za-z\s]/) !== -1) {
+          errors[key] = `${key} can only be alphabetical`;
         }
       }
 

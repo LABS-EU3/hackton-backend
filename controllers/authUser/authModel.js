@@ -44,7 +44,11 @@ async function createOrFindUser(newUser) {
     return user;
   }
 }
-
+/**
+ * User Profile Models
+ *
+ * @returns
+ */
 async function getUsers() {
   const users = await db('users as u')
     .select('u.id', 'u.email', 'u.username', 'u.fullname')
@@ -58,6 +62,14 @@ async function getSingleUser(filter) {
     .first();
   return singleUser;
 }
+const updateUser = async (changes, id) => {
+  const user = await db('users')
+    .where({ id })
+    .update(changes)
+    .returning(['fullname', 'username', 'email', 'bio'])
+    .then(userUpdate => userUpdate[0]);
+  return user;
+};
 
 module.exports = {
   getUserId,
@@ -66,5 +78,6 @@ module.exports = {
   findBy,
   createOrFindUser,
   getUsers,
-  getSingleUser
+  getSingleUser,
+  updateUser
 };
