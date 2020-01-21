@@ -18,8 +18,16 @@ module.exports = {
     product_fit: 1,
     extensibility: 1,
     presentation: 1,
-    event_id: 2,
     judge_comments: 'Awesome job on this project'
+  },
+  projectGrade2: {
+    product_design: 5,
+    functionality: 5,
+    innovation: 5,
+    product_fit: 5,
+    extensibility: 5,
+    presentation: 5,
+    judge_comments: 'You did really well'
   },
   submission2: {
     video_url:
