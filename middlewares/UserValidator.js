@@ -24,7 +24,10 @@ module.exports = class UserValidator {
       password
     });
     if (Object.keys(check).length > 0) {
-      return requestHandler.error(res, 400, check);
+      return res.status(400).json({
+        statusCode: 400,
+        check
+      });
     }
     const userEmail = await userModel.getUserBy({ email });
     let existingUser;
@@ -57,7 +60,10 @@ module.exports = class UserValidator {
         password
       });
       if (Object.keys(check).length > 0) {
-        return requestHandler.error(res, 400, check);
+        return res.status(400).json({
+          statusCode: 400,
+          check
+        });
       }
       const returnUser = await userModel.getUserBy({ email });
 
