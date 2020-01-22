@@ -27,11 +27,9 @@ async function handleProjectGradingEdit(req, res) {
   const { id } = req.params;
 
   let eventRubrics;
-  console.log('event id', req.body.event_id);
   await eventsDb
     .findById(req.body.event_id)
     .then(data => {
-      console.log('events data', data);
       data.map(items => {
         eventRubrics = items.rubrics;
         return eventRubrics;
@@ -41,8 +39,7 @@ async function handleProjectGradingEdit(req, res) {
       res.status(500).json({ message: error.message });
     });
   let totalRating = [];
-  console.log('event rubrics', eventRubrics);
-  
+
   eventRubrics.map(rubricItem => {
     if (rubricItem === 'product_design') {
       totalRating = totalRating.concat(req.body.product_design);
@@ -72,7 +69,6 @@ async function handleProjectGradingEdit(req, res) {
     return finalAvgRubrics;
   }
   average(totalRating);
-  console.log('total rating', finalAvgRubrics);
 
   const editedProjectGraging = {
     product_design: req.body.product_design,
@@ -106,11 +102,9 @@ async function handleprojectGradingPost(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
   let eventRubrics;
-  console.log('event id', req.body.event_id);
   await eventsDb
     .findById(req.body.event_id)
     .then(data => {
-      console.log('events data', data);
       data.map(items => {
         eventRubrics = items.rubrics;
         return eventRubrics;
@@ -120,7 +114,6 @@ async function handleprojectGradingPost(req, res) {
       res.status(500).json({ message: error.message });
     });
   let totalRating = [];
-  console.log('event rubrics', eventRubrics);
   eventRubrics.map(rubricItem => {
     if (rubricItem === 'product_design') {
       totalRating = totalRating.concat(req.body.product_design);
@@ -150,7 +143,6 @@ async function handleprojectGradingPost(req, res) {
     return finalAvgRubrics;
   }
   average(totalRating);
-  console.log('total rating', finalAvgRubrics);
 
   const projectGraging = {
     product_design: req.body.product_design,

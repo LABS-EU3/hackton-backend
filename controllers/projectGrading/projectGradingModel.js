@@ -16,11 +16,26 @@ async function findAllGradingsByEventId(id) {
   return foundAllGrades;
 }
 async function findGrading(id) {
-  const foundSubmission = await db('project_grading')
-    .where({
-      project_id: id
-    })
-    .returning('*');
+  const foundSubmission = await db('project_grading as g')
+    .join('project_entries as p', 'p.id', 'g.project_id')
+    .join('events as e', 'e.id', 'g.event_id')
+    .join('users as u', 'u.id', 'g.judge_id')
+    .select(
+      'g.project_id',
+      'g.event_id',
+      'g.judge_id',
+      'g.product_design',
+      'g.functionality',
+      'g.innovation',
+      'g.product_fit',
+      'g.extensibility',
+      'g.presentation',
+      'g.average_rating',
+      'p.project_writeups',
+      'p.video_url',
+      'p.git_url'
+    )
+    .where({ project_id: id });
   return foundSubmission;
 }
 async function updateGrading(id, grade) {
