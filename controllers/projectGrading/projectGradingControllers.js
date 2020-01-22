@@ -1,4 +1,6 @@
+/* eslint-disable no-else-return */
 const db = require('./projectGradingModel');
+const eventsDb = require('../events/eventsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project grading
@@ -23,6 +25,55 @@ async function handleProjectGradingDelete(req, res) {
 async function handleProjectGradingEdit(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
+
+  let eventRubrics;
+  console.log('event id', req.body.event_id);
+  await eventsDb
+    .findById(req.body.event_id)
+    .then(data => {
+      console.log('events data', data);
+      data.map(items => {
+        eventRubrics = items.rubrics;
+        return eventRubrics;
+      });
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+  let totalRating = [];
+  console.log('event rubrics', eventRubrics);
+  
+  eventRubrics.map(rubricItem => {
+    if (rubricItem === 'product_design') {
+      totalRating = totalRating.concat(req.body.product_design);
+      return totalRating;
+    } else if (rubricItem === 'functionality') {
+      totalRating = totalRating.concat(req.body.functionality);
+      return totalRating;
+    } else if (rubricItem === 'innovation') {
+      totalRating = totalRating.concat(req.body.innovation);
+      return totalRating;
+    } else if (rubricItem === 'product_fit') {
+      totalRating = totalRating.concat(req.body.product_fit);
+      return totalRating;
+    } else if (rubricItem === 'extensibility') {
+      totalRating = totalRating.concat(req.body.extensibility);
+      return totalRating;
+    } else if (rubricItem === 'presentation') {
+      totalRating = totalRating.concat(req.body.presentation);
+      return totalRating;
+    }
+  });
+  let avgRubrics = 0;
+  let finalAvgRubrics = 0;
+  function average(nums) {
+    avgRubrics = nums.reduce((a, b) => a + b);
+    finalAvgRubrics = (avgRubrics / nums.length).toFixed(1);
+    return finalAvgRubrics;
+  }
+  average(totalRating);
+  console.log('total rating', finalAvgRubrics);
+
   const editedProjectGraging = {
     product_design: req.body.product_design,
     functionality: req.body.functionality,
@@ -33,7 +84,8 @@ async function handleProjectGradingEdit(req, res) {
     presentation: req.body.presentation,
     judge_id: userId,
     event_id: req.body.event_id,
-    judge_comments: req.body.judge_comments
+    judge_comments: req.body.judge_comments,
+    average_rating: finalAvgRubrics
   };
   await db
     .updateGrading(id, editedProjectGraging)
@@ -53,6 +105,53 @@ async function handleProjectGradingEdit(req, res) {
 async function handleprojectGradingPost(req, res) {
   const { userId } = req.decodedToken;
   const { id } = req.params;
+  let eventRubrics;
+  console.log('event id', req.body.event_id);
+  await eventsDb
+    .findById(req.body.event_id)
+    .then(data => {
+      console.log('events data', data);
+      data.map(items => {
+        eventRubrics = items.rubrics;
+        return eventRubrics;
+      });
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+  let totalRating = [];
+  console.log('event rubrics', eventRubrics);
+  eventRubrics.map(rubricItem => {
+    if (rubricItem === 'product_design') {
+      totalRating = totalRating.concat(req.body.product_design);
+      return totalRating;
+    } else if (rubricItem === 'functionality') {
+      totalRating = totalRating.concat(req.body.functionality);
+      return totalRating;
+    } else if (rubricItem === 'innovation') {
+      totalRating = totalRating.concat(req.body.innovation);
+      return totalRating;
+    } else if (rubricItem === 'product_fit') {
+      totalRating = totalRating.concat(req.body.product_fit);
+      return totalRating;
+    } else if (rubricItem === 'extensibility') {
+      totalRating = totalRating.concat(req.body.extensibility);
+      return totalRating;
+    } else if (rubricItem === 'presentation') {
+      totalRating = totalRating.concat(req.body.presentation);
+      return totalRating;
+    }
+  });
+  let avgRubrics = 0;
+  let finalAvgRubrics = 0;
+  function average(nums) {
+    avgRubrics = nums.reduce((a, b) => a + b);
+    finalAvgRubrics = (avgRubrics / nums.length).toFixed(1);
+    return finalAvgRubrics;
+  }
+  average(totalRating);
+  console.log('total rating', finalAvgRubrics);
+
   const projectGraging = {
     product_design: req.body.product_design,
     functionality: req.body.functionality,
@@ -63,7 +162,8 @@ async function handleprojectGradingPost(req, res) {
     presentation: req.body.presentation,
     judge_id: userId,
     event_id: req.body.event_id,
-    judge_comments: req.body.judge_comments
+    judge_comments: req.body.judge_comments,
+    average_rating: finalAvgRubrics
   };
   await db
     .addGrading(projectGraging)
