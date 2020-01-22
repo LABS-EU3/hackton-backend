@@ -3,11 +3,11 @@ exports.up = function(knex) {
     table.increments();
     table.unique(['project_id', 'judge_id']);
     table
-      .integer('event_id')
+      .integer('project_event_id')
       .unsigned()
       .notNullable();
     table
-      .foreign('event_id')
+      .foreign('project_event_id')
       .references('events.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');

@@ -75,7 +75,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
       .set('Content-Type', 'application/json')
       .send({
         ...mockGrading.projectGrade1,
-        event_id: response3.body.body.event_id
+        project_event_id: response3.body.body.event_id
       });
     expect(response13.status).toBe(201);
   });
@@ -132,7 +132,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
       .set('Content-Type', 'application/json')
       .send({
         ...mockGrading.projectGrade1,
-        event_id: response3.body.body.event_id
+        project_event_id: response3.body.body.event_id
       });
     expect(response13.status).toBe(201);
     let projectGradeId;
@@ -148,7 +148,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
       .set('Content-Type', 'application/json')
       .send({
         ...mockGrading.projectGrade2,
-        event_id: response3.body.body.event_id
+        project_event_id: response3.body.body.event_id
       });
     expect(response14.status).toBe(201);
   });
@@ -205,7 +205,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
       .set('Content-Type', 'application/json')
       .send({
         ...mockGrading.projectGrade1,
-        event_id: response3.body.body.event_id
+        project_event_id: response3.body.body.event_id
       });
     expect(response13.status).toBe(201);
     let projectGradeId;
@@ -274,7 +274,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
       .set('Content-Type', 'application/json')
       .send({
         ...mockGrading.projectGrade1,
-        event_id: response3.body.body.event_id
+        project_event_id: response3.body.body.event_id
       });
     expect(response13.status).toBe(201);
     let projectGradeId;

@@ -28,7 +28,7 @@ async function handleProjectGradingEdit(req, res) {
 
   let eventRubrics;
   await eventsDb
-    .findById(req.body.event_id)
+    .findById(req.body.project_event_id)
     .then(data => {
       data.map(items => {
         eventRubrics = items.rubrics;
@@ -79,7 +79,7 @@ async function handleProjectGradingEdit(req, res) {
     extensibility: req.body.extensibility,
     presentation: req.body.presentation,
     judge_id: userId,
-    event_id: req.body.event_id,
+    project_event_id: req.body.project_event_id,
     judge_comments: req.body.judge_comments,
     average_rating: finalAvgRubrics
   };
@@ -103,7 +103,7 @@ async function handleprojectGradingPost(req, res) {
   const { id } = req.params;
   let eventRubrics;
   await eventsDb
-    .findById(req.body.event_id)
+    .findById(req.body.project_event_id)
     .then(data => {
       data.map(items => {
         eventRubrics = items.rubrics;
@@ -153,7 +153,7 @@ async function handleprojectGradingPost(req, res) {
     extensibility: req.body.extensibility,
     presentation: req.body.presentation,
     judge_id: userId,
-    event_id: req.body.event_id,
+    project_event_id: req.body.project_event_id,
     judge_comments: req.body.judge_comments,
     average_rating: finalAvgRubrics
   };
