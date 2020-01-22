@@ -30,8 +30,8 @@ async function handleProjectGradingEdit(req, res) {
   await eventsDb
     .findById(req.body.project_event_id)
     .then(data => {
-      data.map(async items => {
-        eventRubrics = await items.rubrics;
+      data.map(items => {
+        eventRubrics = items.rubrics;
         return eventRubrics;
       });
     })
@@ -40,7 +40,7 @@ async function handleProjectGradingEdit(req, res) {
     });
   let totalRating = [];
 
-  eventRubrics.map(async rubricItem => {
+  eventRubrics.map(rubricItem => {
     if (rubricItem === 'product_design') {
       totalRating = totalRating.concat(req.body.product_design);
       return totalRating;
@@ -63,8 +63,8 @@ async function handleProjectGradingEdit(req, res) {
   });
   let avgRubrics = 0;
   let finalAvgRubrics = 0;
-  async function average(nums) {
-    avgRubrics = await nums.reduce((a, b) => a + b);
+  function average(nums) {
+    avgRubrics = nums.reduce((a, b) => a + b);
     finalAvgRubrics = (avgRubrics / nums.length).toFixed(1);
     return finalAvgRubrics;
   }
@@ -105,8 +105,8 @@ async function handleprojectGradingPost(req, res) {
   await eventsDb
     .findById(req.body.project_event_id)
     .then(data => {
-      data.map(async items => {
-        eventRubrics = await items.rubrics;
+      data.map(items => {
+        eventRubrics = items.rubrics;
         return eventRubrics;
       });
     })
@@ -114,7 +114,7 @@ async function handleprojectGradingPost(req, res) {
       res.status(500).json({ message: error.message });
     });
   let totalRating = [];
-  eventRubrics.map(async rubricItem => {
+  eventRubrics.map(rubricItem => {
     if (rubricItem === 'product_design') {
       totalRating = totalRating.concat(req.body.product_design);
       return totalRating;
@@ -137,8 +137,8 @@ async function handleprojectGradingPost(req, res) {
   });
   let avgRubrics = 0;
   let finalAvgRubrics = 0;
-  async function average(nums) {
-    avgRubrics = await nums.reduce((a, b) => a + b);
+  function average(nums) {
+    avgRubrics = nums.reduce((a, b) => a + b);
     finalAvgRubrics = (avgRubrics / nums.length).toFixed(1);
     return finalAvgRubrics;
   }
