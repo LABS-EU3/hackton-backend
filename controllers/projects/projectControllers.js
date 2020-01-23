@@ -85,11 +85,11 @@ async function handleGetAllProjectEntries(req, res) {
     const processedData = async (submissions, scores) => {
       // const sortData = [];
       await submissions.map(submit => {
-        submit.totalScore = 0;
+        submit.average_rating = 0;
         return scores.map(mark => {
           if (submit.event_id === mark.project_event_id) {
             console.log(submit.event_id, '==all data  =', mark.average_rating);
-            submit.totalScore += mark.average_rating;
+            submit.average_rating += mark.average_rating / scores.length;
           }
         });
       });
