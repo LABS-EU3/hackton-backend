@@ -80,16 +80,22 @@ async function handleGetAllProjectEntries(req, res) {
   try {
     const allSubmissions = await db.findAllProjectsByEventId(id);
     const projectGrades = await grades.findAllGradingsByEventId(id);
-
-    // console.log(allSubmissions, '==all data  =', projectGrades);
-    const processedData = async (submissions, scores) => {
-      // const sortData = [];
+/**
+ * Fubction to calculate total score for each project
+ *
+ * @param {*} submissions
+ * @param {*} scores
+ * @returns
+ */
+const processedData = async (submissions, scores) => {
       await submissions.map(submit => {
         submit.average_rating = 0;
         return scores.map(mark => {
-          if (submit.event_id === mark.project_event_id) {
-            console.log(submit.event_id, '==all data  =', mark.average_rating);
-            submit.average_rating += mark.average_rating / scores.length;
+          if (
+            submit.event_id === mark.project_event_id &&
+            submit.id === mark.project_id
+          ) {
+            submit.average_rating += mark.average_rating / submissions.length;
           }
         });
       });
@@ -105,19 +111,6 @@ async function handleGetAllProjectEntries(req, res) {
   } catch (error) {
     return requestHandler.error(res, 500, ` server error ${error.message}`);
   }
-  // await db
-  //   .findAllProjectsByEventId(id)
-  //   .then(data => {
-  //     return requestHandler.success(
-  //       res,
-  //       200,
-  //       'All Project submissions retrieved successfully',
-  //       data
-  //     );
-  //   })
-  //   .catch(error => {
-  //     return requestHandler.error(res, 500, ` server error ${error.message}`);
-  //   });
 }
 
 async function handleGetProjectEntry(req, res) {
