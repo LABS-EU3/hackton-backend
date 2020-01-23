@@ -1,5 +1,6 @@
 const db = require('./projectsModel');
 const grades = require('../projectGrading/projectGradingModel');
+const teamDb = require('../eventTeam/eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements
@@ -80,22 +81,32 @@ async function handleGetAllProjectEntries(req, res) {
   try {
     const allSubmissions = await db.findAllProjectsByEventId(id);
     const projectGrades = await grades.findAllGradingsByEventId(id);
-/**
- * Fubction to calculate total score for each project
- *
- * @param {*} submissions
- * @param {*} scores
- * @returns
- */
-const processedData = async (submissions, scores) => {
+    const eventTeam = await teamDb.getTeam(id);
+
+    const eventJudges = await eventTeam.filter(
+      mate => mate.role_type === 'judge'
+    );
+    /**
+     * Fubction to calculate total score for each project
+     *
+     * @param {*} submissions
+     * @param {*} scores
+     * @returns
+     */
+    const processedData = async (submissions, scores) => {
       await submissions.map(submit => {
         submit.average_rating = 0;
+        submit.acted_judges = 0;
+        submit.number_of_judges = eventJudges.length;
         return scores.map(mark => {
           if (
             submit.event_id === mark.project_event_id &&
-            submit.id === mark.project_id
+            submit.id === mark.project_id &&
+            mark.judge_id
           ) {
-            submit.average_rating += mark.average_rating / submissions.length;
+            submit.acted_judges += 1;
+            submit.average_rating += mark.average_rating;
+            submit.average_rating /= submit.acted_judges;
           }
         });
       });
