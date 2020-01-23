@@ -1,4 +1,5 @@
 const db = require('./projectsModel');
+const grades = require('../projectGrading/projectGradingModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements
@@ -76,19 +77,47 @@ async function handleprojectEntriesPost(req, res) {
 
 async function handleGetAllProjectEntries(req, res) {
   const { id } = req.params;
-  await db
-    .findAllProjectsByEventId(id)
-    .then(data => {
-      return requestHandler.success(
-        res,
-        200,
-        'All Project submissions retrieved successfully',
-        data
-      );
-    })
-    .catch(error => {
-      return requestHandler.error(res, 500, ` server error ${error.message}`);
-    });
+  try {
+    const allSubmissions = await db.findAllProjectsByEventId(id);
+    const projectGrades = await grades.findAllGradingsByEventId(id);
+
+    // console.log(allSubmissions, '==all data  =', projectGrades);
+    const processedData = async (submissions, scores) => {
+      // const sortData = [];
+      await submissions.map(submit => {
+        submit.average_rating = 0;
+        return scores.map(mark => {
+          if (submit.event_id === mark.project_event_id) {
+            console.log(submit.event_id, '==all data  =', mark.average_rating);
+            submit.average_rating += mark.average_rating / scores.length;
+          }
+        });
+      });
+      return submissions;
+    };
+    const allProjectScores = await processedData(allSubmissions, projectGrades);
+    return requestHandler.success(
+      res,
+      200,
+      'All Project submissions retrieved successfully',
+      allProjectScores
+    );
+  } catch (error) {
+    return requestHandler.error(res, 500, ` server error ${error.message}`);
+  }
+  // await db
+  //   .findAllProjectsByEventId(id)
+  //   .then(data => {
+  //     return requestHandler.success(
+  //       res,
+  //       200,
+  //       'All Project submissions retrieved successfully',
+  //       data
+  //     );
+  //   })
+  //   .catch(error => {
+  //     return requestHandler.error(res, 500, ` server error ${error.message}`);
+  //   });
 }
 
 async function handleGetProjectEntry(req, res) {
