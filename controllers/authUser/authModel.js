@@ -51,13 +51,13 @@ async function createOrFindUser(newUser) {
  */
 async function getUsers() {
   const users = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
     .returning('*');
   return users;
 }
 async function getSingleUser(filter) {
   const singleUser = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
     .where(filter)
     .first();
   return singleUser;
