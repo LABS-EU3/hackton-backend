@@ -89,7 +89,7 @@ describe('user can add an event and  post event project requirements, event part
       .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
     expect(response7.body.message).toEqual('Project submitted successfully');
-    // let projectId2;
+
     const projectArray2 = response7.body.body;
     projectArray2.map(project => {
       projectId2 = project.id;
@@ -120,7 +120,7 @@ describe('user can add an event and  post event project requirements, event part
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
-    // let projectId;
+
     const projectArray = response7.body.body;
     projectArray.map(project => {
       projectId = project.id;

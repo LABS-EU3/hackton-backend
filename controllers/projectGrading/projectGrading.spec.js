@@ -101,7 +101,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         project_event_id: eventId
       });
     expect(response13.status).toBe(201);
-    // let projectGradeId;
+
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
       projectGradeId = project.project_id;
@@ -128,7 +128,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         project_event_id: eventId
       });
     expect(response13.status).toBe(201);
-    // let projectGradeId;
+
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
       projectGradeId = project.project_id;
@@ -151,7 +151,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         project_event_id: eventId
       });
     expect(response13.status).toBe(201);
-    // let projectGradeId;
+
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
       projectGradeId = project.project_id;
