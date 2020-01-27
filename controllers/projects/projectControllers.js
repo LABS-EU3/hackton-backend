@@ -1,6 +1,6 @@
-const db = require('./projectsModel');
-const grades = require('../projectGrading/projectGradingModel');
-const teamDb = require('../eventTeam/eventTeamModel');
+const db = require('../../models/projectsModel');
+const grades = require('../../models/projectGradingModel');
+const teamDb = require('../../models/eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements
@@ -87,32 +87,38 @@ async function handleGetAllProjectEntries(req, res) {
       mate => mate.role_type === 'judge'
     );
     /**
-     * Fubction to calculate total score for each project
+     * Function to calculate total score for each project
      *
      * @param {*} submissions
      * @param {*} scores
      * @returns
      */
-    const processedData = async (submissions, scores) => {
+    const processedData = async (submissions, scores, judges) => {
       await submissions.map(submit => {
-        submit.average_rating = 0;
-        submit.acted_judges = 0;
-        submit.number_of_judges = eventJudges.length;
+        const submittedProject = submit;
+        submittedProject.average_rating = 0;
+        submittedProject.acted_judges = 0;
+        submittedProject.number_of_judges = judges.length;
         return scores.map(mark => {
           if (
-            submit.event_id === mark.project_event_id &&
-            submit.id === mark.project_id &&
+            submittedProject.event_id === mark.project_event_id &&
+            submittedProject.id === mark.project_id &&
             mark.judge_id
           ) {
-            submit.acted_judges += 1;
-            submit.average_rating += mark.average_rating;
-            submit.average_rating /= submit.acted_judges;
+            submittedProject.acted_judges += 1;
+            submittedProject.average_rating += mark.average_rating;
+            submittedProject.average_rating /= submittedProject.acted_judges;
           }
+          return submittedProject;
         });
       });
       return submissions;
     };
-    const allProjectScores = await processedData(allSubmissions, projectGrades);
+    const allProjectScores = await processedData(
+      allSubmissions,
+      projectGrades,
+      eventJudges
+    );
     return requestHandler.success(
       res,
       200,

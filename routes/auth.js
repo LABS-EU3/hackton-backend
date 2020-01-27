@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
-const db = require('../controllers/authUser/authModel');
+const db = require('../models/userModel');
 const UserValidator = require('../middlewares/UserValidator');
 const {
   register,

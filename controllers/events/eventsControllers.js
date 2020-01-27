@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 const moment = require('moment');
-const db = require('./eventsModel');
+const db = require('../../models/eventsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetByUSerId(req, res) {

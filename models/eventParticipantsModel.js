@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 async function getByEventId(id) {
   const eventSelected = await db('event_participants as e')

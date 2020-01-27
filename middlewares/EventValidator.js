@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
-const eventModel = require('../controllers/events/eventsModel');
-const eventTeam = require('../controllers/eventTeam/eventTeamModel');
-const userModel = require('../controllers/authUser/authModel');
-const participants = require('../controllers/eventParticipants/eventParticipantsModel');
-const projectModel = require('../controllers/projects/projectsModel');
+const eventModel = require('../models/eventsModel');
+const eventTeam = require('../models/eventTeamModel');
+const userModel = require('../models/userModel');
+const participants = require('../models/eventParticipantsModel');
+const projectModel = require('../models/projectsModel');
 require('dotenv').config();
 
 /**
@@ -175,7 +175,7 @@ module.exports = class EventValidator {
     if (Object.keys(checkEvent).length === 0) {
       return requestHandler.error(
         res,
-        400,
+        403,
         'You are not authorized to do this'
       );
     }

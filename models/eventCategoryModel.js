@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 module.exports = {
   add,

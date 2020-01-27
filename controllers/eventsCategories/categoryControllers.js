@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-use-before-define */
-const db = require('./eventCategoryModel');
+const db = require('../../models/eventCategoryModel');
 const requestHandler = require('../../utils/requestHandler');
 
 function handleCategoriesDelete(req, res) {
