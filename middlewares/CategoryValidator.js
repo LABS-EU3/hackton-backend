@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
-const categoriesModel = require('../controllers/eventsCategories/eventCategoryModel');
+const categoriesModel = require('../models/eventCategoryModel');
 require('dotenv').config();
 
 /**

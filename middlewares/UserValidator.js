@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
-const userModel = require('../controllers/authUser/authModel');
+const userModel = require('../models/userModel');
 require('dotenv').config();
 
 /**
@@ -82,6 +82,24 @@ module.exports = class UserValidator {
       return requestHandler.error(res, 400, 'wrong credentials');
     } catch (err) {
       return err;
+    }
+  }
+
+  static async userProfile(req, res, next) {
+    try {
+      const { email, username, fullname, bio } = req.body;
+      const check = checkItem({
+        email,
+        username,
+        fullname,
+        bio
+      });
+      if (Object.keys(check).length > 0) {
+        return requestHandler.error(res, 400, check);
+      }
+      next();
+    } catch (error) {
+      return error;
     }
   }
 };

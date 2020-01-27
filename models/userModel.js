@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 async function getUserId(id) {
   const userId = await db('users')
@@ -44,11 +44,40 @@ async function createOrFindUser(newUser) {
     return user;
   }
 }
+/**
+ * User Profile Models
+ *
+ * @returns
+ */
+async function getUsers() {
+  const users = await db('users as u')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .returning('*');
+  return users;
+}
+async function getSingleUser(filter) {
+  const singleUser = await db('users as u')
+    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .where(filter)
+    .first();
+  return singleUser;
+}
+const updateUser = async (changes, id) => {
+  const user = await db('users')
+    .where({ id })
+    .update(changes)
+    .returning(['fullname', 'username', 'email', 'bio'])
+    .then(userUpdate => userUpdate[0]);
+  return user;
+};
 
 module.exports = {
   getUserId,
   addUser,
   getUserBy,
   findBy,
-  createOrFindUser
+  createOrFindUser,
+  getUsers,
+  getSingleUser,
+  updateUser
 };

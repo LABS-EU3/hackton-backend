@@ -1,4 +1,4 @@
-const db = require('./authModel');
+const db = require('../../models/userModel');
 const generateToken = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
 

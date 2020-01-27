@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 const moment = require('moment');
-const db = require('./eventsModel');
+const db = require('../../models/eventsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetByUSerId(req, res) {
@@ -64,7 +64,10 @@ function handleEventsEdit(req, res) {
     location: req.body.location,
     guidelines: req.body.guidelines,
     participation_type: req.body.participation_type,
-    category_id: req.body.category_id
+    category_id: req.body.category_id,
+    tag_name: req.body.tag_name,
+    rubrics: req.body.rubrics,
+    requirements: req.body.requirements
   };
 
   db.update(id, editedEvent)
@@ -94,7 +97,10 @@ function handleEventsPost(req, res) {
     location: req.body.location,
     guidelines: req.body.guidelines,
     participation_type: req.body.participation_type,
-    category_id: req.body.category_id
+    category_id: req.body.category_id,
+    tag_name: req.body.tag_name,
+    rubrics: req.body.rubrics,
+    requirements: req.body.requirements
   };
   db.add(event)
     .then(data => {
