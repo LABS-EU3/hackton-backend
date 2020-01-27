@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 async function getUserId(id) {
   const userId = await db('users')

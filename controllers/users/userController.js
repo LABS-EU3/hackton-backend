@@ -1,4 +1,4 @@
-const userModel = require('../authUser/authModel');
+const userModel = require('../../models/userModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleGetUserList(req, res) {

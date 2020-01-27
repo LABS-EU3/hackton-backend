@@ -1,6 +1,6 @@
-const db = require('./projectsModel');
-const grades = require('../projectGrading/projectGradingModel');
-const teamDb = require('../eventTeam/eventTeamModel');
+const db = require('../../models/projectsModel');
+const grades = require('../../models/projectGradingModel');
+const teamDb = require('../../models/eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project Submissions requirements

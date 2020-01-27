@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 // project entries models
 async function addProject(project) {

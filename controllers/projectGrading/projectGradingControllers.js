@@ -1,6 +1,6 @@
 /* eslint-disable no-else-return */
-const db = require('./projectGradingModel');
-const eventsDb = require('../events/eventsModel');
+const db = require('../../models/projectGradingModel');
+const eventsDb = require('../../models/eventsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 // Project grading

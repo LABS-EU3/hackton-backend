@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 // project grading models
 async function addGrading(grade) {

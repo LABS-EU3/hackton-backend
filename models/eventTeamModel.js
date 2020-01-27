@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig');
+const db = require('../data/dbConfig');
 
 async function getTeam(eventId) {
   const team = await db('event_team as team')

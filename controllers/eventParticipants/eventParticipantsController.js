@@ -1,4 +1,4 @@
-const db = require('./eventParticipantsModel');
+const db = require('../../models/eventParticipantsModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleEventsGetById(req, res) {

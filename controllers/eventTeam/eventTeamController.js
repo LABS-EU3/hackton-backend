@@ -1,4 +1,4 @@
-const eventTeam = require('./eventTeamModel');
+const eventTeam = require('../../models/eventTeamModel');
 const requestHandler = require('../../utils/requestHandler');
 
 async function handleAddTeamMember(req, res) {
