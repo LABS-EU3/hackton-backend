@@ -175,7 +175,7 @@ module.exports = class EventValidator {
     if (Object.keys(checkEvent).length === 0) {
       return requestHandler.error(
         res,
-        400,
+        403,
         'You are not authorized to do this'
       );
     }

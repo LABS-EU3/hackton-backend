@@ -90,7 +90,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .set('Authorization', token2)
       .set('Content-Type', 'application/json')
       .send({ email: mockUsers.validInput3.email, role_type: 'judge' });
-    expect(response.status).toEqual(400);
+    expect(response.status).toEqual(403);
     expect(response.body.message).toEqual('You are not authorized to do this');
     done();
   });
@@ -134,7 +134,7 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
       .delete(`/api/events/${eventId}/team/${teamMateId}`)
       .set('Authorization', token2)
       .set('Content-Type', 'application/json');
-    expect(response.status).toEqual(400);
+    expect(response.status).toEqual(403);
     expect(response.body.message).toEqual('You are not authorized to do this');
     done();
   });
