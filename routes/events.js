@@ -152,7 +152,6 @@ router.post(
   '/projects/:id/grading',
   authenticate,
   EventValidator.validateProjectID,
-  EventValidator.validateJudge,
   handleprojectGradingPost
 );
 
