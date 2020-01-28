@@ -1,86 +1,93 @@
 const db = require('../data/dbConfig');
 
 // project grading models
-async function addGrading(grade) {
-  const submittedGrading = await db('project_grading')
-    .insert(grade)
+async function createTeam(team) {
+  const createdTeam = await db('participant_teams')
+    .insert(team)
     .returning('*');
-  return submittedGrading;
+  return createdTeam;
 }
-async function findAllGradingsByEventId(id) {
-  const foundAllGrades = await db('project_grading as g')
-    .join('project_entries as p', 'p.id', 'g.project_id')
-    .join('events as e', 'e.id', 'g.project_event_id')
-    .join('users as u', 'u.id', 'g.judge_id')
-    .select(
-      'g.project_id',
-      'g.project_event_id',
-      'g.judge_id',
-      'g.product_design',
-      'g.functionality',
-      'g.innovation',
-      'g.product_fit',
-      'g.extensibility',
-      'g.presentation',
-      'g.average_rating',
-      'p.project_writeups',
-      'p.video_url',
-      'p.git_url',
-      'p.participant_or_team_name',
-      'u.email as judge_email',
-      'u.fullname as judge_fullname',
-      'g.judge_comments'
-    )
-    .where({ project_event_id: id });
-  return foundAllGrades;
+async function updateTeam(id, team) {
+  const updatedTeam = await db('participant_teams')
+    .where({ id })
+    .update(team)
+    .returning('*');
+  return updatedTeam;
 }
 
-async function findGrading(id) {
-  const foundSubmission = await db('project_grading as g')
-    .join('project_entries as p', 'p.id', 'g.project_id')
-    .join('events as e', 'e.id', 'g.project_event_id')
-    .join('users as u', 'u.id', 'g.judge_id')
+async function findTeam(id) {
+  const foundTeam = await db('participant_teams as p')
+    .join('users as u', 'u.id', 'p.team_lead')
     .select(
-      'g.project_id',
-      'g.project_event_id',
-      'g.judge_id',
-      'g.product_design',
-      'g.functionality',
-      'g.innovation',
-      'g.product_fit',
-      'g.extensibility',
-      'g.presentation',
-      'g.average_rating',
-      'p.project_writeups',
-      'p.video_url',
-      'p.git_url',
-      'p.participant_or_team_name',
-      'u.email as judge_email',
-      'u.fullname as judge_fullname',
-      'g.judge_comments'
+      'p.team_name',
+      'p.team_lead',
+      'u.username as team_lead_username',
+      'u.fullname as team_lead_fullname',
+      'p.event_id',
+      'p.id'
     )
-    .where({ project_id: id });
-  return foundSubmission;
+    .where('p.id', id);
+  return foundTeam;
 }
-async function updateGrading(id, grade) {
-  const updateGrade = await db('project_grading')
-    .where({ project_id: id })
-    .update(grade)
-    .returning('*');
-  return updateGrade;
-}
-async function removeGrading(id) {
-  const deletedSubmission = await db('project_grading')
-    .where({ project_id: id })
+
+async function RemoveTeam(id) {
+  const removedTeam = await db('participant_teams as p')
+    .where({ id })
     .delete();
-  return deletedSubmission;
+  return removedTeam;
+}
+
+// Participant team members models
+
+async function addTeamMate(teamMate) {
+  const createdTeamMember = await db('participant_team_members')
+    .insert(teamMate)
+    .returning('*');
+  return createdTeamMember;
+}
+
+async function findTeamMate(id) {
+  const foundTeamMember = await db('participant_team_members as p')
+    .join('users as u', 'u.id', 'p.team_member')
+    .join('participant_teams as b', 'b.id', 'p.team_id')
+    .select(
+      'b.team_name',
+      'b.team_lead',
+      'u.username as team_member_username',
+      'u.fullname as team_member_fullname',
+      'b.event_id',
+      'p.id',
+      'p.team_member'
+    )
+    .where('p.team_id', id)
+    .groupBy(
+      'b.team_name',
+      'b.team_lead',
+      'u.username',
+      'u.fullname',
+      'b.event_id',
+      'p.id',
+      'p.team_member'
+    );
+  return foundTeamMember;
+}
+async function removeTeamMate(id) {
+  const removeTeamMember = await db('participant_team_members')
+    .where({
+      team_member: id
+    })
+    .delete();
+  return removeTeamMember;
 }
 
 module.exports = {
-  // Project grading models
+  // Participant Teams models
+  createTeam,
+  updateTeam,
+  RemoveTeam,
+  findTeam,
+  // Participant Team Members models
   addTeamMate,
   findTeamMate,
-  findTeamName,
-  updateTeamMate,
   removeTeamMate
 };

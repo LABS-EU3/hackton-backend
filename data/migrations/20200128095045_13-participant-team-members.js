@@ -1,5 +1,6 @@
 exports.up = function(knex) {
   return knex.schema.createTable('participant_team_members', table => {
+    table.increments();
     table
       .integer('team_member')
       .unsigned()
