@@ -88,7 +88,7 @@ async function handleProjectGradingEdit(req, res) {
     .then(data => {
       return requestHandler.success(
         res,
-        201,
+        200,
         'Grade edited successfully',
         data
       );
