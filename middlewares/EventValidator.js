@@ -226,19 +226,15 @@ module.exports = class EventValidator {
     return next();
   }
 
-  static async judgeValidation(req, res, next) {
+  static async validateJudge(req, res, next) {
     const { userId } = req.decodedToken;
     const { id } = req.params;
     const team = await eventTeam.getTeam(id);
     const check = await team.find(user => user.user_id === userId);
 
-    if (!check) {
-      return requestHandler.error(
-        res,
-        403,
-        'You are not authorized to do this'
-      );
+    if (check) {
+      return next();
     }
-    return next();
+    return requestHandler.error(res, 403, 'You are not authorized to do this');
   }
 };
