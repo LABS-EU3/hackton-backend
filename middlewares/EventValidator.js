@@ -232,9 +232,13 @@ module.exports = class EventValidator {
     const team = await eventTeam.getTeam(id);
     const check = await team.find(user => user.user_id === userId);
 
-    if (check) {
-      return next();
+    if (check === undefined || Object.keys(check).length === 0 || !check) {
+      return requestHandler.error(
+        res,
+        403,
+        'You are not authorized to do this'
+      );
     }
-    return requestHandler.error(res, 403, 'You are not authorized to do this');
+    return next();
   }
 };
