@@ -34,11 +34,6 @@ beforeEach(async () => {
     .send(mockUsers.existingUsername);
   token3 = response3.body.body.token;
 
-  const response4 = await app
-    .post('/api/auth/register')
-    .set('Content-Type', 'application/json')
-    .send(mockUsers.validInput3);
-
   const response5 = await request(server)
     .post('/api/event-category')
     .set('Authorization', token)
@@ -52,13 +47,6 @@ beforeEach(async () => {
     .set('Content-Type', 'application/json')
     .send({ ...mockEvents.event1, category_id: categoryId });
   eventId = await eventCreation.body.body.event_id;
-
-  const seedTeam = await app
-    .post(`/api/events/${eventId}/team`)
-    .set('Authorization', token)
-    .set('Content-Type', 'application/json')
-    .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
-  teamMateId = seedTeam.body.body.member.user_id;
 });
 
 describe('[POST] user as event owner can ADD/GET/DELETE team members to their event', () => {
@@ -75,6 +63,18 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
     done();
   });
   test('[POST] event owner can not add a person that is already in the team', async done => {
+    const response4 = await app
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUsers.validInput3);
+
+    const seedTeam = await app
+      .post(`/api/events/${eventId}/team`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
+    teamMateId = seedTeam.body.body.member.user_id;
+
     const response = await app
       .post(`/api/events/${eventId}/team`)
       .set('Authorization', token)
@@ -85,6 +85,18 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
     done();
   });
   test('[POST] none owner can not add a person the team', async done => {
+    const response4 = await app
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUsers.validInput3);
+
+    const seedTeam = await app
+      .post(`/api/events/${eventId}/team`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
+    teamMateId = seedTeam.body.body.member.user_id;
+
     const response = await app
       .post(`/api/events/${eventId}/team`)
       .set('Authorization', token2)
@@ -121,6 +133,18 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
     done();
   });
   test('[DELETE] event owner can delete a person that is already in the team', async done => {
+    const response4 = await app
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUsers.validInput3);
+
+    const seedTeam = await app
+      .post(`/api/events/${eventId}/team`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
+    teamMateId = seedTeam.body.body.member.user_id;
+
     const response = await app
       .delete(`/api/events/${eventId}/team/${teamMateId}`)
       .set('Authorization', token)
@@ -130,6 +154,18 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
     done();
   });
   test('[DELETE] none owner can not delete a person that is in a team', async done => {
+    const response4 = await app
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUsers.validInput3);
+
+    const seedTeam = await app
+      .post(`/api/events/${eventId}/team`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
+    teamMateId = seedTeam.body.body.member.user_id;
+
     const response = await app
       .delete(`/api/events/${eventId}/team/${teamMateId}`)
       .set('Authorization', token2)
@@ -139,6 +175,18 @@ describe('[POST] user as event owner can ADD/GET/DELETE team members to their ev
     done();
   });
   test('[DELETE] throw error if user is not in the team', async done => {
+    const response4 = await app
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUsers.validInput3);
+
+    const seedTeam = await app
+      .post(`/api/events/${eventId}/team`)
+      .set('Authorization', token)
+      .set('Content-Type', 'application/json')
+      .send({ email: mockUsers.validInput3.email, role_type: 'organizer' });
+    teamMateId = seedTeam.body.body.member.user_id;
+
     const response = await app
       .delete(`/api/events/${eventId}/team/${teamMateId}`)
       .set('Authorization', token)

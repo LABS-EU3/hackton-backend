@@ -95,6 +95,7 @@ router.post(
   '/:id/participants',
   authenticate,
   EventValidator.validateID,
+  EventValidator.restrictJudges,
   handleEventRegistration
 );
 
