@@ -1,6 +1,7 @@
 const db = require('../../models/userModel');
 const generateToken = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
+const { sendEmail } = require('../../utils/emailHandler')
 
 const server = require('../../api/server');
 
@@ -9,6 +10,7 @@ const register = (req, res) => {
   try {
     const newUser = req.newuser;
     generateToken(res, 201, 'Signup succesful', newUser);
+    sendEmail('welcome', newUser.email, 'Welcome to hackton')
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
   }
