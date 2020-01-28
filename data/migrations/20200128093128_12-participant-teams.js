@@ -23,15 +23,6 @@ exports.up = function(knex) {
       .references('users.id')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
-    table
-      .integer('team_member')
-      .unsigned()
-      .notNullable();
-    table
-      .foreign('team_member')
-      .references('users.id')
-      .onUpdate('CASCADE')
-      .onDelete('CASCADE');
     table.timestamps(true, true);
   });
 };
