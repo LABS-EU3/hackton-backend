@@ -2,11 +2,14 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const setReminder = require('../utils/reminder');
 
 dotenv.config();
 const routes = require('../routes');
 
 const server = express();
+
+setReminder();
 
 server.use(helmet());
 server.use(express.json());
