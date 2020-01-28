@@ -12,13 +12,13 @@ exports.sendEmail = (subject, recipient, body) => {
         text: 'I hope this message gets through!',
     }
     
-    // const transporter = nodemailer.createTransport({
-    //     service: 'gmail',
-    //     auth: {
-    //         user: email,
-    //         pass: password,
-    //     }
-    // });
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: email,
+            pass: password,
+        }
+    });
 
     transporter.sendMail(mailOptions)
 };
