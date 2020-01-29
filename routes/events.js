@@ -46,6 +46,13 @@ const {
   handleTeamMateDelete,
   handleTeamMateGet
 } = require('../controllers/participantTeams/participantTeamsControllers');
+
+const {
+  participantInvite,
+  organizerInvite
+} = require('../controllers/inviteController/inviteMail');
+const UserValidator = require('../middlewares/UserValidator');
+
 const router = Router();
 
 router.post(
@@ -206,5 +213,16 @@ router.delete(
   '/participant-teams/member/:id',
   authenticate,
   handleTeamMateDelete
+);
+
+router.post(
+  '/participant-teams/invite/:id',
+  UserValidator.inviteInput,
+  participantInvite
+);
+router.post(
+  '/event-teams/invite/:id',
+  UserValidator.inviteInput,
+  organizerInvite
 );
 module.exports = router;

@@ -3,7 +3,6 @@ const cron = require('node-cron');
 const eventsDb = require('../models/eventsModel');
 const participantDb = require('../models/eventParticipantsModel');
 const organizerDb = require('../models/eventTeamModel');
-const { usersToken } = require('../utils/generateToken');
 const Mailer = require('../utils/mailHandler');
 
 const setReminder = async () => {
@@ -18,13 +17,12 @@ const setReminder = async () => {
         const month = event.start_date.split('-')[1];
         const eta = day;
         const eventId = event.id;
-        const token = usersToken({ user_id, email: participants_email });
         const template = await Mailer.generateMailTemplate({
           receiverName: participants_name || participants_email,
           intro: 'Hackathon Reminder',
-          text: 'The hackathon starts soon. Are you ready!!!',
+          text: `The hackathon starts soon. Are you ready!!!`,
           actionBtnText: 'View Event',
-          actionBtnLink: `${process.env.REDIRECT_URL}/info/${eventId}/${token}`
+          actionBtnLink: `${process.env.REDIRECT_URL}/dashboard/event/${eventId}`
         });
 
         cron.schedule(`* * ${eta} ${month} * *`, async () => {
@@ -43,13 +41,12 @@ const setReminder = async () => {
         const month = event.start_date.split('-')[1];
         const eta = day;
         const eventId = event.id;
-        const token = usersToken({ user_id, email });
         const template = await Mailer.generateMailTemplate({
           receiverName: username || email,
           intro: 'Hackathon Reminder',
-          text: 'The hackathon starts soon. Are you ready!!!',
+          text: `The hackathon starts soon. Are you ready!!!`,
           actionBtnText: 'View Event',
-          actionBtnLink: `${process.env.REDIRECT_URL}/info/${eventId}/${token}`
+          actionBtnLink: `${process.env.REDIRECT_URL}/dashboard/event/${eventId}`
         });
 
         cron.schedule(`* * ${eta} ${month} * *`, async () => {
