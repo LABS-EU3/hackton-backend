@@ -7,31 +7,34 @@ const mockProjects = require('../../data/mock/projects.mock');
 const mockGrading = require('../../data/mock/projectGrading.mock');
 const mockUser = require('../../data/mock/auth.mock');
 
+const app = request(server);
+
 let token;
 let projectId;
 let judgeToken;
 let eventId;
 let projectGradeId;
+let particpanToken;
 
 beforeEach(async () => {
   await db.raw(
-    'TRUNCATE TABLE event_categories,users,events,project_entries,project_grading CASCADE'
+    'TRUNCATE TABLE event_categories,users,events,project_entries,project_grading, event_team, event_participants CASCADE'
   );
   // eslint-disable-next-line no-unused-vars
-  const response = await request(server)
+  const response = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockUser.validInput1);
   token = await response.body.body.token;
 
-  const response5 = await request(server)
+  const response5 = await app
     .post('/api/event-category')
     .set('Authorization', token)
     .set('Content-Type', 'application/json')
     .send(mockCategory.cat1);
-  expect(response5.status).toBe(201);
-  const categoryId = response5.body.body.category_id;
-  const response3 = await request(server)
+  // expect(response5.status).toEqual(201);
+  const categoryId = await response5.body.body.category_id;
+  const response3 = await app
     .post('/api/events')
     .set('Authorization', token)
     .set('Content-Type', 'application/json')
@@ -39,49 +42,50 @@ beforeEach(async () => {
       ...mockEvents.event1,
       category_id: categoryId
     });
-  expect(response3.status).toBe(201);
+  // expect(response3.status).toEqual(201);
   eventId = await response3.body.body.event_id;
-  const response11 = await request(server)
+  const response11 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockGrading.judge1);
-  expect(response11.status).toBe(201);
-  judgeToken = response11.body.body.token;
-  const response6 = await request(server)
+  // expect(response11.status).toEqual(201);
+  judgeToken = await response11.body.body.token;
+  const response6 = await app
     .post(`/api/events/${eventId}/team`)
     .set('Authorization', token)
     .set('Content-Type', 'application/json')
     .send(mockGrading.teammate1);
-  expect(response6.status).toBe(200);
-  const response12 = await request(server)
+  // expect(response6.status).toEqual(200);
+
+  const response12 = await app
     .post('/api/auth/register')
     .set('Content-Type', 'application/json')
     .send(mockGrading.participant1);
-  const particpanToken = response12.body.body.token;
-  const eventRegister = await request(server)
+  particpanToken = await response12.body.body.token;
+  const eventRegister = await app
     .post(`/api/events/${eventId}/participants`)
     .set('Authorization', particpanToken)
     .set('Content-Type', 'application/json');
-  expect(eventRegister.status).toBe(201);
+  // expect(eventRegister.status).toEqual(201);
 
-  const response7 = await request(server)
+  const response7 = await app
     .post(`/api/events/${eventId}/projects`)
     .set('Authorization', particpanToken)
     .set('Content-Type', 'application/json')
     .send(mockProjects.submission2);
-  expect(response7.status).toBe(201);
+  // expect(response7.status).toEqual(201);
 
-  const projectArray = response7.body.body;
-  projectArray.map(project => {
+  const projectArray = await response7.body.body;
+  await projectArray.map(project => {
     projectId = project.id;
 
     return projectId;
   });
 });
 
-describe('organizer can add a judge to his/her team,judge can grade a submitted project', () => {
-  test('organizer can [POST] team members,judges can [POST] grades', async () => {
-    const response13 = await request(server)
+describe('judges can [POST, GET, PUT, DELETE] grade a submitted project', () => {
+  test('[POST] judges can add grades', async done => {
+    const response13 = await app
       .post(`/api/events/projects/${projectId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json')
@@ -89,10 +93,11 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         ...mockGrading.projectGrade1,
         project_event_id: eventId
       });
-    expect(response13.status).toBe(201);
+    expect(response13.status).toEqual(201);
+    done();
   });
-  test('organizer can [POST] team members,judges can [PUT] grades', async () => {
-    const response13 = await request(server)
+  test('[PUT] judges can update grades', async done => {
+    const response13 = await app
       .post(`/api/events/projects/${projectId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json')
@@ -100,7 +105,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         ...mockGrading.projectGrade1,
         project_event_id: eventId
       });
-    expect(response13.status).toBe(201);
+    expect(response13.status).toEqual(201);
 
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
@@ -108,7 +113,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
 
       return projectGradeId;
     });
-    const response14 = await request(server)
+    const response14 = await app
       .put(`/api/events/projects/${projectGradeId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json')
@@ -116,10 +121,11 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         ...mockGrading.projectGrade2,
         project_event_id: eventId
       });
-    expect(response14.status).toBe(201);
+    expect(response14.status).toEqual(200);
+    done();
   });
-  test('organizer can [POST] team members,judges can [DELETE] grades', async () => {
-    const response13 = await request(server)
+  test('[DELETE] judges can DELETE grades', async done => {
+    const response13 = await app
       .post(`/api/events/projects/${projectId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json')
@@ -127,7 +133,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         ...mockGrading.projectGrade1,
         project_event_id: eventId
       });
-    expect(response13.status).toBe(201);
+    expect(response13.status).toEqual(201);
 
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
@@ -135,14 +141,15 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
 
       return projectGradeId;
     });
-    const response14 = await request(server)
+    const response14 = await app
       .delete(`/api/events/projects/${projectGradeId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json');
-    expect(response14.status).toBe(200);
+    expect(response14.status).toEqual(200);
+    done();
   });
-  test('organizer can [POST] team members,judges can [GET] grades', async () => {
-    const response13 = await request(server)
+  test('[GET] judges can GET grades', async done => {
+    const response13 = await app
       .post(`/api/events/projects/${projectId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json')
@@ -150,7 +157,7 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
         ...mockGrading.projectGrade1,
         project_event_id: eventId
       });
-    expect(response13.status).toBe(201);
+    expect(response13.status).toEqual(201);
 
     const projectGradeArray = response13.body.body;
     projectGradeArray.map(project => {
@@ -158,15 +165,16 @@ describe('organizer can add a judge to his/her team,judge can grade a submitted 
 
       return projectGradeId;
     });
-    const response14 = await request(server)
+    const response14 = await app
       .get(`/api/events/projects/${projectGradeId}/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json');
-    expect(response14.status).toBe(200);
-    const response15 = await request(server)
+    expect(response14.status).toEqual(200);
+    const response15 = await app
       .get(`/api/events/${eventId}/projects/grading`)
       .set('Authorization', judgeToken)
       .set('Content-Type', 'application/json');
-    expect(response15.status).toBe(200);
+    expect(response15.status).toEqual(200);
+    done();
   });
 });
