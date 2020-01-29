@@ -30,6 +30,14 @@ async function findTeam(id) {
   return foundTeam;
 }
 
+async function findTeamByEventId(id) {
+  const foundEventTeams = await db('participant_teams as p').where(
+    'p.event_id',
+    id
+  );
+  return foundEventTeams;
+}
+
 async function RemoveTeam(id) {
   const removedTeam = await db('participant_teams as p')
     .where({ id })
@@ -49,26 +57,15 @@ async function addTeamMate(teamMate) {
 async function findTeamMate(id) {
   const foundTeamMember = await db('participant_team_members as p')
     .join('users as u', 'u.id', 'p.team_member')
-    .join('participant_teams as b', 'b.id', 'p.team_id')
     .select(
-      'b.team_name',
-      'b.team_lead',
-      'u.username as team_member_username',
+      'u.email as team_member_email',
       'u.fullname as team_member_fullname',
-      'b.event_id',
       'p.id',
+      'p.team_id',
       'p.team_member'
     )
-    .where('p.team_id', id)
-    .groupBy(
-      'b.team_name',
-      'b.team_lead',
-      'u.username',
-      'u.fullname',
-      'b.event_id',
-      'p.id',
-      'p.team_member'
-    );
+    .where('p.team_id', id);
+
   return foundTeamMember;
 }
 async function removeTeamMate(id) {
@@ -86,6 +83,7 @@ module.exports = {
   updateTeam,
   RemoveTeam,
   findTeam,
+  findTeamByEventId,
   // Participant Team Members models
   addTeamMate,
   findTeamMate,

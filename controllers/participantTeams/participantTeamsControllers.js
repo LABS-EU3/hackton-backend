@@ -80,6 +80,23 @@ async function handleTeamGet(req, res) {
     });
 }
 
+async function handleAllTeamGet(req, res) {
+  const { id } = req.params;
+  await db
+    .findTeamByEventId(id)
+    .then(data => {
+      return requestHandler.success(
+        res,
+        200,
+        'All Event Teams retrieved successfully',
+        data
+      );
+    })
+    .catch(error => {
+      return requestHandler.error(res, 500, ` server error ${error.message}`);
+    });
+}
+
 // participant team members controllers
 
 async function handleTeamMateGet(req, res) {
@@ -145,5 +162,6 @@ module.exports = {
   handleTeamEdit,
   handleTeamGet,
   handleTeamMateGet,
-  handleTeamMateDelete
+  handleTeamMateDelete,
+  handleAllTeamGet
 };
