@@ -45,7 +45,6 @@
     "pg": "^7.14.0",
     "pg-types": "^3.0.0",
     "prettier": "^1.19.1",
-    "query-string": "^6.10.1",
     "validator": "^12.1.0"
   },
   "devDependencies": {
