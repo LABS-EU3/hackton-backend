@@ -29,7 +29,7 @@ const setReminder = async () => {
 
         cron.schedule(`* * ${eta} ${month} * *`, async () => {
           Mailer.createMail({
-            to: participants_email,
+            to: participants_name || participants_email,
             message: template,
             subject: 'Event Reminder'
           });
