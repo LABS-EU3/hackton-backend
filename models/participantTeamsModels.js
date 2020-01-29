@@ -58,7 +58,7 @@ async function findTeamMate(id) {
   const foundTeamMember = await db('participant_team_members as p')
     .join('users as u', 'u.id', 'p.team_member')
     .select(
-      'u.username as team_member_username',
+      'u.email as team_member_email',
       'u.fullname as team_member_fullname',
       'p.id',
       'p.team_id',
