@@ -57,14 +57,14 @@ module.exports = class Mailer {
    */
   static async createMail({ to, message, subject }) {
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: 'SendGrid',
       auth: {
-        user: process.env.USER_EMAIL,
-        pass: process.env.USER_PASSWORD
+        user: process.env.SENDGRID_USERNAME,
+        pass: process.env.SENDGRID_PASSWORD
       }
     });
     const mailOptions = {
-      from: 'Hackton.co <test@examle.com>',
+      from: 'Hackton.co <hacktonlambda@gmail.com>',
       to,
       subject,
       html: message
@@ -91,7 +91,7 @@ module.exports = class Mailer {
       text:
         "You recently requested to reset your password. If this wasn't you, please ignore this mail.To reset your password click the button below",
       actionBtnText: 'Reset Password',
-      actionBtnLink: `${process.env.REDIRECT_URL}/info/${token}`
+      actionBtnLink: `${process.env.REDIRECT_URL}/reset_password/${token}`
     });
 
     requestHandler.success(res, statusCode, info, { data: token });

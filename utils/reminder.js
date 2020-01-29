@@ -11,26 +11,20 @@ const setReminder = async () => {
     const paricipants = await participantDb.getByEventId(event.id);
     paricipants.forEach(async ele => {
       if (ele.event_id === event.id) {
-        const {
-          user_id,
-          participants_email,
-          participants_name,
-          participants_username
-        } = ele;
+        const { user_id, participants_email, participants_name } = ele;
         const day = Number(event.start_date.split('-')[2] - 3);
         const month = event.start_date.split('-')[1];
-        // const eta = day;
+        const eta = day;
         const token = usersToken({ user_id, participants_email });
-        console.log(participants_email, '==email==')
         const template = await Mailer.generateMailTemplate({
-          receiverName: participants_email,
+          receiverName: participants_name || participants_email,
           intro: 'Hackathon Reminder',
           text: 'The hackathon starts soon. Are you ready!!!',
           actionBtnText: 'View Event',
           actionBtnLink: `${process.env.REDIRECT_URL}/info/${token}`
         });
 
-        cron.schedule(`1 * * * * *`, async () => {
+        cron.schedule(`* * ${eta} ${month} * *`, async () => {
           Mailer.createMail({
             to: participants_email,
             message: template,
