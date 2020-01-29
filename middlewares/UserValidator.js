@@ -102,4 +102,19 @@ module.exports = class UserValidator {
       return error;
     }
   }
+
+  static async inviteInput(req, res, next) {
+    try {
+      const { email } = req.body;
+      const check = checkItem({
+        email
+      });
+      if (Object.keys(check).length > 0) {
+        return requestHandler.error(res, 400, check);
+      }
+      next();
+    } catch (error) {
+      return error;
+    }
+  }
 };

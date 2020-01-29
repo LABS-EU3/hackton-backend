@@ -26,18 +26,18 @@ const Login = (req, res) => {
   }
 };
 
-// const participantInvite = (req, res) => {
-//   try {
-//     const newInvite = req.body;
-//     sendEmail(
-//       'Invite to join Hackaton event',
-//       newInvite.email,
-//       'You are invited to join hackaton portal. Click this to join or ignore if not interested'
-//     );
-//   } catch (err) {
-//     return requestHandler.error(res, 500, `server error ${err.message}`);
-//   }
-// };
+const participantInvite = (req, res) => {
+  try {
+    const newInvite = req.body;
+    sendEmail(
+      'Invite to join Hackaton event',
+      newInvite.email,
+      'You are invited to join hackaton portal. Click this to join or ignore if not interested'
+    );
+  } catch (err) {
+    return requestHandler.error(res, 500, `server error ${err.message}`);
+  }
+};
 
 const getAuthToken = async (req, res) => {
   try {

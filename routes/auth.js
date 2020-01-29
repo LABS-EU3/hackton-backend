@@ -24,6 +24,9 @@ router.post('/register', UserValidator.userInput, register);
 
 router.post('/login', UserValidator.userLogin, Login);
 
+router.post('/invite', UserValidator.userLogin, Login);
+
+
 // Passportjs config
 router.use(passport.initialize());
 
