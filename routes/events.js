@@ -37,6 +37,15 @@ const {
   handleProjectGradingDelete
 } = require('../controllers/projectGrading/projectGradingControllers');
 
+const {
+  handleCreateTeam,
+  handleAddTeamMembers,
+  handleTeamDelete,
+  handleTeamEdit,
+  handleTeamGet,
+  handleTeamMateDelete,
+  handleTeamMateGet
+} = require('../controllers/participantTeams/participantTeamsControllers');
 const router = Router();
 
 router.post(
@@ -181,4 +190,21 @@ router.delete(
   handleProjectGradingDelete
 );
 
+// Participant Teams
+router.post(
+  '/:id/participant-teams',
+  authenticate,
+  EventValidator.validateID,
+  handleCreateTeam
+);
+
+router.post('/participant-teams/:id', authenticate, handleAddTeamMembers);
+router.put('/participant-teams/:id', authenticate, handleTeamEdit);
+router.get('/participant-teams/:id', authenticate, handleTeamMateGet);
+router.delete('/participant-teams/:id', authenticate, handleTeamDelete);
+router.delete(
+  '/participant-teams/member/:id',
+  authenticate,
+  handleTeamMateDelete
+);
 module.exports = router;
