@@ -3,6 +3,8 @@ const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const userModel = require('../models/userModel');
 require('dotenv').config();
+const teamModel = require('../models/participantTeamsModels');
+const organizerModel = require('../models/eventTeamModel');
 
 /**
  * Validates all routes
@@ -18,7 +20,8 @@ module.exports = class UserValidator {
    */
   static async userInput(req, res, next) {
     const { email, password } = req.body;
-
+    const { id } = req.params;
+    const { role } = req.query;
     const check = checkItem({
       email,
       password
@@ -47,6 +50,25 @@ module.exports = class UserValidator {
       email,
       password: hash
     });
+    if (id) {
+      if (role) {
+        await organizerModel.addTeamMember({
+          user_id: newUser.id,
+          event_id: id,
+          role_type: role
+        });
+        // eslint-disable-next-line require-atomic-updates
+        req.newuser = newUser;
+        next();
+      }
+      await teamModel.addTeamMate({
+        team_id: id,
+        team_member: newUser.id
+      });
+      // eslint-disable-next-line require-atomic-updates
+      req.newuser = newUser;
+      next();
+    }
     // eslint-disable-next-line require-atomic-updates
     req.newuser = newUser;
     next();
@@ -93,6 +115,21 @@ module.exports = class UserValidator {
         username,
         fullname,
         bio
+      });
+      if (Object.keys(check).length > 0) {
+        return requestHandler.error(res, 400, check);
+      }
+      next();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async inviteInput(req, res, next) {
+    try {
+      const { email } = req.body;
+      const check = checkItem({
+        email
       });
       if (Object.keys(check).length > 0) {
         return requestHandler.error(res, 400, check);

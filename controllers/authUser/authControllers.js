@@ -1,14 +1,23 @@
 const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
-
 const server = require('../../api/server');
 
 const register = (req, res) => {
   // endpoint to register
   try {
     const newUser = req.newuser;
-    generateToken(res, 201, 'Signup succesful', newUser);
+    const { id } = req.params;
+    if (id) {
+      generateToken(
+        res,
+        201,
+        'You are successfully signed up to hackathon',
+        newUser
+      );
+    } else {
+      generateToken(res, 201, 'Signup succesful', newUser);
+    }
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
   }

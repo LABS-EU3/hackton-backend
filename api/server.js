@@ -9,7 +9,7 @@ const routes = require('../routes');
 
 const server = express();
 
-setReminder();
+// setReminder();
 
 server.use(helmet());
 server.use(express.json());
