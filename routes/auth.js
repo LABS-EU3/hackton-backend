@@ -8,7 +8,8 @@ const UserValidator = require('../middlewares/UserValidator');
 const {
   register,
   Login,
-  getAuthToken
+  getAuthToken,
+  participantInvite
 } = require('../controllers/authUser/authControllers');
 
 const router = Router();
@@ -24,8 +25,7 @@ router.post('/register', UserValidator.userInput, register);
 
 router.post('/login', UserValidator.userLogin, Login);
 
-router.post('/invite', UserValidator.userLogin, Login);
-
+router.post('/invite', UserValidator.inviteInput, participantInvite);
 
 // Passportjs config
 router.use(passport.initialize());

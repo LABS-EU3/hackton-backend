@@ -2,7 +2,7 @@ const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
 const { sendEmail } = require('../../utils/emailHandler');
-
+const Mailer = require('../../utils/mailHandler');
 const server = require('../../api/server');
 
 const register = (req, res) => {
@@ -26,13 +26,25 @@ const Login = (req, res) => {
   }
 };
 
-const participantInvite = (req, res) => {
+const participantInvite = async (req, res) => {
   try {
     const newInvite = req.body;
+    const emailBody = await Mailer.generateMailTemplate({
+      receiverName: newInvite.email,
+      intro: 'Invite as Participant',
+      text: 'Hacky team want you to be part of team members, click the button below to join or ignore if not interested.',
+      actionBtnText:  "Join as Participant",
+      actionBtnLink: 'https://staging.hackton.co/register'
+    });
     sendEmail(
       'Invite to join Hackaton event',
       newInvite.email,
-      'You are invited to join hackaton portal. Click this to join or ignore if not interested'
+     emailBody
+    );
+    return requestHandler.success(
+      res,
+      200,
+      'Invite sent successfully'
     );
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
