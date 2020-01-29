@@ -1,5 +1,5 @@
 const db = require('../../models/userModel');
-const generateToken = require('../../utils/generateToken');
+const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
 
 const server = require('../../api/server');

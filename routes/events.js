@@ -104,6 +104,7 @@ router.post(
   '/:id/participants',
   authenticate,
   EventValidator.validateID,
+  EventValidator.restrictJudges,
   handleEventRegistration
 );
 
@@ -119,6 +120,7 @@ router.post(
   '/:id/projects',
   authenticate,
   EventValidator.validateID,
+  EventValidator.validateParticipant,
   EventValidator.projectValidation,
   handleprojectEntriesPost
 );
