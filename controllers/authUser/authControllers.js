@@ -1,3 +1,4 @@
+const queryString = require('query-string');
 const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
@@ -8,9 +9,13 @@ const server = require('../../api/server');
 const register = (req, res) => {
   // endpoint to register
   try {
+    const { id } = req.params;
+    if (id) {
+      const newUser = req.newuser;
+    generateToken(res, 201, 'You are successfully signed up to hackathon', newUser);
+    }
     const newUser = req.newuser;
     generateToken(res, 201, 'Signup succesful', newUser);
-    // sendEmail('welcome', newUser.email, 'Welcome to hackton');
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err.message}`);
   }
@@ -28,17 +33,18 @@ const Login = (req, res) => {
 
 const participantInvite = async (req, res) => {
   try {
-    const newInvite = req.body;
+    const { id } = req.params;
+    const newUsersEmail = req.body;
     const emailBody = await Mailer.generateMailTemplate({
-      receiverName: newInvite.email,
+      receiverName: newUsersEmail.email,
       intro: 'Invite as Participant',
       text: 'Hacky team want you to be part of team members, click the button below to join or ignore if not interested.',
       actionBtnText:  "Join as Participant",
-      actionBtnLink: 'https://staging.hackton.co/register'
+      actionBtnLink: `https://staging.hackton.co/register?team=${id}`
     });
     sendEmail(
       'Invite to join Hackaton event',
-      newInvite.email,
+      newUsersEmail.email,
      emailBody
     );
     return requestHandler.success(

@@ -3,6 +3,7 @@ const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const userModel = require('../models/userModel');
 require('dotenv').config();
+const teamModel = require('../models/participantTeamsModels');
 
 /**
  * Validates all routes
@@ -18,6 +19,44 @@ module.exports = class UserValidator {
    */
   static async userInput(req, res, next) {
     const { email, password } = req.body;
+    const { id } = req.params;
+    if (id) {
+      const check = checkItem({
+        email,
+        password
+      });
+      if (Object.keys(check).length > 0) {
+        return res.status(400).json({
+          statusCode: 400,
+          check
+        });
+      }
+      const userEmail = await userModel.getUserBy({ email });
+      let existingUser;
+      if (userEmail !== undefined) {
+        existingUser = `email ${email}`;
+      }
+      if (existingUser) {
+        return requestHandler.error(
+          res,
+          409,
+          `User with ${existingUser} already exist`
+        );
+      }
+
+      const hash = await bcrypt.hash(password, 15);
+      const newUser = await userModel.addUser({
+        email,
+        password: hash
+      });
+      const newUserTeam = await teamModel.addTeamMate({
+        team_id: id,
+        team_member: newUser.id
+      });
+      // eslint-disable-next-line require-atomic-updates
+      req.newuser = newUser;
+      next();
+    }
 
     const check = checkItem({
       email,

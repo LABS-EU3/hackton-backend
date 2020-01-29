@@ -23,9 +23,11 @@ const redirectUrl = process.env.REDIRECT_URL;
  */
 router.post('/register', UserValidator.userInput, register);
 
+router.post('/register/:id', UserValidator.userInput, register);
+
 router.post('/login', UserValidator.userLogin, Login);
 
-router.post('/invite', UserValidator.inviteInput, participantInvite);
+router.post('/invite/:id', UserValidator.inviteInput, participantInvite);
 
 // Passportjs config
 router.use(passport.initialize());
