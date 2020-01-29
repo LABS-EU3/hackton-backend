@@ -20,7 +20,7 @@ const generateToken = (res, statusCode, message, user) => {
 const usersToken = user => {
   const payload = {
     userId: user.user_id,
-    email: user.participants_email || user.email
+    email: user.email
   };
   const options = {
     expiresIn: '1 day'
