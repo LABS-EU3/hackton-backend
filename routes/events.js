@@ -44,7 +44,8 @@ const {
   handleTeamEdit,
   handleTeamGet,
   handleTeamMateDelete,
-  handleTeamMateGet
+  handleTeamMateGet,
+  handleAllTeamGet
 } = require('../controllers/participantTeams/participantTeamsControllers');
 const router = Router();
 
@@ -196,6 +197,12 @@ router.post(
   handleCreateTeam
 );
 
+router.get(
+  '/:id/participant-teams',
+  authenticate,
+  EventValidator.validateID,
+  handleAllTeamGet
+);
 router.post('/participant-teams/:id', authenticate, handleAddTeamMembers);
 router.put('/participant-teams/:id', authenticate, handleTeamEdit);
 router.get('/participant-teams/:id', authenticate, handleTeamGet);
