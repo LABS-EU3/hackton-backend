@@ -8,8 +8,11 @@ const UserValidator = require('../middlewares/UserValidator');
 const {
   register,
   Login,
-  getAuthToken
+  getAuthToken,
+  passwordReset,
+  newPassword
 } = require('../controllers/authUser/authControllers');
+const authenticate = require('../api/auth/authenticate');
 
 const router = Router();
 const server = require('../api/server');
@@ -25,6 +28,9 @@ router.post('/register', UserValidator.userInput, register);
 router.post('/register/:id', UserValidator.userInput, register);
 
 router.post('/login', UserValidator.userLogin, Login);
+
+router.route('/forgotpassword').post(UserValidator.inviteInput, passwordReset);
+router.route('/resetpassword').patch(newPassword);
 
 // Passportjs config
 router.use(passport.initialize());
@@ -44,7 +50,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${baseUrl}/api/auth/google/callback` || process.env.LOCAL_URL_GG
+      callbackURL:
+        `${baseUrl}/api/auth/google/callback` || process.env.LOCAL_URL_GG
     },
     async (accessToken, refreshToken, profile, done) => {
       const userCredentials = {
