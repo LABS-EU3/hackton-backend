@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const { mailGenerator } = require('../config/mail');
 const requestHandler = require('../utils/requestHandler');
 const { usersToken } = require('../utils/generateToken');
+const winston = require('../config/winston');
 
 const redirectUrl = process.env.REDIRECT_URL;
 
@@ -72,9 +73,9 @@ module.exports = class Mailer {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
+        winston.infog(error);
       }
-      console.log(info);
+      winston.info(info);
     });
   }
 
@@ -95,7 +96,7 @@ module.exports = class Mailer {
     });
 
     requestHandler.success(res, statusCode, info, { data: token });
-    console.log(token);
+    winston.info(token);
 
     Mailer.createMail({
       to: email,

@@ -1,8 +1,9 @@
 const server = require('./api/server');
+const winston = require('./config/winston');
 
 const port = process.env.PORT || 4000;
 
 server.listen(port, err => {
-  if (err) return console.error(err.message);
-  return console.log(`server is listening on http://localhost:${port}`);
+  if (err) return winston.info(err.message);
+  return winston.info(`Application started on http://localhost:${port}`);
 });
