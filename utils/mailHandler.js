@@ -3,6 +3,7 @@ const { mailGenerator } = require('../config/mail');
 const requestHandler = require('../utils/requestHandler');
 const { usersToken } = require('../utils/generateToken');
 const winston = require('../config/winston');
+const server = require('../api/server');
 
 const redirectUrl = process.env.REDIRECT_URL;
 
@@ -73,7 +74,7 @@ module.exports = class Mailer {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        winston.infog(error);
+        winston.info(error);
       }
       winston.info(info);
     });
@@ -84,22 +85,23 @@ module.exports = class Mailer {
    * @param {string} token
    * @param {string} email
    */
-  static async forgotPassword(res, statusCode, info, email) {
-    const token = usersToken({ email });
+  static async forgotPassword(res, statusCode, info, user) {
+    const token = usersToken(user);
+    server.locals = token;
     const template = await this.generateMailTemplate({
-      receiverName: email,
-      intro: 'Hackathon Reminder',
+      receiverName: user.email,
+      intro: 'Password Reset',
       text:
         "You recently requested to reset your password. If this wasn't you, please ignore this mail.To reset your password click the button below",
       actionBtnText: 'Reset Password',
-      actionBtnLink: `${process.env.REDIRECT_URL}/reset_password/${token}`
+      actionBtnLink: `${process.env.REDIRECT_URL}/resetpassword`
     });
 
-    requestHandler.success(res, statusCode, info, { data: token });
+    requestHandler.success(res, statusCode, info, token);
     winston.info(token);
 
     Mailer.createMail({
-      to: email,
+      to: user.email,
       subject: 'Reset forgotPassword',
       message: template
     });
@@ -112,7 +114,7 @@ module.exports = class Mailer {
   static async resetPassword(res, statusCode, info, email) {
     const template = await this.generateMailTemplate({
       receiverName: email,
-      intro: 'Hackathon Reminder',
+      intro: 'Password Reset',
       text:
         'Your password was reset succesfully.You can now login to your account again.',
       actionBtnText: 'Login',

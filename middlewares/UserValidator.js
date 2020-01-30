@@ -128,12 +128,26 @@ module.exports = class UserValidator {
   static async inviteInput(req, res, next) {
     try {
       const { email } = req.body;
+      const { id } = req.params;
       const check = checkItem({
         email
       });
       if (Object.keys(check).length > 0) {
         return requestHandler.error(res, 400, check);
       }
+      if (id) {
+        next();
+      }
+      const checkUser = await userModel.getUserBy({ email });
+      const secureData = { email: checkUser.email, id: checkUser.id };
+      if (!checkUser) {
+        return requestHandler.error(
+          res,
+          401,
+          'This email is either incorrect or not registered'
+        );
+      }
+      req.checked = secureData;
       next();
     } catch (error) {
       return error;
