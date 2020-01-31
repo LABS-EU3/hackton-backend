@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const decode = require('jwt-decode');
 const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
@@ -14,6 +13,7 @@ const register = (req, res) => {
     const newUser = req.newuser;
     const { id } = req.params;
     if (id) {
+      Mailer.confirmEmail(newUser);
       generateToken(
         res,
         201,
@@ -21,6 +21,7 @@ const register = (req, res) => {
         newUser
       );
     } else {
+      Mailer.confirmEmail(newUser);
       generateToken(res, 201, 'Signup succesful', newUser);
     }
   } catch (err) {
@@ -78,18 +79,17 @@ const passwordReset = async (req, res) => {
 
 const newPassword = async (req, res) => {
   try {
-    const token = await server.locals;
-    if (token) {
-      const { __uid } = decode(token);
+    const id = await req.token;
+    if (id) {
       const { password } = req.body;
       const check = checkItem({ password });
       if (Object.keys(check).length > 0) {
         return requestHandler.error(res, 400, check);
       }
       const hash = await bcrypt.hash(password, 15);
-      const foundUser = userModel.getSingleUser({ id: __uid });
+      const foundUser = userModel.getSingleUser({ id });
       if (foundUser) {
-        await userModel.updateUser({ password: hash }, __uid);
+        await userModel.updateUser({ password: hash }, id);
         return Mailer.resetPassword(
           res,
           200,
@@ -104,4 +104,32 @@ const newPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, Login, getAuthToken, passwordReset, newPassword };
+const confirmEmail = async (req, res) => {
+  try {
+    const id = await req.token;
+    if (id) {
+      const foundUser = await userModel.getSingleUser({ id });
+      if (foundUser) {
+        await userModel.confirmEmail(id);
+        return generateToken(
+          res,
+          200,
+          `User with email ${foundUser.email} has been verified`,
+          { id }
+        );
+      }
+    }
+    return false;
+  } catch (err) {
+    return requestHandler.error(res, 500, `server error ${err}`);
+  }
+};
+
+module.exports = {
+  register,
+  Login,
+  getAuthToken,
+  passwordReset,
+  newPassword,
+  confirmEmail
+};

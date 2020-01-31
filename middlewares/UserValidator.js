@@ -1,10 +1,12 @@
 const bcrypt = require('bcrypt');
+const decode = require('jwt-decode');
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const userModel = require('../models/userModel');
 require('dotenv').config();
 const teamModel = require('../models/participantTeamsModels');
 const organizerModel = require('../models/eventTeamModel');
+const server = require('../api/server');
 
 /**
  * Validates all routes
@@ -109,6 +111,13 @@ module.exports = class UserValidator {
 
   static async userProfile(req, res, next) {
     try {
+      if (req.file) {
+        req.body.image_url = [
+          { avatar: req.file.secure_url, public_id: req.file.public_id }
+        ];
+      } else {
+        req.body.image_url = '';
+      }
       const { email, username, fullname, bio } = req.body;
       const check = checkItem({
         email,
@@ -139,16 +148,30 @@ module.exports = class UserValidator {
         next();
       }
       const checkUser = await userModel.getUserBy({ email });
-      const secureData = { email: checkUser.email, id: checkUser.id };
-      if (!checkUser) {
+      if (!checkUser || Object.keys(checkUser).length === 0) {
         return requestHandler.error(
           res,
           401,
           'This email is either incorrect or not registered'
         );
       }
-      req.checked = secureData;
+      req.checked = { email: checkUser.email, id: checkUser.id };
       next();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async validateToken(req, res, next) {
+    try {
+      const token = await server.locals;
+      if (token) {
+        const { __uid } = decode(token);
+        req.token = __uid;
+        next();
+      } else {
+        return requestHandler.error(res, 400, `Email is invalid`);
+      }
     } catch (error) {
       return error;
     }

@@ -50,7 +50,8 @@ const updateUserProfile = async (req, res) => {
         email: req.body.email || foundUser.email,
         username: req.body.username || foundUser.username,
         fullname: req.body.fullname || foundUser.fullname,
-        bio: req.body.bio || foundUser.bio
+        bio: req.body.bio || foundUser.bio,
+        image_url: req.body.image_url || foundUser.image_url
       };
       const userUpdates = await userModel.updateUser(updates, userId);
       return requestHandler.success(res, 200, 'Profile updated successfully', {
