@@ -148,15 +148,14 @@ module.exports = class UserValidator {
         next();
       }
       const checkUser = await userModel.getUserBy({ email });
-      const secureData = { email: checkUser.email, id: checkUser.id };
-      if (!checkUser) {
+      if (!checkUser || Object.keys(checkUser).length === 0) {
         return requestHandler.error(
           res,
           401,
           'This email is either incorrect or not registered'
         );
       }
-      req.checked = secureData;
+      req.checked = { email: checkUser.email, id: checkUser.id };
       next();
     } catch (error) {
       return error;
