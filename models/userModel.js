@@ -4,7 +4,7 @@ const db = require('../data/dbConfig');
 async function getUserId(id) {
   const userId = await db('users')
     .where('users.id', id)
-    .select('fullname', 'username', 'email', 'bio')
+    .select('fullname', 'username', 'email', 'bio', 'image_url')
     .first();
   return userId;
 }
@@ -62,13 +62,27 @@ const confirmEmail = async id => {
  */
 async function getUsers() {
   const users = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .select(
+      'u.id',
+      'u.email',
+      'u.username',
+      'u.fullname',
+      'u.bio',
+      'u.image_url'
+    )
     .returning('*');
   return users;
 }
 async function getSingleUser(filter) {
   const singleUser = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .select(
+      'u.id',
+      'u.email',
+      'u.username',
+      'u.fullname',
+      'u.bio',
+      'u.image_url'
+    )
     .where(filter)
     .first();
   return singleUser;
@@ -77,7 +91,7 @@ const updateUser = async (changes, id) => {
   const user = await db('users')
     .where({ id })
     .update(changes)
-    .returning(['fullname', 'username', 'email', 'bio'])
+    .returning(['fullname', 'username', 'email', 'bio', 'image_url'])
     .then(userUpdate => userUpdate[0]);
   return user;
 };
