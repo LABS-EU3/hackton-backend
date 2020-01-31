@@ -33,6 +33,7 @@
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "knex": "^0.20.4",
     "mailgen": "^2.0.10",
     "moment": "^2.24.0",

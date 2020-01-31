@@ -5,6 +5,7 @@ const eventModel = require('../models/eventsModel');
 const eventTeam = require('../models/eventTeamModel');
 const userModel = require('../models/userModel');
 const participants = require('../models/eventParticipantsModel');
+const participantTeams = require('../models/participantTeamsModels');
 const projectModel = require('../models/projectsModel');
 require('dotenv').config();
 
@@ -197,10 +198,14 @@ module.exports = class EventValidator {
     const { userId } = req.decodedToken;
     const { id } = req.params;
     const partparticipantsList = await participants.getByEventId(id);
+    const teamParticipantsList = await participantTeams.findTeamByEventId(id);
+    const validTeamLead = await teamParticipantsList.find(
+      user => user.team_lead === userId
+    );
     const validity = await partparticipantsList.find(
       user => user.user_id === userId
     );
-    if (!validity) {
+    if (!validity && validTeamLead === undefined) {
       return requestHandler.error(
         res,
         403,
