@@ -10,7 +10,8 @@ const {
   Login,
   getAuthToken,
   passwordReset,
-  newPassword
+  newPassword,
+  confirmEmail
 } = require('../controllers/authUser/authControllers');
 const authenticate = require('../api/auth/authenticate');
 
@@ -30,7 +31,8 @@ router.post('/register/:id', UserValidator.userInput, register);
 router.post('/login', UserValidator.userLogin, Login);
 
 router.route('/forgotpassword').post(UserValidator.inviteInput, passwordReset);
-router.route('/resetpassword').patch(newPassword);
+router.route('/resetpassword').patch(UserValidator.validateToken, newPassword);
+router.route('/verify_email').post(UserValidator.validateToken, confirmEmail);
 
 // Passportjs config
 router.use(passport.initialize());

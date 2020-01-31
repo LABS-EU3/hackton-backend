@@ -1,10 +1,12 @@
 const bcrypt = require('bcrypt');
+const decode = require('jwt-decode');
 const checkItem = require('../utils/checkInputs');
 const requestHandler = require('../utils/requestHandler');
 const userModel = require('../models/userModel');
 require('dotenv').config();
 const teamModel = require('../models/participantTeamsModels');
 const organizerModel = require('../models/eventTeamModel');
+const server = require('../api/server');
 
 /**
  * Validates all routes
@@ -149,6 +151,21 @@ module.exports = class UserValidator {
       }
       req.checked = secureData;
       next();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  static async validateToken(req, res, next) {
+    try {
+      const token = await server.locals;
+      if (token) {
+        const { __uid } = decode(token);
+        req.token = __uid;
+        next();
+      } else {
+        return requestHandler.error(res, 400, `Email is invalid`);
+      }
     } catch (error) {
       return error;
     }

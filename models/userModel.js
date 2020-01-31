@@ -44,6 +44,17 @@ async function createOrFindUser(newUser) {
     return user;
   }
 }
+
+const confirmEmail = async id => {
+  const user = await db('users')
+    .where({ id })
+    .update({ verified: true }, 'id')
+    .then(ids => {
+      const userId = ids[0];
+      return findBy({ id: userId });
+    });
+  return user;
+};
 /**
  * User Profile Models
  *
@@ -79,5 +90,6 @@ module.exports = {
   createOrFindUser,
   getUsers,
   getSingleUser,
-  updateUser
+  updateUser,
+  confirmEmail
 };
