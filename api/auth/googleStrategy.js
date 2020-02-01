@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const db = require('../../models/userModel');
@@ -20,7 +19,7 @@ module.exports = {
         async (accessToken, refreshToken, profile, done) => {
           const userCredentials = {
             username: profile.name.givenName,
-            password: bcrypt.hashSync('Hackton', 15),
+            password: process.env.OAUTH_DEFAULT_PWD,
             email: profile.emails[0].value,
             fullname: profile.displayName
           };

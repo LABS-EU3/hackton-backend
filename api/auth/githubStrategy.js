@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const db = require('../../models/userModel');
@@ -24,7 +23,7 @@ module.exports = {
             fullname: _json.name,
             username,
             email: _json.email || id,
-            password: bcrypt.hashSync('Hackton', 15)
+            password: process.env.OAUTH_DEFAULT_PWD
           };
           const user = await db.createOrFindUser(userCredentials);
           server.locals = user;
