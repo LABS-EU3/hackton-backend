@@ -111,13 +111,6 @@ module.exports = class UserValidator {
 
   static async userProfile(req, res, next) {
     try {
-      if (req.file) {
-        req.body.image_url = [
-          { avatar: req.file.secure_url, public_id: req.file.public_id }
-        ];
-      } else {
-        req.body.image_url = '';
-      }
       const { email, username, fullname, bio } = req.body;
       const check = checkItem({
         email,
