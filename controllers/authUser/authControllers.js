@@ -1,9 +1,7 @@
 const bcrypt = require('bcrypt');
-// const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
 const Mailer = require('../../utils/mailHandler');
-// const server = require('../../api/server');
 const checkItem = require('../../utils/checkInputs');
 const userModel = require('../../models/userModel');
 
