@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require('../data/dbConfig');
 
 async function getUserId(id) {
@@ -39,8 +38,7 @@ async function createOrFindUser(newUser) {
     user = await addUser(newUser);
     return user;
   }
-  const hash = bcrypt.compareSync('Hackton', user.password);
-  if (hash) {
+  if (process.env.OAUTH_DEFAULT_PWD === user.password) {
     return user;
   }
 }

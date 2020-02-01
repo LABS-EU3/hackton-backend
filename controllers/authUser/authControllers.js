@@ -1,9 +1,7 @@
 const bcrypt = require('bcrypt');
-const db = require('../../models/userModel');
 const { generateToken } = require('../../utils/generateToken');
 const requestHandler = require('../../utils/requestHandler');
 const Mailer = require('../../utils/mailHandler');
-const server = require('../../api/server');
 const checkItem = require('../../utils/checkInputs');
 const userModel = require('../../models/userModel');
 
@@ -36,30 +34,6 @@ const Login = (req, res) => {
     generateToken(res, 200, 'Login succesful', payload);
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err}`);
-  }
-};
-
-const getAuthToken = async (req, res) => {
-  try {
-    const data = server.locals;
-    if (!data) {
-      res.status(400).json({
-        statusCode: 400,
-        message: 'Authentication Failed'
-      });
-    }
-    const user = await db.createOrFindUser(data);
-    if (user) {
-      req.user = server.locals;
-      generateToken(
-        res,
-        200,
-        `${req.user.authType} Login was successfull`,
-        user
-      );
-    }
-  } catch (error) {
-    return error;
   }
 };
 
@@ -128,7 +102,6 @@ const confirmEmail = async (req, res) => {
 module.exports = {
   register,
   Login,
-  getAuthToken,
   passwordReset,
   newPassword,
   confirmEmail
