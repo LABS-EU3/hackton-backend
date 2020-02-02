@@ -9,6 +9,7 @@ async function getTeam(eventId) {
       'team.event_id',
       'team.role_type',
       'u.email',
+      'u.verified',
       'u.fullname',
       'u.username'
     )

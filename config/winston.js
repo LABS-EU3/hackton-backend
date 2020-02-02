@@ -15,7 +15,8 @@ const options = {
     level: 'debug',
     handleExceptions: true,
     json: false,
-    colorize: true
+    colorize: true,
+    silent: process.env.NODE_ENV === 'test'
   }
 };
 
