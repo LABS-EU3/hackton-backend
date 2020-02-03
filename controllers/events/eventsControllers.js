@@ -117,9 +117,11 @@ function handleEventsPost(req, res) {
 }
 
 function handleEventsGet(req, res) {
-  const eventLimit = req.query.limit;
-  const eventOffset = req.query.offset;
-  db.find(eventLimit, eventOffset)
+  // const eventLimit = req.query.limit;
+  // const eventOffset = req.query.offset;
+  const { perPage } = req.query;
+  const { currentPage } = req.query;
+  db.find(perPage,  )
     .then(data => {
       return requestHandler.success(
         res,
