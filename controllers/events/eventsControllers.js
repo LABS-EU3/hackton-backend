@@ -5,12 +5,14 @@ const requestHandler = require('../../utils/requestHandler');
 
 function handleEventsGetByUSerId(req, res) {
   const { userId } = req.decodedToken;
-  db.getByUserId(userId)
+  const { perPage } = req.query;
+  const { currentPage } = req.query;
+  db.getByUserId(perPage, currentPage, userId)
     .then(data => {
       return requestHandler.success(
         res,
         200,
-        'Events retrieved Successfully',
+        'Successfully retrieved all your events',
         data
       );
     })
