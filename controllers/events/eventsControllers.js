@@ -113,11 +113,11 @@ function handleEventsPost(req, res) {
     })
     .catch(error => {
       return requestHandler.error(res, 500, `server error ${error.message}`);
-    });
-}
 
 function handleEventsGet(req, res) {
-  db.find()
+  const eventLimit = req.query.limit;
+  const eventOffset = req.query.offset;
+  db.find(eventLimit, eventOffset)
     .then(data => {
       return requestHandler.success(
         res,

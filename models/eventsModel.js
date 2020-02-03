@@ -68,8 +68,10 @@ async function add(event) {
   return newEvent;
 }
 
-async function find() {
+async function find(eventLimit, eventOffset) {
   const foundEvent = await db('events as e')
+    .limit(eventLimit)
+    .offset(eventOffset)
     .join('users as u', ' u.id', 'e.creator_id')
     .select(
       'e.id',
