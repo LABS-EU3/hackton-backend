@@ -113,6 +113,8 @@ function handleEventsPost(req, res) {
     })
     .catch(error => {
       return requestHandler.error(res, 500, `server error ${error.message}`);
+    });
+}
 
 function handleEventsGet(req, res) {
   const eventLimit = req.query.limit;
