@@ -54,8 +54,6 @@ async function getByUserId(perPage = 100, currentPage = 1, id) {
     pagination.data = rows;
     return pagination.data;
   });
-  // const foundEvents = await db('events').where({ creator_id: id });
-  // return foundEvents;
 }
 
 async function findByTitle(title) {
