@@ -77,7 +77,7 @@ const getByUserId = async (perPage, currentPage, id) => {
     pagination.currentPage = page;
     pagination.from = offset;
     pagination.data = rows;
-    return pagination;
+    return pagination.data;
   });
 };
 
