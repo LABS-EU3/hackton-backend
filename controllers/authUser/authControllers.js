@@ -11,7 +11,7 @@ const register = (req, res) => {
     const newUser = req.newuser;
     const { id } = req.params;
     if (id) {
-      Mailer.confirmEmail(newUser);
+      Mailer.confirmEmail(newUser, `register`);
       generateToken(
         res,
         201,
@@ -19,7 +19,7 @@ const register = (req, res) => {
         newUser
       );
     } else {
-      Mailer.confirmEmail(newUser);
+      Mailer.confirmEmail(newUser, `register`);
       generateToken(res, 201, 'Signup succesful', newUser);
     }
   } catch (err) {
@@ -31,7 +31,18 @@ const Login = (req, res) => {
   // login endpoint
   try {
     const payload = req.checked;
-    generateToken(res, 200, 'Login succesful', payload);
+    if (payload.verified) {
+      generateToken(res, 200, 'Login succesful', payload);
+    } else {
+      Mailer.confirmEmail(payload, `login`);
+      generateToken(
+        res,
+        200,
+        `Login succesful. Email not verified.
+        An email verification message has been sent to this email.`,
+        payload
+      );
+    }
   } catch (err) {
     return requestHandler.error(res, 500, `server error ${err}`);
   }

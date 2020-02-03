@@ -30,8 +30,8 @@ const organizerInvite = async (req, res) => {
     const { email, role_type } = req.body;
     const emailBody = await Mailer.generateMailTemplate({
       receiverName: email,
-      intro: 'Invite as Participant',
-      text: `Hacky team want you to be part of the organzers at a hackathon,
+      intro: `Invite as ${role_type}`,
+      text: `Hacky team want you to be part of the organizers at a hackathon,
         click the button below to join or ignore if not interested.`,
       actionBtnText: 'Join as Participant',
       actionBtnLink: `https://staging.hackton.co/register?team=${id}&role=${role_type}`

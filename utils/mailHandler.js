@@ -134,7 +134,7 @@ module.exports = class Mailer {
    * @param {string} token
    * @param {string} email
    */
-  static async confirmEmail(user) {
+  static async confirmEmail(user, action) {
     const token = usersToken(user);
     server.locals = token;
     const template = await this.generateMailTemplate({
@@ -143,7 +143,7 @@ module.exports = class Mailer {
       text:
         'Welcome To Hackton, The Number One Playground for Hackers. To verify your email please click the button below',
       actionBtnText: 'Verify Email',
-      actionBtnLink: `${process.env.REDIRECT_URL}/register?verified=true`
+      actionBtnLink: `${process.env.REDIRECT_URL}/${action}?verified=true`
     });
 
     Mailer.createMail({

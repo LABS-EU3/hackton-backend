@@ -8,6 +8,7 @@ async function getByEventId(id) {
       'u.email as participants_email',
       'u.fullname as participants_name',
       'u.username as participants_username',
+      'u.verified',
       'e.event_id'
     )
     .where('e.event_id', id);

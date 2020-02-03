@@ -12,7 +12,7 @@ const setReminder = async () => {
     const organizers = await organizerDb.getTeam(event.id);
     paricipants.forEach(async ele => {
       if (ele.event_id === event.id) {
-        const { user_id, participants_email, participants_name } = ele;
+        const { verified, participants_email, participants_name } = ele;
         const day = Number(event.start_date.split('-')[2] - 3);
         const month = event.start_date.split('-')[1];
         const eta = day;
@@ -25,18 +25,20 @@ const setReminder = async () => {
           actionBtnLink: `${process.env.REDIRECT_URL}/dashboard/event/${eventId}`
         });
 
-        cron.schedule(`* * ${eta} ${month} * *`, async () => {
-          Mailer.createMail({
-            to: participants_name || participants_email,
-            message: template,
-            subject: 'Event Reminder'
+        if (verified) {
+          cron.schedule(`* * ${eta} ${month} * *`, async () => {
+            Mailer.createMail({
+              to: participants_name || participants_email,
+              message: template,
+              subject: 'Event Reminder'
+            });
           });
-        });
+        }
       }
     });
     organizers.forEach(async ele => {
       if (ele.event_id === event.id) {
-        const { user_id, email, username } = ele;
+        const { verified, email, username } = ele;
         const day = Number(event.start_date.split('-')[2] - 3);
         const month = event.start_date.split('-')[1];
         const eta = day;
@@ -49,13 +51,15 @@ const setReminder = async () => {
           actionBtnLink: `${process.env.REDIRECT_URL}/dashboard/event/${eventId}`
         });
 
-        cron.schedule(`* * ${eta} ${month} * *`, async () => {
-          Mailer.createMail({
-            to: username || email,
-            message: template,
-            subject: 'Event Reminder'
+        if (verified) {
+          cron.schedule(`* * ${eta} ${month} * *`, async () => {
+            Mailer.createMail({
+              to: username || email,
+              message: template,
+              subject: 'Event Reminder'
+            });
           });
-        });
+        }
       }
     });
   });
