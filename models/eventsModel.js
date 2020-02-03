@@ -11,18 +11,17 @@ module.exports = {
   getByUserId
 };
 
-async function getByUserId(perPage, currentPage, id) {
+async function getByUserId(perPage = 100, currentPage = 1, id) {
   const pagination = {};
-  const limitPerPage = perPage || 10;
-  const page = Math.max(currentPage || 1, 1);
+  const page = Math.max(currentPage, 1);
   const offset = (page - 1) * perPage;
   return Promise.all([
-    await db('events as e')
+    db('events as e')
       .clone()
       .count('* as count')
       .first(),
-    await db('events as e')
-      .limit(limitPerPage)
+    db('events as e')
+      .limit(perPage)
       .offset(offset)
       .join('users as u', ' u.id', 'e.creator_id')
       .select(
@@ -42,7 +41,7 @@ async function getByUserId(perPage, currentPage, id) {
         'u.email as organizer_email',
         'u.username as organizer_username'
       )
-      .where({ creator_id: id })
+      .where('e.creator_id', `${id}`)
   ]).then(([total, rows]) => {
     const { count } = total;
     pagination.total = parseInt(count, 10);
@@ -53,7 +52,7 @@ async function getByUserId(perPage, currentPage, id) {
     pagination.currentPage = page;
     pagination.from = offset;
     pagination.data = rows;
-    return pagination;
+    return pagination.data;
   });
   // const foundEvents = await db('events').where({ creator_id: id });
   // return foundEvents;

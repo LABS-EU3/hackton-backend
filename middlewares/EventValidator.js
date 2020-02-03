@@ -172,7 +172,7 @@ module.exports = class EventValidator {
     const { id } = req.params;
     const { teammate_id } = req.params;
     const { userId } = req.decodedToken;
-    const checkEvent = await eventModel.getByUserId(userId);
+    const checkEvent = await eventModel.getByUserId(1, 1, userId);
     if (Object.keys(checkEvent).length === 0) {
       return requestHandler.error(
         res,
