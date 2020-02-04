@@ -11,7 +11,8 @@ async function getTeam(eventId) {
       'u.email',
       'u.verified',
       'u.fullname',
-      'u.username'
+      'u.username',
+      'u.image_url'
     )
     .where({ event_id: eventId });
   return team;
