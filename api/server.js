@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const winston = require('../config/winston');
 const setReminder = require('../utils/reminder');
+const port = process.env.PORT || 5000;
 
 dotenv.config();
 const routes = require('../routes');
@@ -32,6 +33,10 @@ server.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
   next();
+});
+
+server.listen(port, () => {
+  console.log('listening on port', port);
 });
 
 server.use('/api', routes);

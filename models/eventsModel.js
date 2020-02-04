@@ -39,7 +39,8 @@ async function getByUserId(perPage = 100, currentPage = 1, id) {
         'e.participation_type',
         'u.fullname as organizer_name',
         'u.email as organizer_email',
-        'u.username as organizer_username'
+        'u.username as organizer_username',
+        'u.image_url as organizer_profile_pic'
       )
       .where('e.creator_id', `${id}`)
   ]).then(([total, rows]) => {
@@ -79,7 +80,8 @@ async function findById(id) {
       'e.participation_type',
       'u.fullname as organizer_name',
       'u.email as organizer_email',
-      'u.username as organizer_username'
+      'u.username as organizer_username',
+      'u.image_url as organizer_profile_pic'
     )
     .where('e.id', `${id}`);
   return eventId;
@@ -126,7 +128,8 @@ async function find() {
       'e.participation_type',
       'u.fullname as organizer_name',
       'u.email as organizer_email',
-      'u.username as organizer_username'
+      'u.username as organizer_username',
+      'u.image_url as organizer_profile_pic'
     );
   return foundEvent;
 }
