@@ -60,7 +60,7 @@ async function findTeamMate(id) {
     .select(
       'u.email as team_member_email',
       'u.fullname as team_member_fullname',
-      'u.image_url as team_member_profile',
+      'u.image_url as team_member_avatar',
       'p.id',
       'p.team_id',
       'p.team_member'
