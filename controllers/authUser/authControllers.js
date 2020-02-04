@@ -11,7 +11,7 @@ const register = (req, res) => {
     const newUser = req.newuser;
     const { id } = req.params;
     if (id) {
-      Mailer.confirmEmail(newUser, `register`);
+      Mailer.confirmEmail(newUser, `login`);
       generateToken(
         res,
         201,
