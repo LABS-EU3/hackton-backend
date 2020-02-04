@@ -9,7 +9,7 @@ const participantInvite = async (req, res) => {
     const emailBody = await Mailer.generateMailTemplate({
       receiverName: email,
       intro: 'Invite as Participant',
-      text: `Hacky team want you to be part of team members, click the button below to join or ignore if not interested.`,
+      text: `Hacky team want you to be part of team members, click the button below to join.`,
       actionBtnText: 'Join as Participant',
       actionBtnLink: `https://staging.hackton.co/register?team=${id}`
     });
@@ -32,8 +32,8 @@ const organizerInvite = async (req, res) => {
       receiverName: email,
       intro: `Invite as ${role_type}`,
       text: `Hacky team want you to be part of the organizers at a hackathon,
-        click the button below to join or ignore if not interested.`,
-      actionBtnText: 'Join as Participant',
+        click the button below to join.`,
+      actionBtnText: `Join as ${role_type}`,
       actionBtnLink: `https://staging.hackton.co/register?team=${id}&role=${role_type}`
     });
     await Mailer.createMail({
