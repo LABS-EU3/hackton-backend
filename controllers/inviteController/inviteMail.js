@@ -18,7 +18,7 @@ const participantInvite = async (req, res) => {
     await Mailer.createMail({
       to: email,
       message: emailBody,
-      subject: 'Invite to join Hackaton event'
+      subject: 'Invitation to join Hackaton event'
     });
     return requestHandler.success(res, 200, 'Invite sent successfully');
   } catch (err) {
@@ -41,7 +41,7 @@ const organizerInvite = async (req, res) => {
     await Mailer.createMail({
       to: email,
       message: emailBody,
-      subject: `Invite to join Hackaton event`
+      subject: `Invitation to join Hackaton event`
     });
     return requestHandler.success(res, 200, 'Invite sent successfully');
   } catch (err) {
