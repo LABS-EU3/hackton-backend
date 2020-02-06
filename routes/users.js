@@ -7,6 +7,8 @@ const {
   updateUserProfile
 } = require('../controllers/users/userController');
 const UserValidator = require('../middlewares/UserValidator');
+const upload = require('../config/cloudinary');
+
 
 const router = Router();
 
@@ -16,6 +18,7 @@ router.get('/search', authenticate, handleGetSingleUser);
 router.put(
   '/profile',
   authenticate,
+  upload.single('image_url'),
   UserValidator.userProfile,
   updateUserProfile
 );

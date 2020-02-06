@@ -266,7 +266,7 @@ describe('user can add, edit, delete and get an event', () => {
       'This event title already exists in the database, please pick a new event title!'
     );
   });
-  test('[GET] /events/your-events for each logged in user', async () => {
+  test('[GET] /events/user-events for each logged in user', async () => {
     const response5 = await request(server)
       .post('/api/event-category')
       .set('authorization', token)
@@ -292,7 +292,7 @@ describe('user can add, edit, delete and get an event', () => {
       });
     expect(response3.status).toBe(201);
     const response4 = await request(server)
-      .get('/api/events/your-events')
+      .get('/api/events/user-events')
       .set('authorization', token)
       .set('Content-Type', 'application/json');
     expect(response4.status).toBe(200);

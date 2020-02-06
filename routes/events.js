@@ -18,7 +18,8 @@ const EventValidator = require('../middlewares/EventValidator');
 const {
   handleEventsGetById,
   handleEventRegistration,
-  handleEventDelete
+  handleEventDelete,
+  handleEventsUserSignedFor
 } = require('../controllers/eventParticipants/eventParticipantsController');
 
 const {
@@ -37,6 +38,23 @@ const {
   handleProjectGradingDelete
 } = require('../controllers/projectGrading/projectGradingControllers');
 
+const {
+  handleCreateTeam,
+  handleAddTeamMembers,
+  handleTeamDelete,
+  handleTeamEdit,
+  handleTeamGet,
+  handleTeamMateDelete,
+  handleTeamMateGet,
+  handleAllTeamGet
+} = require('../controllers/participantTeams/participantTeamsControllers');
+
+const {
+  participantInvite,
+  organizerInvite
+} = require('../controllers/inviteController/inviteMail');
+const UserValidator = require('../middlewares/UserValidator');
+
 const router = Router();
 
 router.post(
@@ -46,7 +64,7 @@ router.post(
   handleEventsPost
 );
 router.get('/', authenticate, handleEventsGet);
-router.get('/your-events', authenticate, handleEventsGetByUSerId);
+router.get('/user-events', authenticate, handleEventsGetByUSerId);
 router.put(
   '/:id',
   authenticate,
@@ -91,10 +109,14 @@ router.get(
   EventValidator.validateID,
   handleEventsGetById
 );
+
+router.get('/participants/user', authenticate, handleEventsUserSignedFor);
+
 router.post(
   '/:id/participants',
   authenticate,
   EventValidator.validateID,
+  EventValidator.restrictJudges,
   handleEventRegistration
 );
 
@@ -110,6 +132,7 @@ router.post(
   '/:id/projects',
   authenticate,
   EventValidator.validateID,
+  EventValidator.validateParticipant,
   EventValidator.projectValidation,
   handleprojectEntriesPost
 );
@@ -145,7 +168,6 @@ router.delete(
 );
 
 // Project Grading
-
 router.post(
   '/projects/:id/grading',
   authenticate,
@@ -179,4 +201,39 @@ router.delete(
   handleProjectGradingDelete
 );
 
+// Participant Teams
+router.post(
+  '/:id/participant-teams',
+  authenticate,
+  EventValidator.validateID,
+  handleCreateTeam
+);
+
+router.get(
+  '/:id/participant-teams',
+  authenticate,
+  EventValidator.validateID,
+  handleAllTeamGet
+);
+router.post('/participant-teams/:id', authenticate, handleAddTeamMembers);
+router.put('/participant-teams/:id', authenticate, handleTeamEdit);
+router.get('/participant-teams/:id', authenticate, handleTeamGet);
+router.get('/participant-teams/:id/members', authenticate, handleTeamMateGet);
+router.delete('/participant-teams/:id', authenticate, handleTeamDelete);
+router.delete(
+  '/participant-teams/member/:id',
+  authenticate,
+  handleTeamMateDelete
+);
+
+router.post(
+  '/participant-teams/invite/:id',
+  UserValidator.inviteInput,
+  participantInvite
+);
+router.post(
+  '/event-teams/invite/:id',
+  UserValidator.inviteInput,
+  organizerInvite
+);
 module.exports = router;

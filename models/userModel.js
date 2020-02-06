@@ -1,10 +1,9 @@
-const bcrypt = require('bcrypt');
 const db = require('../data/dbConfig');
 
 async function getUserId(id) {
   const userId = await db('users')
     .where('users.id', id)
-    .select('fullname', 'username', 'email', 'bio')
+    .select('fullname', 'username', 'email', 'bio', 'image_url')
     .first();
   return userId;
 }
@@ -39,11 +38,21 @@ async function createOrFindUser(newUser) {
     user = await addUser(newUser);
     return user;
   }
-  const hash = bcrypt.compareSync('Hackton', user.password);
-  if (hash) {
+  if (process.env.OAUTH_DEFAULT_PWD === user.password) {
     return user;
   }
 }
+
+const confirmEmail = async id => {
+  const user = await db('users')
+    .where({ id })
+    .update({ verified: true }, 'id')
+    .then(ids => {
+      const userId = ids[0];
+      return findBy({ id: userId });
+    });
+  return user;
+};
 /**
  * User Profile Models
  *
@@ -51,13 +60,27 @@ async function createOrFindUser(newUser) {
  */
 async function getUsers() {
   const users = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .select(
+      'u.id',
+      'u.email',
+      'u.username',
+      'u.fullname',
+      'u.bio',
+      'u.image_url'
+    )
     .returning('*');
   return users;
 }
 async function getSingleUser(filter) {
   const singleUser = await db('users as u')
-    .select('u.id', 'u.email', 'u.username', 'u.fullname', 'u.bio')
+    .select(
+      'u.id',
+      'u.email',
+      'u.username',
+      'u.fullname',
+      'u.bio',
+      'u.image_url'
+    )
     .where(filter)
     .first();
   return singleUser;
@@ -66,7 +89,7 @@ const updateUser = async (changes, id) => {
   const user = await db('users')
     .where({ id })
     .update(changes)
-    .returning(['fullname', 'username', 'email', 'bio'])
+    .returning(['fullname', 'username', 'email', 'bio', 'image_url'])
     .then(userUpdate => userUpdate[0]);
   return user;
 };
@@ -79,5 +102,6 @@ module.exports = {
   createOrFindUser,
   getUsers,
   getSingleUser,
-  updateUser
+  updateUser,
+  confirmEmail
 };

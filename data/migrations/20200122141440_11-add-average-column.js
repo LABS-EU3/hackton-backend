@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.raw(`ALTER TABLE "project_grading"
-      ADD average_rating float not null`);
+      ADD average_rating float(1) not null`);
 };
 
 exports.down = function(knex) {

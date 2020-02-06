@@ -5,6 +5,7 @@ const eventModel = require('../models/eventsModel');
 const eventTeam = require('../models/eventTeamModel');
 const userModel = require('../models/userModel');
 const participants = require('../models/eventParticipantsModel');
+const participantTeams = require('../models/participantTeamsModels');
 const projectModel = require('../models/projectsModel');
 require('dotenv').config();
 
@@ -171,7 +172,7 @@ module.exports = class EventValidator {
     const { id } = req.params;
     const { teammate_id } = req.params;
     const { userId } = req.decodedToken;
-    const checkEvent = await eventModel.getByUserId(userId);
+    const checkEvent = await eventModel.getByUserId(1, 1, userId);
     if (Object.keys(checkEvent).length === 0) {
       return requestHandler.error(
         res,
@@ -189,6 +190,43 @@ module.exports = class EventValidator {
       }
       req.team = check;
       return next();
+    }
+    return next();
+  }
+
+  static async validateParticipant(req, res, next) {
+    const { userId } = req.decodedToken;
+    const { id } = req.params;
+    const partparticipantsList = await participants.getByEventId(id);
+    const teamParticipantsList = await participantTeams.findTeamByEventId(id);
+    const validTeamLead = await teamParticipantsList.find(
+      user => user.team_lead === userId
+    );
+    const validity = await partparticipantsList.find(
+      user => user.user_id === userId
+    );
+    if (!validity && validTeamLead === undefined) {
+      return requestHandler.error(
+        res,
+        403,
+        'You are not authorized to do this'
+      );
+    }
+    return next();
+  }
+
+  static async restrictJudges(req, res, next) {
+    const { userId } = req.decodedToken;
+    const { id } = req.params;
+    const team = await eventTeam.getTeam(id);
+    const check = await team.find(user => user.user_id === userId);
+
+    if (check) {
+      return requestHandler.error(
+        res,
+        403,
+        'Event judges or organisers are not allowed to participate'
+      );
     }
     return next();
   }

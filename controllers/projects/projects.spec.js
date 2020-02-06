@@ -46,23 +46,24 @@ beforeEach(async () => {
 });
 
 describe('user can add an event and  post event project requirements, event participant can submit a project', () => {
-  test('organizer can [POST] project requirements, participants can submit projects', async () => {
+  test('[POST] participants can submit projects', async done => {
     const response7 = await request(server)
       .post(`/api/events/${eventId}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission1);
     expect(response7.status).toBe(201);
+    done();
   });
 
-  test('organizer can [PUT] project requirements, participants can [PUT] projects', async () => {
+  test('[PUT] participants can update projects', async done => {
     const response7 = await request(server)
       .post(`/api/events/${eventId}/projects`)
       .set('Authorization', token)
       .set('Content-Type', 'application/json')
       .send(mockProjects.submission2);
     expect(response7.status).toBe(201);
-    // let projectId;
+
     const projectArray = response7.body.body;
     projectArray.map(project => {
       projectId = project.id;
@@ -79,9 +80,10 @@ describe('user can add an event and  post event project requirements, event part
       });
     expect(response9.status).toBe(201);
     expect(response9.body.message).toEqual('Project edited successfully');
+    done();
   });
 
-  test('organizer can [GET] project requirements, participants can [GET] projects', async () => {
+  test('[GET] participants can [GET] projects', async done => {
     const response7 = await request(server)
       .post(`/api/events/${eventId}/projects`)
       .set('Authorization', token)
@@ -111,9 +113,10 @@ describe('user can add an event and  post event project requirements, event part
     expect(response9.body.message).toEqual(
       'Project submission retrieved successfully'
     );
+    done();
   });
 
-  test('participants can [DELETE] project submission', async () => {
+  test('participants can [DELETE] project submission', async done => {
     const response7 = await request(server)
       .post(`/api/events/${eventId}/projects`)
       .set('Authorization', token)
@@ -135,5 +138,22 @@ describe('user can add an event and  post event project requirements, event part
     expect(response9.body.message).toEqual(
       'Project submission deleted successfully'
     );
+    done();
+  });
+  test('None participants should not be allowed to submit projects', async done => {
+    const response = await request(server)
+      .post('/api/auth/register')
+      .set('Content-Type', 'application/json')
+      .send(mockUser.validInput3);
+    const token2 = await response.body.body.token;
+
+    const response7 = await request(server)
+      .post(`/api/events/${eventId}/projects`)
+      .set('Authorization', token2)
+      .set('Content-Type', 'application/json')
+      .send(mockProjects.submission2);
+    expect(response7.status).toBe(403);
+    expect(response7.body.message).toEqual('You are not authorized to do this');
+    done();
   });
 });
